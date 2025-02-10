@@ -42,7 +42,7 @@ void doIntakeUnstuck() {
     if (fabs(intake.get_actual_velocity()) < 0.5 && fabs(intake.get_voltage()) > 2000) { // if intake is stuck
         if (intakeStuckTime == 0) {
             intakeStuckTime = pros::millis();
-        } else if (pros::millis() - intakeStuckTime > 100 && LBState == PROPPED) { // ring caught on ladybrown, extend a little
+        } else if (pros::millis() - intakeStuckTime > 300 && LBState == PROPPED) { // ring caught on ladybrown, extend a little
             intake.move(0);
             wrongColorDetected = true;
             LBExtend(SEMIEXTENDED);
@@ -50,7 +50,8 @@ void doIntakeUnstuck() {
                 intake.move(127); // restart intake if autonomous running
             }
             wrongColorDetected = false;
-        } else if (pros::millis() - intakeStuckTime > 500 && LBState != PROPPED) {
+        } 
+        else if (pros::millis() - intakeStuckTime > 500 && LBState != PROPPED) {
             master.rumble("-"); // short rumble to notify driver
             double intakePower = intake.get_power();
             intake.move(-127);
@@ -92,15 +93,18 @@ void tempFunction(double state, double stop,
     {
         if(stop - curAng > degreeOne)
         {
-            ladybrown.move(moveOne);
+            ladybrown1.move(moveOne);
+            ladybrown2.move(moveOne);
         }
         else if(stop - curAng < degreeTwo)
         {
-            ladybrown.move(moveTwo);
+            ladybrown1.move(moveTwo);
+            ladybrown2.move(moveTwo);
         }
         else
         {
-            ladybrown.move(moveThree);
+            ladybrown1.move(moveThree);
+            ladybrown2.move(moveThree);
         }
     }
 }
@@ -111,7 +115,8 @@ void doLBAmbientAdjust(double curAngle) {
     tempFunction(SEMIEXTENDED, STOP1_5, curAngle, 5, -5, 25, -5, 10);
     tempFunction(EXTENDED, STOP2, curAngle, 5, -5, 5, -30 - 15, -10);
     if (LBState == FULLEXTENDED) {
-        ladybrown.move(-10);
+        ladybrown1.move(-10);
+        ladybrown2.move(-10);
     }
 }
 
@@ -164,18 +169,22 @@ void LBExtend(double point) {
 
     std::cout << "Extending to point " << point << ", Goal Angle: " << GOALANGLE << "\n";
     
-    ladybrown.move(power);
+    ladybrown1.move(power);
+    ladybrown2.move(power);
     
     while ((abs(GOALANGLE - curAngle) > 3 || timeStayedGood < iterationsRequired) && pros::millis() - startTime < 2500) { // ends once above goal angle
         curAngle = LBRotation.get_position() / 100.0;
         //std::cout << "Current Angle: " << curAngle << "\n";
         if (curAngle > GOALANGLE) {
-            ladybrown.move(negPower);
+            ladybrown1.move(negPower);
+            ladybrown2.move(negPower);
         } else {
             if (point == 1) {
-                ladybrown.move(power * (abs(GOALANGLE - curAngle) / angleChange + 0.2));
+                ladybrown1.move(power * (abs(GOALANGLE - curAngle) / angleChange + 0.2));
+                ladybrown2.move(power * (abs(GOALANGLE - curAngle) / angleChange + 0.2));
             } else {
-                ladybrown.move(power);
+                ladybrown1.move(power);
+                ladybrown2.move(power);
             }
         }
         if (abs(GOALANGLE - curAngle) < 3) {
@@ -203,7 +212,8 @@ void LBExtend(double point) {
         pros::delay(10);
     }
     std::cout << "Reached Goal Angle: " << curAngle << "\n";
-    ladybrown.move(0); // stop once done
+    ladybrown1.move(0); // stop once done
+    ladybrown2.move(0); // stop once done
     stateSetter(point);
     LBAutonGoal = point;
 }
@@ -232,12 +242,14 @@ void stateSetter(double point) {
  * 
  */
 void LBRetract() {
-    ladybrown.move(-127); // move beyond stopping point 2
+    ladybrown1.move(-127); // move back
+    ladybrown2.move(-127);
     pros::delay(200);
-    while (fabs(ladybrown.get_actual_velocity()) > 1) {
+    while (fabs(ladybrown1.get_actual_velocity()) > 1) {
         pros::delay(20);
     }
-    ladybrown.move(0);
+    ladybrown1.move(0);
+    ladybrown2.move(0);
     LBState = REST;
     LBAutonGoal = REST;
     LBRotation.reset_position();
@@ -270,7 +282,8 @@ void callLBReset() {
  */
 void LBLoop() {
     LBLoopActive = true;
-    ladybrown.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+    ladybrown1.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+    ladybrown2.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
     //LBRotation.reset();
     while (true) {
         //ladybrown.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
@@ -295,9 +308,6 @@ void LBLoop() {
                     if (curAngle < STOP1 - 5) { // at stopping point 1
                         std::cout << "At rest, extending to point 1\n";
                         LBExtend(1); // go to stopping point 2
-                    // } else if (LBState == PROPPED) { // propped and will semiextend
-                    //     std::cout << "Propped, will semiextend\n";
-                    //     LBExtend(1.5); // go to stopping point 1.5
                     } else if ((curAngle < STOP2 - 5) && LBState != EXTENDED) { // at 1.5
                         std::cout << "At stopping point 1, going to stopping point 2\n";
                         LBExtend(2); // go to rest
@@ -319,11 +329,6 @@ void LBLoop() {
             chassis.pid_wait();
             LBExtend(3);
         }
-        // if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_UP)) {
-        //     std::cout << "DOWN BUTTON PRESSED" << "\n";
-        //     LBExtend(1.5);
-        //     //LBState = SEMIEXTENDED;
-        // }
         if (LBAutonGoal != prevLBAutonGoal) { // interact with LB in auton mode
             prevLBAutonGoal = LBAutonGoal;
             ChangeLBAuton(LBAutonGoal);

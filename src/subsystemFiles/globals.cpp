@@ -7,21 +7,21 @@
 //MOTORS
 
 //drive
-pros::MotorGroup left_side_motors({1, -3, -2}, pros::v5::MotorGears::blue, pros::v5::MotorUnits::degrees);
-pros::MotorGroup right_side_motors({11, -13, 12}, pros::v5::MotorGears::blue, pros::v5::MotorUnits::degrees);
+pros::MotorGroup left_side_motors({5, -6, 9}, pros::v5::MotorGears::blue, pros::v5::MotorUnits::degrees);
+pros::MotorGroup right_side_motors({2, -1, 7}, pros::v5::MotorGears::blue, pros::v5::MotorUnits::degrees);
 
 //intake
 pros::Motor intake(9, pros::v5::MotorGears::blue, pros::v5::MotorUnits::degrees);
 
 // ladybrown wall stake mech
-pros::Motor ladybrown(-8, pros::v5::MotorGears::red, pros::v5::MotorUnits::degrees);
+pros::Motor ladybrown1(-11, pros::v5::MotorGears::red, pros::v5::MotorUnits::degrees);
+pros::Motor ladybrown2(-20, pros::v5::MotorGears::red, pros::v5::MotorUnits::degrees);
+
 
 //pistons
 pros::adi::Pneumatics intakeLift('H', false);
 pros::adi::Pneumatics doinker('H', false); 
 pros::adi::Pneumatics mogoClamp('D', false);
-pros::adi::Pneumatics rushRightPiston('C', false);
-pros::adi::Pneumatics rushLeftPiston('B', false);
 
 // inertial
 pros::Imu IMU(4);
@@ -31,10 +31,12 @@ bool allianceColorBlue = true;
 // rotational sensor
 pros::Rotation horizTracking(12);
 pros::Rotation vertTracking(19);
+pros::Rotation LBRotation(7);
 
 pros::Optical optical(20);
 
-pros::Rotation LBRotation(7);
+extern pros::Distance autoClampSensor(1);
+
 
 //CONTROLLERS
 pros::Controller master(pros::E_CONTROLLER_MASTER);

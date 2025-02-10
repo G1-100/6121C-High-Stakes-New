@@ -27,7 +27,8 @@ extern bool allianceColorBlue;
 extern pros::Motor intake;
 
 //ladybrown
-extern pros::Motor ladybrown;
+extern pros::Motor ladybrown1;
+extern pros::Motor ladybrown2;
 
 
 // Inertial
@@ -39,8 +40,7 @@ extern pros::Rotation vertTracking;
 
 extern pros::Rotation LBRotation;
 
-extern lemlib::TrackingWheel horizTrackingWheel;
-extern lemlib::TrackingWheel vertTrackingWheel;
+extern pros::Distance autoClampSensor;
 
 //CONTROLLER
 extern  pros::Controller master;
