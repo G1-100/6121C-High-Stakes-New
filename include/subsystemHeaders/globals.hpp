@@ -43,7 +43,7 @@ extern pros::Rotation LBRotation;
 extern pros::Distance autoClampSensor;
 
 //CONTROLLER
-extern  pros::Controller master;
+extern pros::Controller master;
 
 
 //MISCELLANEOUS

@@ -24,7 +24,7 @@ using namespace ez;
 void default_constants() {
   // P, I, D, and Start I
   chassis.pid_drive_constants_set(20.0, 0.0, 100.0);         // ez::fwd/rev constants, used for odom and non odom motions
-  chassis.pid_heading_constants_set(11.0, 0.0, 20.0);        // Holds the robot straight while going forward without odom
+  chassis.pid_heading_constants_set(2, 0.0, 5.0);        // Holds the robot straight while going forward without odom
   chassis.pid_turn_constants_set(3.0, 0.05, 20.0, 15.0);     // Turn in place constants
   chassis.pid_swing_constants_set(6.0, 0.0, 65.0);           // Swing constants
   chassis.pid_odom_angular_constants_set(6.5, 0.0, 52.5);    // Angular control for odom motions
@@ -65,11 +65,16 @@ void drive_example() {
   // The third parameter is a boolean (true or false) for enabling/disabling a slew at the start of drive motions
   // for slew, only enable it when the drive distance is greater than the slew distance + a few inches
 
-  chassis.pid_drive_set(24_in, DRIVE_SPEED, true);
+  chassis.odom_reset();
+
+  chassis.pid_drive_set(24_in, DRIVE_SPEED, false);
   chassis.pid_wait();
+
+  pros::delay(1000);
 
   chassis.pid_drive_set(-12_in, DRIVE_SPEED);
   chassis.pid_wait();
+  pros::delay(1000);
 
   chassis.pid_drive_set(-12_in, DRIVE_SPEED);
   chassis.pid_wait();
@@ -81,15 +86,20 @@ void drive_example() {
 void turn_example() {
   // The first parameter is the target in degrees
   // The second parameter is max speed the robot will drive at
+  chassis.pid_turn_set(270_deg, 127);
+  chassis.pid_wait();
+
+  pros::delay(1000);
 
   chassis.pid_turn_set(90_deg, 127);
   chassis.pid_wait();
 
-  chassis.pid_turn_set(45_deg, 127);
+  pros::delay(1000);
+
+  chassis.pid_turn_set(225_deg, 127);
   chassis.pid_wait();
 
-  chassis.pid_turn_set(0_deg, 127);
-  chassis.pid_wait();
+  
 }
 
 ///
@@ -668,7 +678,6 @@ void safeFourRing(bool isBlue) {
   LBRotation.set_position(4400);
   ChangeLBState(EXTENDED); // Extend LB for AWS
   pros::delay(650 - 50);
-  ladybrown.move(-15); // jank way to make sure LB doesn't get stuck
   
   set_drive(-11 + 3, 2000, 80); // move back from AWS
   chassis.pid_wait();

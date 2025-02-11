@@ -27,6 +27,8 @@ void initialize() {
 	std::cout << "initialize done" << "\n";
 	initializeSelector();
 
+  autoClampActivated = false;
+
 
   // Look at your horizontal tracking wheel and decide if it's in front of the midline of your robot or behind it
   //  - change `back` to `front` if the tracking wheel is in front of the midline
@@ -100,6 +102,8 @@ void logger() {
         //std::cout << "RED: " << std::to_string(optical.get_rgb().red) << " BLUE: " << std::to_string(optical.get_rgb().blue) << "\n";
 		//std::cout << "DIFFERENCE: " << std::to_string(optical.get_rgb().blue - optical.get_rgb().red) << "\n";
 		//std::cout << "HUE: " + to_string(optical.get_hue()) << "\n";
+    auto pose = chassis.odom_pose_get();
+    std::cout << "POSITION: (" + std::to_string(pose.x) + ", " + std::to_string(pose.y) + ", " + std::to_string(pose.theta) + ")\n";
 		//std::cout << lemlib::format_as(chassis.getPose()) << "\n";
 		//std::cout << ladybrown.get_actual_velocity() << "\n";
 		//std::cout << LBRotation.get_position() / 100.0 << "\n";
@@ -152,9 +156,15 @@ void autonomous() {
 	intakeUnstuckActivated = true;
 
 	pros::Task lb_task(LBLoop);
-	ladybrown.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+	ladybrown1.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+  ladybrown2.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
 
-  skills();
+  pros::Task logger_task(logger);
+  
+
+  //skills();
+  //turn_example();
+  drive_example();
 
   //ez::as::auton_selector.selected_auton_call();  // Calls selected auton from autonomous selector
 }
@@ -209,7 +219,7 @@ void ez_screen_task() {
     pros::delay(ez::util::DELAY_TIME);
   }
 }
-pros::Task ezScreenTask(ez_screen_task);
+//pros::Task ezScreenTask(ez_screen_task);
 
 /**
  * Gives you some extras to run in your opcontrol:
@@ -265,26 +275,26 @@ void ez_template_extras() {
 void opcontrol() {
   // This is preference to what you like to drive on
   chassis.drive_brake_set(MOTOR_BRAKE_COAST);
-  brakeModeCoast();
+  //brakeModeCoast();
 
   if (!LBLoopActive) { 
-		pros::Task lb_task(LBLoop);
+		//pros::Task lb_task(LBLoop);
 	}
   runStart = pros::millis();
-	ladybrown.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+	ladybrown1.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+  ladybrown2.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
 
-  pros::Task logger_task(logger);
-	pros::Task temp_task(checkTemp);
+  
+	//pros::Task temp_task(checkTemp);
 	
 	ColorLoopActive = true; // starts inactive until tested ambient colors
 
 	intakeUnstuckActivated = false;
-	//callLBReset();
 	ChangeLBState(REST);
 
   while (true) {
 
-    runArcadeDrive();
+    //runArcadeDrive();
       	// Activate Intake Logic
 		setIntakeMotors();
 		// Activate Doinker Logic
@@ -297,7 +307,7 @@ void opcontrol() {
     //ez_template_extras();
 
     //chassis.opcontrol_tank();  // Tank control
-    // chassis.opcontrol_arcade_standard(ez::SPLIT);   // Standard split arcade
+     chassis.opcontrol_arcade_standard(ez::SPLIT);   // Standard split arcade
     // chassis.opcontrol_arcade_standard(ez::SINGLE);  // Standard single arcade
     // chassis.opcontrol_arcade_flipped(ez::SPLIT);    // Flipped split arcade
     // chassis.opcontrol_arcade_flipped(ez::SINGLE);   // Flipped single arcade
@@ -337,13 +347,12 @@ void checkTemp() {
 			double tempFahrenheit = intake.get_temperature() * 9.0 / 5.0 + 32.0;
 			master.set_text(0, 0, "Intake Temp: " + std::to_string(tempFahrenheit) + "F");
 		} else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_RIGHT)) {
-			double tempFarenheit = ladybrown.get_temperature() * 9.0 / 5.0 + 32.0;
+			double tempFarenheit = ((ladybrown1.get_temperature() + ladybrown2.get_temperature()) / 2.0) * 9.0 / 5.0 + 32.0;
 			master.set_text(0, 0, "LB Temp: " + std::to_string(tempFarenheit) + "F");
-		} else if (count == 0) {
-			master.set_text(0, 0, "No motors found.");
 		} else {
 			double averageTempCelsius = totalTemp / 6;
 			double averageTempFahrenheit = averageTempCelsius * 9.0 / 5.0 + 32.0;
+      std::cout << "Average Temp: " << averageTempFahrenheit << "\n";
 			master.set_text(0, 0, "Avg Temp: " + std::to_string(averageTempFahrenheit) + "F");
 		}
 		pros::delay(500);

@@ -56,8 +56,8 @@ void setDriveMotors() {
 
 void runArcadeDrive() {
     // Get the power and turn values from the joystick
-	int power = master.get_analog(ANALOG_LEFT_Y);
-	int turn = master.get_analog(ANALOG_RIGHT_X);
+	int turn = master.get_analog(ANALOG_LEFT_Y);
+	int power = master.get_analog(ANALOG_RIGHT_X);
     // Calculate the left and right side powers
 	int left = power + turn;
 	int right = power - turn;
