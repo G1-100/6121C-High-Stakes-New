@@ -8,7 +8,7 @@
 
 //drive
 pros::MotorGroup left_side_motors({-8, 9, -10}, pros::v5::MotorGears::blue, pros::v5::MotorUnits::degrees);
-pros::MotorGroup right_side_motors({7, 1 -2}, pros::v5::MotorGears::blue, pros::v5::MotorUnits::degrees);
+pros::MotorGroup right_side_motors({4, 1, -2}, pros::v5::MotorGears::blue, pros::v5::MotorUnits::degrees);
 // pros::MotorGroup left_side_motors({5, -6, 10}, pros::v5::MotorGears::blue, pros::v5::MotorUnits::degrees);
 // pros::MotorGroup right_side_motors({-2, 1, -7}, pros::v5::MotorGears::blue, pros::v5::MotorUnits::degrees);
 
@@ -45,7 +45,7 @@ pros::Controller master(pros::E_CONTROLLER_MASTER);
 ez::Drive chassis(
     // These are your drive motors, the first motor is used for sensing!
     {-8, 9, -10},     // Left Chassis Ports (negative port will reverse it!)
-    {7, 1, -2},  // Right Chassis Ports (negative port will reverse it!)
+    {4, 1, -2},  // Right Chassis Ports (negative port will reverse it!)
 
     21,      // IMU Port
     3.25,  // Wheel Diameter (Remember, 4" wheels without screw holes are actually 4.125!)
