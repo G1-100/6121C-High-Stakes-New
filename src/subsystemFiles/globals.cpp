@@ -45,11 +45,12 @@ pros::Controller master(pros::E_CONTROLLER_MASTER);
 ez::Drive chassis(
     // These are your drive motors, the first motor is used for sensing!
     {-8, 9, -10},     // Left Chassis Ports (negative port will reverse it!)
-    {4, 1, -2},  // Right Chassis Ports (negative port will reverse it!)
+    {4, -1, 2},  // Right Chassis Ports (negative port will reverse it!)
 
     21,      // IMU Port
     3.25,  // Wheel Diameter (Remember, 4" wheels without screw holes are actually 4.125!)
-    450);   // Wheel RPM = cartridge * (motor gear / wheel gear)
+    450,   // Wheel RPM = cartridge * (motor gear / wheel gear)
+    1.15);
 
 // Uncomment the trackers you're using here!
 // - `8` and `9` are smart ports (making these negative will reverse the sensor)

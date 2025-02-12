@@ -103,7 +103,7 @@ void logger() {
 		//std::cout << "DIFFERENCE: " << std::to_string(optical.get_rgb().blue - optical.get_rgb().red) << "\n";
 		//std::cout << "HUE: " + to_string(optical.get_hue()) << "\n";
     auto pose = chassis.odom_pose_get();
-    std::cout << "POSITION: (" + std::to_string(pose.x) + ", " + std::to_string(pose.y) + ", " + std::to_string(pose.theta) + ")\n";
+    //std::cout << "POSITION: (" + std::to_string(pose.x) + ", " + std::to_string(pose.y) + ", " + std::to_string(pose.theta) + ")\n";
 		//std::cout << lemlib::format_as(chassis.getPose()) << "\n";
 		//std::cout << ladybrown.get_actual_velocity() << "\n";
 		//std::cout << LBRotation.get_position() / 100.0 << "\n";
@@ -163,9 +163,9 @@ void autonomous() {
   
 
   //skills();
-  //turn_example();
-  drive_example();
-
+  turn_example();
+  //drive_example();
+  
   //ez::as::auton_selector.selected_auton_call();  // Calls selected auton from autonomous selector
 }
 
