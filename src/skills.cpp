@@ -31,24 +31,37 @@ void skills() {
     chassis.pid_turn_set(90, 127); // turn to two rings
     chassis.pid_wait();
 
-    //chassis.follow(skills1_txt, 15, 2500); // pure pursuit two rings
-    chassis.pid_wait_until(30);
-    callLBReset();
+    chassis.pid_drive_set(20, 2500); // move to first ring
     chassis.pid_wait();
-    chassis.pid_turn_set(-1.2156, -54.6709, 127); // turn to wall stake ring
+    chassis.pid_turn_set(120, 127); // turn to next two rings
+    chassis.pid_wait();
+    chassis.pid_drive_set(50, 2500); // move to next two rings
     chassis.pid_wait();
     ChangeLBState(PROPPED); // prop up ladybrown
+    chassis.pid_drive_set(-45, 110); // move back a bit
+    chassis.pid_wait();
+    chassis.pid_turn_set(180, 127); // turn to wall stake
+    chassis.pid_wait();
+
+
+    //chassis.follow(skills1_txt, 15, 2500); // pure pursuit two rings
+    //chassis.pid_wait_until(30);
+    //callLBReset();
+    //chassis.pid_wait();
+    //chassis.pid_turn_set(-1.2156, -54.6709, 127); // turn to wall stake ring
+    //chassis.pid_wait();
+    //ChangeLBState(PROPPED); // prop up ladybrown
 
     chassis.pid_odom_set({-1.2156, -54.6709});
     chassis.pid_wait();
 
-    chassis.pid_turn_set(180, 127); // turn to wall stake
-    chassis.pid_wait();
-    pros::delay(300 - 150);
+    // chassis.pid_turn_set(180, 127); // turn to wall stake
+    // chassis.pid_wait();
+    // pros::delay(300 - 150);
 
-    set_drive(5, 1200 - 700); // move to wall stake
-    chassis.pid_wait_until(1.5);
-    intake.move(0);
+    // set_drive(5, 1200 - 700); // move to wall stake
+    // chassis.pid_wait_until(1.5);
+    // intake.move(0);
     ChangeLBState(EXTENDED); // extend ladybrown
     chassis.pid_wait();
     pros::delay(350 + 50);
@@ -107,18 +120,29 @@ void skills() {
     /////////////////////////// SECOND MOGO ///////////////////////////
     /////////////////////////// SECOND MOGO ///////////////////////////
 
-    set_drive(3, 500, 40); // move back
-    chassis.pid_wait();
-    chassis.pid_turn_set(80 - 2, 127); // turn to pure pursuit two stacks
+    // set_drive(3, 500, 40); // move back
+    // chassis.pid_wait();
+    chassis.pid_turn_set(90, 127); // turn to pure pursuit two stacks
     chassis.pid_wait();
     setIntake(127);
     callLBReset(); // reset ladybrown
+
+    chassis.pid_drive_set(20, 2500); // move to first ring
+    chassis.pid_wait();
+    chassis.pid_turn_set(60, 127); // turn to next two rings
+    chassis.pid_wait();
+    chassis.pid_drive_set(50, 2500); // move to next two rings
+    chassis.pid_wait();
+    ChangeLBState(PROPPED); // prop up ladybrown
+    chassis.pid_drive_set(-45, 110); // move back a bit
+    chassis.pid_wait();
+    chassis.pid_turn_set(0, 127); // turn to wall stake
+    chassis.pid_wait();
     
     //chassis.follow(skills2_txt, 15, 4000); // pure pursuit 3 rings
-    chassis.pid_wait();
-    ChangeLBState(PROPPED);
-    set_drive(-45, 1500, 80); // move back
-    chassis.pid_wait();
+    //chassis.pid_wait();
+    // set_drive(-45, 1500, 80); // move back
+    // chassis.pid_wait();
 
     chassis.pid_turn_set(0.699233+1 - 2, 69.8696 + 3, 127);
     chassis.pid_wait();
