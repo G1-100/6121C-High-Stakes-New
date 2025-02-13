@@ -441,7 +441,8 @@ void simpleMogo(bool isBlue) {
 	int sgn=isBlue?1:-1;
 	chassis.odom_xyt_set(0, 0, (33 + 1) * sgn);
   LBState = PROPPED;
-  LBRotation.set_position(4600);
+  //LBRotation.set_position(4600);
+  ladybrown1.set_zero_position(-46);
   ChangeLBState(FULLEXTENDED);
   pros::delay(650);
   set_drive(-15, 2000);
@@ -490,7 +491,8 @@ void newMogoRush(bool isBlue) {
   int sgn=isBlue?1:-1;
   chassis.odom_xyt_set(0, 0, -110 * sgn); // Set position
   LBState = PROPPED;
-  LBRotation.set_position(4600);
+  //LBRotation.set_position(4600);
+  ladybrown1.set_zero_position(-46);
   set_drive(37 + 2, 2500, 126, 127); // Move to first mogo
   chassis.pid_wait_until(11 + 1);
   ChangeLBState(ALMOSTFULLEXTENDED);
@@ -521,13 +523,13 @@ void newMogoRush(bool isBlue) {
   pros::delay(200);
   chassis.pid_turn_set(isBlue?(106-10 + 5):-106, 127); // turn to corner
   chassis.pid_wait();
-  doinker.toggle();
+  rightDoinker.toggle();
   set_drive(40 - 5, 1500, 60, 127); // Move to corner
   chassis.pid_wait();
   pros::delay(500);
   chassis.pid_turn_set(isBlue?-180:310, 127); // Turn to knock away corner rings
   chassis.pid_wait();
-  doinker.toggle();
+  rightDoinker.toggle();
   chassis.pid_turn_set(-260 * sgn, 127); // Turn to 2nd mogo
   chassis.pid_wait();
   set_drive(15 - 5, 2000, 60, 120); // Move forward
@@ -686,7 +688,8 @@ void safeFourRing(bool isBlue) {
 // AWS
 
   LBState = PROPPED; // Prop LB for preload
-  LBRotation.set_position(4400);
+  //LBRotation.set_position(4400);
+  ladybrown1.set_zero_position(-46);
   ChangeLBState(EXTENDED); // Extend LB for AWS
   pros::delay(650 - 50);
   
@@ -722,7 +725,7 @@ void safeFourRing(bool isBlue) {
   chassis.pid_wait();
   set_drive(-40, 1500, 90, 120); // move back
   chassis.pid_wait();
-  doinker.toggle();
+  rightDoinker.toggle();
   //chassis.pid_turn_set(-225 * sgn); // face corner
   chassis.pid_turn_set(isBlue?-210:225, 127); // Turn to knock away corner rings
   chassis.pid_wait();
@@ -731,7 +734,7 @@ void safeFourRing(bool isBlue) {
   //chassis.pid_turn_set(-300 * sgn); // sweep corner
   chassis.pid_turn_set(isBlue?180:300, 127); // Turn to knock away corner rings
   chassis.pid_wait();
-  doinker.toggle();
+  rightDoinker.toggle();
   chassis.pid_turn_set(-240 * sgn, 127);
   chassis.pid_wait();
   // set_drive(-10, 1000, 80); // move back

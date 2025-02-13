@@ -49,7 +49,8 @@ extern pros::Controller master;
 //MISCELLANEOUS
 
 extern pros::adi::Pneumatics intakeLift;
-extern pros::adi::Pneumatics doinker;
+extern pros::adi::Pneumatics leftDoinker;
+extern pros::adi::Pneumatics rightDoinker;
 extern pros::adi::Pneumatics mogoClamp;
 extern pros::adi::Pneumatics rushRightPiston;
 extern pros::adi::Pneumatics rushLeftPiston;

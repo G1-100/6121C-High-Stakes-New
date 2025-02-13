@@ -19,8 +19,8 @@ void initialize() {
   pros::delay(500);  // Stop the user from doing anything while legacy ports configure
 
   pros::lcd::initialize();
-	LBRotation.set_position(0);
 	LBRotation.reset_position();
+  ladybrown1.tare_position();
 	optical.set_led_pwm(100);
 	allianceColorBlue = false; // VERY IMPORTANT
 	initColorSort();

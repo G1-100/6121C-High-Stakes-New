@@ -7,7 +7,8 @@ void skills() {
     chassis.odom_xyt_set(-60.5, -13, (-49)); // starts at middle of red alliance line
     //pros::Task lb_task(LBLoop);
     LBState = EXTENDED;
-    LBRotation.set_position(4600);
+    //LBRotation.set_position(4600);
+    ladybrown1.set_zero_position(-46);
     ChangeLBState(FULLEXTENDED);
     intakeUnstuckActivated = true;
     ColorLoopActive = false;
@@ -256,11 +257,11 @@ void skills() {
     chassis.pid_wait();
     set_drive(13, 2000); // intake third two stack
     chassis.pid_wait();
-    doinker.toggle();
+    rightDoinker.toggle();
     pros::delay(500);
 
     
-    chassis.pid_turn_set(-58 + 5, 127); // turn to corner, sweep with doinker
+    chassis.pid_turn_set(-58 + 5, 127); // turn to corner, sweep with rightDoinker
     //chassis.swingToHeading(-55 + 20, lemlib::DriveSide::LEFT, 1000); // turn to corner
     chassis.pid_wait();
     //pros::delay(400);
@@ -294,7 +295,8 @@ void skillsMacro() {
     setIntake(127); // score on alliance stake
     pros::Task lb_task(LBLoop);
     LBState = EXTENDED;
-    LBRotation.set_position(4600);
+    //LBRotation.set_position(4600);
+    ladybrown1.set_zero_position(-46);
     ChangeLBState(FULLEXTENDED);
 
     pros::delay(650);
