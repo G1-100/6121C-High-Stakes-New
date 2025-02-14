@@ -16,8 +16,8 @@ pros::MotorGroup right_side_motors({4, 1, -2}, pros::v5::MotorGears::blue, pros:
 pros::Motor intake(-16, pros::v5::MotorGears::blue, pros::v5::MotorUnits::degrees);
 
 // ladybrown wall stake mech
-pros::Motor ladybrown1(14, pros::v5::MotorGears::red, pros::v5::MotorUnits::degrees);
-pros::Motor ladybrown2(-17, pros::v5::MotorGears::red, pros::v5::MotorUnits::degrees);
+pros::Motor ladybrown1(14, pros::v5::MotorGears::rpm_200, pros::v5::MotorUnits::degrees);
+pros::Motor ladybrown2(-17, pros::v5::MotorGears::rpm_200, pros::v5::MotorUnits::degrees);
 
 
 //pistons
@@ -32,9 +32,9 @@ pros::Imu IMU(21);
 bool allianceColorBlue = true;
 
 // rotational sensor
-pros::Rotation LBRotation(7);
+pros::Rotation LBRotation(15);
 
-pros::Optical optical(16);
+pros::Optical optical(15);
 
 pros::Distance autoClampSensor(1);
 
@@ -51,7 +51,7 @@ ez::Drive chassis(
     21,      // IMU Port
     3.25,  // Wheel Diameter (Remember, 4" wheels without screw holes are actually 4.125!)
     450,   // Wheel RPM = cartridge * (motor gear / wheel gear)
-    1.33);
+    1.205);
 
 // Uncomment the trackers you're using here!
 // - `8` and `9` are smart ports (making these negative will reverse the sensor)

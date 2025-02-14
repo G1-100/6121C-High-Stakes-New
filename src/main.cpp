@@ -84,16 +84,18 @@ void logger() {
         //std::cout << "RED: " << std::to_string(optical.get_rgb().red) << " BLUE: " << std::to_string(optical.get_rgb().blue) << "\n";
 		//std::cout << "DIFFERENCE: " << std::to_string(optical.get_rgb().blue - optical.get_rgb().red) << "\n";
 		//std::cout << "HUE: " + to_string(optical.get_hue()) << "\n";
-    auto pose = chassis.odom_pose_get();
+    //auto pose = chassis.odom_pose_get();
     //std::cout << "POSITION: (" + std::to_string(pose.x) + ", " + std::to_string(pose.y) + ", " + std::to_string(pose.theta) + ")\n";
 		//std::cout << lemlib::format_as(chassis.getPose()) << "\n";
 		//std::cout << ladybrown.get_actual_velocity() << "\n";
-		//std::cout << LBRotation.get_position() / 100.0 << "\n";
+	  std::cout << "Ladybrown Angle: " << LBRotation.get_position() / 100.0 << " LBState: " << LBState << "\n";
 		//std::cout << "LBState: " << LBState << "\n";
 		//std::cout << "VELOCITY: " + std::to_string(intake.get_actual_velocity()) << " VOLTAGE: " + std::to_string(intake.get_voltage()) << "\n";
 		//std::cout << "PROXIMITY: " << optical.get_proximity() << " DIFFERENCE: " << std::to_string(optical.get_rgb().blue - optical.get_rgb().red) << "\n";
 		//std::cout << "LED PWM" << optical.get_led_pwm() << "\n";
 		//std::cout << stopDriverIntake << "\n";
+    //std::cout << "ladybrown velocity: " << ladybrown1.get_actual_velocity() << "\n";
+    //std::cout << "Ladybrown Angle: " << ladybrown1.get_position() << "\n";
         pros::delay(50);
         
         // Add a way to break the loop if needed
@@ -141,11 +143,13 @@ void autonomous() {
 	ladybrown1.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
   ladybrown2.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
 
-  pros::Task logger_task(logger);
+  //pros::Task logger_task(logger);
+  intakeLift.toggle();
+  rightDoinker.toggle();
   
 
-  //skills();
-  turn_example();
+  skills();
+  //turn_example();
   //drive_example();
   
   //ez::as::auton_selector.selected_auton_call();  // Calls selected auton from autonomous selector
@@ -260,19 +264,20 @@ void opcontrol() {
   //brakeModeCoast();
 
   if (!LBLoopActive) { 
-		//pros::Task lb_task(LBLoop);
+		pros::Task lb_task(LBLoop);
 	}
   runStart = pros::millis();
 	ladybrown1.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
   ladybrown2.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
 
-  
+  pros::Task logger_task(logger);
 	//pros::Task temp_task(checkTemp);
 	
 	ColorLoopActive = true; // starts inactive until tested ambient colors
 
 	intakeUnstuckActivated = false;
 	ChangeLBState(REST);
+  LBState = REST;
 
   while (true) {
 
@@ -283,6 +288,8 @@ void opcontrol() {
 		setDoinker();
       	// Activate Mogo Logic
 		setMogoMotors();
+
+    setIntakeLift();
 
 		checkLBBroken();
     // Gives you some extras to make EZ-Template ezier

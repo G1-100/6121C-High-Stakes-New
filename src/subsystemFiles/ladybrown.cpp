@@ -7,10 +7,10 @@
 #include "main.h"
 #include <string>
 double RESTANGLE = 0; // actual -30
-double STOP1 = 41 - 3 + 3; // 42.57
+double STOP1 = 41 + 28; // 42.57
 double STOP1_5 = STOP1 + 45 - 15;
-double STOP2 = 170 + 20; // angle of stop 2 - 130
-double STOP3 = 250;
+double STOP2 = 190 + 300; // angle of stop 2 - 130
+double STOP3 = 250 + 450;
 
 double REST = 0;
 double PROPPED = 1;
@@ -42,23 +42,23 @@ void doIntakeUnstuck() {
     if (fabs(intake.get_actual_velocity()) < 0.5 && fabs(intake.get_voltage()) > 2000) { // if intake is stuck
         if (intakeStuckTime == 0) {
             intakeStuckTime = pros::millis();
-        } else if (pros::millis() - intakeStuckTime > 300 && LBState == PROPPED) { // ring caught on ladybrown, extend a little
-            intake.move(0);
-            wrongColorDetected = true;
-            LBExtend(SEMIEXTENDED);
-            if (pros::competition::is_autonomous()) {
-                intake.move(127); // restart intake if autonomous running
-            }
-            wrongColorDetected = false;
+        // } else if (pros::millis() - intakeStuckTime > 300 && LBState == PROPPED) { // ring caught on ladybrown, extend a little
+        //     intake.move(0);
+        //     wrongColorDetected = true;
+        //     LBExtend(SEMIEXTENDED);
+        //     if (pros::competition::is_autonomous()) {
+        //         intake.move(127); // restart intake if autonomous running
+        //     }
+        //     wrongColorDetected = false;
         } 
-        else if (pros::millis() - intakeStuckTime > 500 && LBState != PROPPED) {
-            master.rumble("-"); // short rumble to notify driver
-            double intakePower = intake.get_power();
-            intake.move(-127);
-            pros::delay(400);
-            intake.move(127);
-            intakeStuckTime = 0;
-        }
+        // else if (pros::millis() - intakeStuckTime > 500 && LBState != PROPPED) {
+        //     master.rumble("-"); // short rumble to notify driver
+        //     double intakePower = intake.get_power();
+        //     intake.move(-127);
+        //     pros::delay(400);
+        //     intake.move(127);
+        //     intakeStuckTime = 0;
+        // }
         
     }
 }
@@ -90,7 +90,7 @@ void tempFunction(double state, double stop,
                   double curAng, 
                   double degreeOne, double degreeTwo, 
                   double moveOne, double moveTwo, double moveThree) {
-    if(LBState = state)
+    if(LBState == state)
     {
         if(stop - curAng > degreeOne)
         {
@@ -112,9 +112,9 @@ void tempFunction(double state, double stop,
 
 
 void doLBAmbientAdjust(double curAngle) {
-    tempFunction(PROPPED, STOP1, curAngle, 1, -1, 25, -5, 0);
-    tempFunction(SEMIEXTENDED, STOP1_5, curAngle, 5, -5, 25, -5, 0);
-    tempFunction(EXTENDED, STOP2, curAngle, 5, -5, 5, -45, 0);
+    tempFunction(PROPPED, STOP1, curAngle, 5, -5, 3, -3, 0);
+    tempFunction(SEMIEXTENDED, STOP1_5, curAngle, 10, -10, 5, -5, 0);
+    tempFunction(EXTENDED, STOP2, curAngle, 5, -10, 10, -5, 0);
     if (LBState == FULLEXTENDED) {
         ladybrown1.move(-5);
         ladybrown2.move(-5);
@@ -129,17 +129,21 @@ void LBExtend(double point) {
     double negPower;
     double angleChange;
     double iterationsRequired;
-    
-    //double curAngle = LBRotation.get_position() / 100.0;
-    double curAngle = ladybrown1.get_position();
+    const double kP = 0.9;
+    const double kI = 0;
+    const double kD = 0.1; 
+    double totalError = 0;
+
+    double curAngle = -LBRotation.get_position() / 100.0;
+    //double curAngle = ladybrown1.get_position();
 
     if (point == 1) {
         GOALANGLE = STOP1;
-        power = 70;
+        power = 70 * 0.01;
         if (curAngle > GOALANGLE) { // over and going back
             negPower = -30;
         } else {
-            negPower = 0;
+            negPower = -1;
         }
         iterationsRequired = 40;
         angleChange = STOP1 - 0;
@@ -176,16 +180,25 @@ void LBExtend(double point) {
     ladybrown2.move(power);
     
     while ((abs(GOALANGLE - curAngle) > 3 || timeStayedGood < iterationsRequired) && pros::millis() - startTime < 2500) { // ends once above goal angle
-        //curAngle = LBRotation.get_position() / 100.0;
-        curAngle = ladybrown1.get_position();
+        curAngle = -LBRotation.get_position() / 100.0;
+        //curAngle = ladybrown1.get_position();
         //std::cout << "Current Angle: " << curAngle << "\n";
         if (curAngle > GOALANGLE) {
             ladybrown1.move(negPower);
             ladybrown2.move(negPower);
         } else {
             if (point == 1) {
-                ladybrown1.move(power * (abs(GOALANGLE - curAngle) / angleChange + 0.2));
-                ladybrown2.move(power * (abs(GOALANGLE - curAngle) / angleChange + 0.2));
+                totalError += abs(GOALANGLE - curAngle);
+                double total = abs(GOALANGLE - curAngle) * kP + totalError * kI - ladybrown1.get_actual_velocity() * kD;
+                if (total > 127) {
+                    total = 127;
+                }
+                if (total < 0) {
+                    total = 0;
+                }
+                ladybrown1.move(total);
+                ladybrown2.move(total);
+                //std::cout << "total: " + std::to_string(total) + "\n";
             } else {
                 ladybrown1.move(power);
                 ladybrown2.move(power);
@@ -220,6 +233,7 @@ void LBExtend(double point) {
     ladybrown2.move(0); // stop once done
     stateSetter(point);
     LBAutonGoal = point;
+    prevLBAutonGoal = point;
 }
 
 void stateSetter(double point) {
@@ -249,15 +263,29 @@ void LBRetract() {
     ladybrown1.move(-127); // move back
     ladybrown2.move(-127);
     pros::delay(200);
-    while (fabs(ladybrown1.get_actual_velocity()) > 1) {
+    long startTime = pros::millis();
+    double prevAngle = -LBRotation.get_position() / 100.0;
+    double curAngle = prevAngle;
+    double power;
+    while (curAngle > 5 && pros::millis() - startTime < 2000) { // wait for motors to stop
+        power = curAngle + 20;
+        if (power > 127) {
+            power = 127;
+        }
+        ladybrown1.move(-power);
+        ladybrown2.move(-power);
+        curAngle = -LBRotation.get_position() / 100.0;
         pros::delay(20);
     }
+    ladybrown1.move(-1); // move back
+    ladybrown2.move(-1);
+    pros::delay(100);
     ladybrown1.move(0);
     ladybrown2.move(0);
     LBState = REST;
     LBAutonGoal = REST;
-    //LBRotation.reset_position();
-    ladybrown1.tare_position();
+    LBRotation.reset_position();
+    //ladybrown1.tare_position();
 }
 
 void ChangeLBState(double goal) {
@@ -291,8 +319,8 @@ void LBLoop() {
     ladybrown2.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
     while (true) {
         //ladybrown.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
-        //double curAngle = LBRotation.get_position() / 100.0;
-        double curAngle = ladybrown1.get_position();
+        double curAngle = -LBRotation.get_position() / 100.0;
+        //double curAngle = ladybrown1.get_position();
         if (master.get_digital(pros::E_CONTROLLER_DIGITAL_L2)) { // IMPORTANT: must be new_press
             if (!lastPressed) { // just pressed
                 pressTime = pros::millis();
