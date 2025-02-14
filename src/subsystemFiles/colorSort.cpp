@@ -62,7 +62,8 @@ void doColorSort() {
             ambientColorDiff = currentColorDiff;
         }
 
-        const int PROXIMITYDIFFREQUIRED = 70;
+        const int PROXIMITYDIFFREQUIRED = 70; // used to activate color sort as a prerequisite
+        const int PROXIMITYCUSHION = 20; // acts as an earlier activation for color sort
        
         if (ColorLoopActive) {
             if (curProximity - ambientProximity > PROXIMITYDIFFREQUIRED && !rightRingBeingSeen) { // ring detected
@@ -73,7 +74,7 @@ void doColorSort() {
                         wrongColorDetected = true; // stop driver intake when color sorting
                         setIntake(127);
                         long start = pros::millis();
-                        while (optical.get_proximity() > ambientProximity + 9 && pros::millis() - start < 500) { // fling ring after 500 ms or until undetected
+                        while (optical.get_proximity() > ambientProximity + PROXIMITYCUSHION && pros::millis() - start < 500) { // fling ring after 500 ms or until undetected
                             intake.move(110);
                             pros::delay(10);
                         }
@@ -86,8 +87,8 @@ void doColorSort() {
                             ringsSeen++;
                             rightRingBeingSeen = true;
                             if (ringsSeen >= colorUntilRings) { // stop color until
-                                // intake.move(-127);
-                                // pros::delay(30);
+                                intake.move(-127);
+                                pros::delay(30);
                                 intake.move(0);
                                 colorUntilActivated = false;
                             } else if (safeScoring) { // wait until not scoring
@@ -106,7 +107,7 @@ void doColorSort() {
                         cout << "RED DETECTED" << "\n";
                         setIntake(127);
                         long start = pros::millis();
-                        while (optical.get_proximity() > ambientProximity + 9 && pros::millis() - start < 500) { // wait until undetected or 500 ms to fling
+                        while (optical.get_proximity() > ambientProximity + PROXIMITYCUSHION && pros::millis() - start < 500) { // wait until undetected or 500 ms to fling
                             intake.move(110);
                             pros::delay(10);
                         }
@@ -120,8 +121,8 @@ void doColorSort() {
                             ringsSeen++;
                             if (ringsSeen >= colorUntilRings) {
                                 std::cout <<"right red seen" << "\n";
-                                // intake.move(-127);
-                                // pros::delay(30);
+                                intake.move(-127);
+                                pros::delay(30);
                                 intake.move(0);
                                 colorUntilActivated = false;
                             }

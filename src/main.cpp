@@ -6,7 +6,7 @@
 /////
 
 long runStart;
-
+double averageTempFahrenheit = 0;
 
 /**
  * Runs initialization code. This occurs as soon as the program is started.
@@ -84,18 +84,17 @@ void logger() {
         //std::cout << "RED: " << std::to_string(optical.get_rgb().red) << " BLUE: " << std::to_string(optical.get_rgb().blue) << "\n";
 		//std::cout << "DIFFERENCE: " << std::to_string(optical.get_rgb().blue - optical.get_rgb().red) << "\n";
 		//std::cout << "HUE: " + to_string(optical.get_hue()) << "\n";
-    //auto pose = chassis.odom_pose_get();
+    auto pose = chassis.odom_pose_get();
     //std::cout << "POSITION: (" + std::to_string(pose.x) + ", " + std::to_string(pose.y) + ", " + std::to_string(pose.theta) + ")\n";
 		//std::cout << lemlib::format_as(chassis.getPose()) << "\n";
 		//std::cout << ladybrown.get_actual_velocity() << "\n";
-	  std::cout << "Ladybrown Angle: " << LBRotation.get_position() / 100.0 << " LBState: " << LBState << "\n";
+	  std::cout << "Ladybrown Angle: " << ladybrown2.get_position() / 3.0 << " LBState: " << LBState << "\n";
 		//std::cout << "LBState: " << LBState << "\n";
 		//std::cout << "VELOCITY: " + std::to_string(intake.get_actual_velocity()) << " VOLTAGE: " + std::to_string(intake.get_voltage()) << "\n";
 		//std::cout << "PROXIMITY: " << optical.get_proximity() << " DIFFERENCE: " << std::to_string(optical.get_rgb().blue - optical.get_rgb().red) << "\n";
 		//std::cout << "LED PWM" << optical.get_led_pwm() << "\n";
 		//std::cout << stopDriverIntake << "\n";
-    //std::cout << "ladybrown velocity: " << ladybrown1.get_actual_velocity() << "\n";
-    //std::cout << "Ladybrown Angle: " << ladybrown1.get_position() << "\n";
+    //std::cout << "ladybrown velocity: " << ladybrown2.get_actual_velocity() << "\n";
         pros::delay(50);
         
         // Add a way to break the loop if needed
@@ -144,8 +143,6 @@ void autonomous() {
   ladybrown2.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
 
   //pros::Task logger_task(logger);
-  intakeLift.toggle();
-  rightDoinker.toggle();
   
 
   skills();
@@ -271,7 +268,7 @@ void opcontrol() {
   ladybrown2.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
 
   pros::Task logger_task(logger);
-	//pros::Task temp_task(checkTemp);
+	pros::Task temp_task(checkTemp);
 	
 	ColorLoopActive = true; // starts inactive until tested ambient colors
 
@@ -283,6 +280,7 @@ void opcontrol() {
 
     //runArcadeDrive();
       	// Activate Intake Logic
+    //master.set_text(0, 0, "Avg Temp: " + std::to_string(averageTempFahrenheit) + "F");
 		setIntakeMotors();
 		// Activate Doinker Logic
 		setDoinker();
@@ -311,23 +309,31 @@ void opcontrol() {
 
 void checkTemp() {
 	int count;
-  std::vector<double> left_side_temps;
-  std::vector<double> right_side_temps;
 	double totalTemp;
     while (true) {
         totalTemp = 0.0;
         count = 0;
-        left_side_temps = left_side_motors.get_temperature_all();
-        right_side_temps = right_side_motors.get_temperature_all();
+        std::vector<double> left_side_temps = left_side_motors.get_temperature_all();
+        std::vector<double> right_side_temps = right_side_motors.get_temperature_all();
+        //std::cout << "Left Side Temps: " << left_side_temps[0] << ", " << left_side_temps[1] << ", " << left_side_temps[2] << "\n";
+        //std::cout << "Right Side Temps: " << right_side_temps[0] << ", " << right_side_temps[1] << ", " << right_side_temps[2] << "\n";
         
-        if (left_side_temps.size() != 3 || right_side_temps.size() != 3) {
-            master.set_text(0, 0, "MOTOR UNPLUGGED");
+        
+          for (int i = 0; i < left_side_temps.size(); i++) {
+            totalTemp += left_side_temps[i];
+            count++;
+          }
+          for (int i = 0; i < right_side_temps.size(); i++) {
+            totalTemp += right_side_temps[i];
+            count++;
+          }
+
+          if (count < 6) {
+            //master.set_text(0, 0, "MOTOR UNPLUGGED");
             master.rumble("---");
-        }
-        totalTemp = std::accumulate(left_side_temps.begin(), right_side_temps.end(), 0.0) + std::accumulate(right_side_temps.begin(), right_side_temps.end(), 0.0);
-        
+          }
         if (IMU.get_heading() == NAN) {
-          master.set_text(0, 0, "IMU unplugged.");
+          //master.set_text(0, 0, "IMU unplugged.");
           pros::delay(250);
           master.rumble("---");
 			  }
@@ -340,10 +346,11 @@ void checkTemp() {
 			master.set_text(0, 0, "LB Temp: " + std::to_string(tempFarenheit) + "F");
 		} else {
 			double averageTempCelsius = totalTemp / 6;
-			double averageTempFahrenheit = averageTempCelsius * 9.0 / 5.0 + 32.0;
-      std::cout << "Average Temp: " << averageTempFahrenheit << "\n";
-			master.set_text(0, 0, "Avg Temp: " + std::to_string(averageTempFahrenheit) + "F");
+			averageTempFahrenheit = averageTempCelsius * 9.0f / 5.0 + 32.0;
+      //std::cout << "Average Temp: " << averageTempFahrenheit << "\n";
+      //master.clear_line(0);
+			//master.set_text(0, 0, "Avg Temp: " + std::to_string(averageTempFahrenheit) + "F");
 		}
-		pros::delay(500);
+		pros::delay(10);
     }
 }

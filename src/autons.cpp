@@ -25,13 +25,13 @@ void default_constants() {
   // P, I, D, and Start I
   chassis.pid_drive_constants_set(16.0, 0.0, 100.0);         // ez::fwd/rev constants, used for odom and non odom motions
   chassis.pid_heading_constants_set(9.5, 0.0, 20);        // Holds the robot straight while going forward without odom
-  chassis.pid_turn_constants_set(3.0 + 0.05, 0.05, 25.5, 15.0);     // Turn in place constants
+  chassis.pid_turn_constants_set(3.7, 0, 20, 15.0);     // Turn in place constants, old are 3.05, 0.05, 25.5, 15, negative kI are 2.5, -0.1, 10, 15
   chassis.pid_swing_constants_set(6.0, 0.0, 65.0);           // Swing constants
   chassis.pid_odom_angular_constants_set(6.5, 0.0, 52.5);    // Angular control for odom motions
   chassis.pid_odom_boomerang_constants_set(5.8, 0.0, 32.5);  // Angular control for boomerang motions
 
   // Exit conditions
-  chassis.pid_turn_exit_condition_set(100_ms, 1.75_deg, 250_ms, 7_deg, 500_ms, 500_ms);
+  chassis.pid_turn_exit_condition_set(100_ms, 2_deg, 250_ms, 7_deg, 300_ms, 500_ms); // velocity original is 500 ms
   chassis.pid_swing_exit_condition_set(90_ms, 3_deg, 250_ms, 7_deg, 500_ms, 500_ms);
   chassis.pid_drive_exit_condition_set(90_ms, 1_in, 250_ms, 3_in, 500_ms, 500_ms);
   chassis.pid_odom_turn_exit_condition_set(90_ms, 1_deg, 250_ms, 7_deg, 500_ms, 750_ms);
@@ -98,17 +98,22 @@ void turn_example() {
   // chassis.pid_wait();
   // chassis.pid_turn_set(0_deg, TURN_SPEED);
   // chassis.pid_wait();
+  chassis.pid_turn_set(45_deg, 110);
+  chassis.pid_wait();
+
+  pros::delay(500);
+
+  chassis.pid_turn_set(135_deg, 110);
+  chassis.pid_wait();
+
+  pros::delay(1000);
+
   chassis.pid_turn_set(270_deg, 110);
   chassis.pid_wait();
 
   pros::delay(1000);
 
   chassis.pid_turn_set(90_deg, 110);
-  chassis.pid_wait();
-
-  pros::delay(1000);
-
-  chassis.pid_turn_set(225_deg, 110);
   chassis.pid_wait();
   
 }
@@ -353,6 +358,7 @@ void measure_offsets() {
 // This orientation makes a cartesian plane with the origin at the center of the field.
 
 void set_drive(double inches, int time, float minSpeed, float maxSpeed) {
+
     ez::pose c_pose = chassis.odom_pose_get();
     double trueAngle = c_pose.theta;
     chassis.pid_drive_set(inches, maxSpeed);
@@ -701,55 +707,85 @@ void safeFourRing(bool isBlue) {
   callLBReset();
   set_drive(-29, 2000, 100); // move to mogo
   chassis.pid_wait_until(20);
-  set_drive(-10, 1500, 0, 70);
+  set_drive(-10, 1500, 0, 70); // move slower
   chassis.pid_wait_until(6);
   mogoClamp.toggle();
   chassis.pid_wait();
 	intake.move_voltage(12000);
-	chassis.pid_turn_set(180, 127);
+	chassis.pid_turn_set(180, 127); // turn to two stack
 	chassis.pid_wait();
-	set_drive(21, 2000, 100);
+	set_drive(21, 2000, 100); // intake ring
 	chassis.pid_wait();
-	//pros::delay(500);
-	set_drive(-20 + 7, 1500, 100);
+	pros::delay(300);
+  chassis.pid_turn_set(150 * sgn, 100); // turn to corner
+  chassis.pid_wait();
+  set_drive(40); // move to corner
+  chassis.pid_wait();
+  pros::delay(500);
+  set_drive(-10); // move back
+  chassis.pid_wait();
+  set_drive(10); // intake 2nd ring
+  chassis.pid_wait();
+  set_drive(-10); // move back for real
+  chassis.pid_wait();
+
+  chassis.pid_turn_set(0 * sgn, 127); // turn to middle two stack
+  chassis.pid_wait();
+
+  set_drive(60, 2000, 110); // move to middle two stack
+  intakeLift.toggle();
+  chassis.pid_wait();
+  intakeLift.toggle();
+
+  
+	set_drive(-13, 1500, 100); // move back
 	chassis.pid_wait();
-  chassis.pid_turn_set((45 - 2) * sgn, 127);
-	chassis.pid_wait();
-	set_drive(35, 2000, 80, 120); // move to middle two stck
-  chassis.pid_wait_until(18);
-  set_drive(15 + 2, 2500, 0, 60);
+  chassis.pid_turn_set((-30) * sgn, 127);
   chassis.pid_wait();
-  intake.move(127);
-  pros::delay(500 - 200);
-  set_drive(15, 1500, 80); // move to intake right color
-  chassis.pid_wait();
-  set_drive(-40, 1500, 90, 120); // move back
-  chassis.pid_wait();
-  rightDoinker.toggle();
-  //chassis.pid_turn_set(-225 * sgn); // face corner
-  chassis.pid_turn_set(isBlue?-210:225, 127); // Turn to knock away corner rings
-  chassis.pid_wait();
-  set_drive(70 + 3, 1000, 100); // move to corner
-  chassis.pid_wait();
-  //chassis.pid_turn_set(-300 * sgn); // sweep corner
-  chassis.pid_turn_set(isBlue?180:300, 127); // Turn to knock away corner rings
-  chassis.pid_wait();
-  rightDoinker.toggle();
-  chassis.pid_turn_set(-240 * sgn, 127);
-  chassis.pid_wait();
-  // set_drive(-10, 1000, 80); // move back
-  // chassis.pid_wait();
-  // chassis.pid_turn_set(260);
-  // chassis.pid_wait();
-  set_drive(10, 1000, 127);
-  chassis.pid_wait();
-  set_drive(-10, 100, 127);
-  chassis.pid_wait();
-  chassis.pid_turn_set(-45 * sgn, 127);
-  chassis.pid_wait();
-  set_drive(42, 1000, 127);
-  //chassis.pid_wait_until(25);
+
+  set_drive(20, 2000, 120); // move to ladder
   chassis.pid_wait();
   ChangeLBState(EXTENDED);
+
+	// set_drive(-20 + 7, 1500, 100);
+	// chassis.pid_wait();
+  // chassis.pid_turn_set((45 - 2) * sgn, 127);
+	// chassis.pid_wait();
+	// set_drive(35, 2000, 80, 120); // move to middle two stck
+  // chassis.pid_wait_until(18);
+  // set_drive(15 + 2, 2500, 0, 60);
+  // chassis.pid_wait();
+  // intake.move(127);
+  // pros::delay(500 - 200);
+  // set_drive(15, 1500, 80); // move to intake right color
+  // chassis.pid_wait();
+  // set_drive(-40, 1500, 90, 120); // move back
+  // chassis.pid_wait();
+  // rightDoinker.toggle();
+  // //chassis.pid_turn_set(-225 * sgn); // face corner
+  // chassis.pid_turn_set(isBlue?-210:225, 127); // Turn to knock away corner rings
+  // chassis.pid_wait();
+  // set_drive(70 + 3, 1000, 100); // move to corner
+  // chassis.pid_wait();
+  // //chassis.pid_turn_set(-300 * sgn); // sweep corner
+  // chassis.pid_turn_set(isBlue?180:300, 127); // Turn to knock away corner rings
+  // chassis.pid_wait();
+  // rightDoinker.toggle();
+  // chassis.pid_turn_set(-240 * sgn, 127);
+  // chassis.pid_wait();
+  // // set_drive(-10, 1000, 80); // move back
+  // // chassis.pid_wait();
+  // // chassis.pid_turn_set(260);
+  // // chassis.pid_wait();
+  // set_drive(10, 1000, 127);
+  // chassis.pid_wait();
+  // set_drive(-10, 100, 127);
+  // chassis.pid_wait();
+  // chassis.pid_turn_set(-45 * sgn, 127);
+  // chassis.pid_wait();
+  // set_drive(42, 1000, 127);
+  // //chassis.pid_wait_until(25);
+  // chassis.pid_wait();
+  // ChangeLBState(EXTENDED);
 	
 }
