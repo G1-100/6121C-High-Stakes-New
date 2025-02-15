@@ -82,9 +82,13 @@ void skills() {
     chassis.pid_wait_until(1);
     intake.move(127);
     chassis.pid_wait();
+    
+    pros::delay(350);
+    intake.move(0);
 
     ChangeLBState(EXTENDED); // extend ladybrown
     pros::delay(350 + 50);
+    intake.move(127);
 
     set_drive(-12.8 - .5); // go back a bit
     chassis.pid_wait();
@@ -127,7 +131,7 @@ void skills() {
     chassis.pid_wait();
     setIntake(0);
 
-    set_drive(-75, 2500, 80, 120); // move to mogo
+    set_drive(-75 - 2, 2500 + 250, 80, 120); // move to mogo
     chassis.pid_wait_until(45);
     chassis.pid_speed_max_set(60);
     chassis.pid_wait_until(70);
@@ -151,10 +155,10 @@ void skills() {
     chassis.pid_wait();
     chassis.pid_turn_set(60, 90); // turn to next two rings
     chassis.pid_wait();
-    chassis.pid_drive_set(50, 2500); // move to next two rings
+    chassis.pid_drive_set(50 + 3, 2500); // move to next two rings
     chassis.pid_wait();
     ChangeLBState(PROPPED); // prop up ladybrown
-    chassis.pid_drive_set(-45, 110); // move back a bit
+    chassis.pid_drive_set(-45 - 3, 110); // move back a bit
     chassis.pid_wait();
     chassis.pid_turn_set(0, 90); // turn to wall stake
     chassis.pid_wait();
@@ -219,6 +223,8 @@ void skills() {
 
     ColorLoopActive = true;
 
+/*
+
     chassis.pid_turn_set(135, 127); // turn to intake ring
     chassis.pid_wait();
     startColorUntil(1); // stop first red ring at top
@@ -236,6 +242,8 @@ void skills() {
     chassis.pid_wait_until(33);
     mogoClamp.toggle();
 
+
+// Stopping before third half for tuning    
 
     /////////////////////////// THIRD MOGO ///////////////////////////
     /////////////////////////// THIRD MOGO ///////////////////////////
@@ -327,4 +335,7 @@ void skillsMacro() {
     //LBRetract();
     ChangeLBState(REST); // retract ladybrown
     master.rumble("."); // short rumble to notify driver
+
+*/ 
+
 }
