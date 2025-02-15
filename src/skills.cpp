@@ -35,16 +35,17 @@ void skills() {
 
     chassis.pid_drive_set(20 - 3, 2500); // move to first ring
     chassis.pid_wait();
-    chassis.pid_turn_set(116, 90); // turn to next two rings
+    chassis.pid_turn_set(116, 90); // turn to corner ring stack
     chassis.pid_wait();
-    chassis.pid_drive_set(73 + 5, 2500); // move to next two rings
+    chassis.pid_drive_set(73 + 6, 115); // move to next two rings in corner 2 stack
+    pros::delay(250); // Wait a bit to intake the rings into the mogo
     chassis.pid_wait();
     intake.move_voltage(12000);
     ChangeLBState(PROPPED); // prop up ladybrown
     chassis.pid_turn_set(109, 90); // turn to next two rings
     chassis.pid_wait();
     intake.move_voltage(12000);
-    chassis.pid_drive_set(-48 - 0.5, 110); // move back a bit
+    chassis.pid_drive_set(-48 - 3, 110); // move back a bit
     chassis.pid_wait();
     setIntake(0);
     ChangeLBState(SEMIEXTENDED);
@@ -83,9 +84,7 @@ void skills() {
     intake.move(127);
     chassis.pid_wait();
     
-    pros::delay(350);
-    intake.move(0);
-
+    pros::delay(200);
     ChangeLBState(EXTENDED); // extend ladybrown
     pros::delay(350 + 50);
     intake.move(127);
@@ -125,40 +124,47 @@ void skills() {
     mogoClamp.toggle(); // unclamp mogo
     setIntake(0);
 
-    set_drive(6.75 + 3, 1500, 60, 120); // move out of corner
+    set_drive(6.75 + 3.5, 1500, 60, 120); // move out of corner
     chassis.pid_wait();
     chassis.pid_turn_set(180 + 2, 90);
     chassis.pid_wait();
     setIntake(0);
 
-    set_drive(-75 - 2, 2500 + 250, 80, 120); // move to mogo
+    set_drive(-37.5, 1000, 80, 120); // move to mogo
     chassis.pid_wait_until(45);
     chassis.pid_speed_max_set(60);
     chassis.pid_wait_until(70);
+    set_drive(-37.5, 1250 + 125, 40, 80);
     // set_drive(-21 + 5, 1500, 0, 60);
     // chassis.pid_wait_until(20.5 - 5);
     mogoClamp.toggle(); // clamp mogo
     chassis.pid_wait();
+    set_drive(2, 100, 50, 80);
+    chassis.pid_wait();
 
+    
 
     /////////////////////////// SECOND MOGO ///////////////////////////
     /////////////////////////// SECOND MOGO ///////////////////////////
 
     // set_drive(3, 500, 40); // move back
     // chassis.pid_wait();
-    chassis.pid_turn_set(90, 127); // turn to pure pursuit two stacks
+    chassis.pid_turn_set(60, 127); // turn to pure pursuit two stacks
     chassis.pid_wait();
     setIntake(127);
     callLBReset(); // reset ladybrown
 
-    chassis.pid_drive_set(20, 2500); // move to first ring
+    chassis.pid_drive_set(20 + 60, 2500); // move to first ring
+    pros::delay(1000);
+    ChangeLBState(PROPPED);
     chassis.pid_wait();
-    chassis.pid_turn_set(60, 90); // turn to next two rings
-    chassis.pid_wait();
-    chassis.pid_drive_set(50 + 3, 2500); // move to next two rings
-    chassis.pid_wait();
-    ChangeLBState(PROPPED); // prop up ladybrown
-    chassis.pid_drive_set(-45 - 3, 110); // move back a bit
+    // Making only 1 turn
+    // chassis.pid_turn_set(60, 90); // turn to next two rings
+    // chassis.pid_wait();
+    // chassis.pid_drive_set(50 + 3, 2500); // move to next two rings
+    // chassis.pid_wait();
+    // ChangeLBState(PROPPED); // prop up ladybrown
+    chassis.pid_drive_set(-45 + 15, 110); // move back a bit
     chassis.pid_wait();
     chassis.pid_turn_set(0, 90); // turn to wall stake
     chassis.pid_wait();
@@ -176,6 +182,7 @@ void skills() {
     chassis.pid_wait();
     setIntake(0);
 
+    set_drive(30 + 5, 700);
     ChangeLBState(EXTENDED); // extend ladybrown
     pros::delay(300);
     chassis.pid_turn_set(0, 127); // correct angle
@@ -189,7 +196,7 @@ void skills() {
     chassis.pid_wait();
     ChangeLBState(EXTENDED);
 
-    set_drive(-15.5 + 2.5, 3000); // move back
+    set_drive(-15.5 + 5.5, 3000); // move back
     chassis.pid_wait();
     ChangeLBState(REST); // retract ladybrown
     setIntake(127);
@@ -222,8 +229,7 @@ void skills() {
     mogoClamp.toggle(); // unclamp mogo
 
     ColorLoopActive = true;
-
-/*
+ 
 
     chassis.pid_turn_set(135, 127); // turn to intake ring
     chassis.pid_wait();
@@ -244,6 +250,7 @@ void skills() {
 
 
 // Stopping before third half for tuning    
+/*
 
     /////////////////////////// THIRD MOGO ///////////////////////////
     /////////////////////////// THIRD MOGO ///////////////////////////
