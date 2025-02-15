@@ -751,7 +751,7 @@ void safeFourRing(bool isBlue) {
 
 void safeRingSide(bool isBlue) {
 	int sgn=isBlue?1:-1;
-	chassis.odom_xyt_set(0, 0, (33 + 1) * sgn);
+	chassis.odom_xyt_set(0, 0, (146) * sgn);
   LBState = PROPPED;
   //LBRotation.set_position(4600);
   ladybrown2.set_zero_position(-46);
