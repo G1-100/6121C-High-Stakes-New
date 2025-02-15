@@ -118,10 +118,10 @@ void doLBAmbientAdjust(double curAngle) {
     tempFunction(PROPPED, STOP1, curAngle, 0.5, -1.5, 10, -3, 3);
     tempFunction(SEMIEXTENDED, STOP1_5, curAngle, 10, -10, 13, -8, 7);
     tempFunction(EXTENDED, STOP2, curAngle, 5, -10, 10, -5, 0);
-    if (LBState == FULLEXTENDED) {
-        ladybrown1.move(-5);
-        ladybrown2.move(-5);
-    }
+    // if (LBState == FULLEXTENDED) {
+    //     ladybrown1.move(-5);
+    //     ladybrown2.move(-5);
+    // }
 }
 
 
