@@ -7,7 +7,7 @@
 #include "main.h"
 #include <string>
 double RESTANGLE = 0; // actual -30
-double STOP1 = 41 - 25; // 42.57
+double STOP1 = 16 + 1; // 42.57
 double STOP1_5 = STOP1 + 45 - 15;
 double STOP2 = 190 - 30; // angle of stop 2 - 130
 double STOP3 = 250 + 450 - 450;
