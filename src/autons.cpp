@@ -448,7 +448,7 @@ void simpleMogo(bool isBlue) {
 	chassis.odom_xyt_set(0, 0, (33 + 1) * sgn);
   LBState = PROPPED;
   //LBRotation.set_position(4600);
-  ladybrown1.set_zero_position(-46);
+  ladybrown2.set_zero_position(-46);
   ChangeLBState(FULLEXTENDED);
   pros::delay(650);
   set_drive(-15, 2000);
@@ -498,7 +498,7 @@ void newMogoRush(bool isBlue) {
   chassis.odom_xyt_set(0, 0, -110 * sgn); // Set position
   LBState = PROPPED;
   //LBRotation.set_position(4600);
-  ladybrown1.set_zero_position(-46);
+  ladybrown2.set_zero_position(-46);
   set_drive(37 + 2, 2500, 126, 127); // Move to first mogo
   chassis.pid_wait_until(11 + 1);
   ChangeLBState(ALMOSTFULLEXTENDED);
@@ -695,7 +695,7 @@ void safeFourRing(bool isBlue) {
 
   LBState = PROPPED; // Prop LB for preload
   //LBRotation.set_position(4400);
-  ladybrown1.set_zero_position(-46);
+  ladybrown2.set_zero_position(-46);
   ChangeLBState(EXTENDED); // Extend LB for AWS
   pros::delay(650 - 50);
   
@@ -746,46 +746,56 @@ void safeFourRing(bool isBlue) {
   set_drive(20, 2000, 120); // move to ladder
   chassis.pid_wait();
   ChangeLBState(EXTENDED);
-
-	// set_drive(-20 + 7, 1500, 100);
-	// chassis.pid_wait();
-  // chassis.pid_turn_set((45 - 2) * sgn, 127);
-	// chassis.pid_wait();
-	// set_drive(35, 2000, 80, 120); // move to middle two stck
-  // chassis.pid_wait_until(18);
-  // set_drive(15 + 2, 2500, 0, 60);
-  // chassis.pid_wait();
-  // intake.move(127);
-  // pros::delay(500 - 200);
-  // set_drive(15, 1500, 80); // move to intake right color
-  // chassis.pid_wait();
-  // set_drive(-40, 1500, 90, 120); // move back
-  // chassis.pid_wait();
-  // rightDoinker.toggle();
-  // //chassis.pid_turn_set(-225 * sgn); // face corner
-  // chassis.pid_turn_set(isBlue?-210:225, 127); // Turn to knock away corner rings
-  // chassis.pid_wait();
-  // set_drive(70 + 3, 1000, 100); // move to corner
-  // chassis.pid_wait();
-  // //chassis.pid_turn_set(-300 * sgn); // sweep corner
-  // chassis.pid_turn_set(isBlue?180:300, 127); // Turn to knock away corner rings
-  // chassis.pid_wait();
-  // rightDoinker.toggle();
-  // chassis.pid_turn_set(-240 * sgn, 127);
-  // chassis.pid_wait();
-  // // set_drive(-10, 1000, 80); // move back
-  // // chassis.pid_wait();
-  // // chassis.pid_turn_set(260);
-  // // chassis.pid_wait();
-  // set_drive(10, 1000, 127);
-  // chassis.pid_wait();
-  // set_drive(-10, 100, 127);
-  // chassis.pid_wait();
-  // chassis.pid_turn_set(-45 * sgn, 127);
-  // chassis.pid_wait();
-  // set_drive(42, 1000, 127);
-  // //chassis.pid_wait_until(25);
-  // chassis.pid_wait();
-  // ChangeLBState(EXTENDED);
 	
+}
+
+void safeRingSide(bool isBlue) {
+	int sgn=isBlue?1:-1;
+	chassis.odom_xyt_set(0, 0, (146) * sgn);
+  LBState = PROPPED;
+  //LBRotation.set_position(4600);
+  ladybrown2.set_zero_position(-46);
+  ChangeLBState(FULLEXTENDED);
+  pros::delay(650);
+  set_drive(-15, 2000);
+  chassis.pid_wait();
+  ChangeLBState(REST);
+  chassis.pid_turn_set(90 * sgn, 127);
+  chassis.pid_wait();
+  set_drive(-23 - 11 + 3, 2000, 0, 70);
+  chassis.pid_wait_until(25 + 1);
+  mogoClamp.toggle();
+  chassis.pid_wait();
+  chassis.pid_turn_set((-45) * sgn, 90);
+  chassis.pid_wait();
+  intake.move(127);
+  set_drive(21);
+  chassis.pid_wait();
+  chassis.pid_turn_set((-10) * sgn, 90);
+  chassis.pid_wait();
+  set_drive(20);
+  chassis.pid_wait();
+  set_drive(-30);
+  chassis.pid_wait();
+  chassis.pid_turn_set(30 * sgn, 90);
+  chassis.pid_wait();
+  set_drive(20);
+  chassis.pid_wait();
+  chassis.pid_turn_set(65 * sgn, 90);
+  chassis.pid_wait();
+  set_drive(45);
+  chassis.pid_wait();
+  chassis.pid_turn_set(45 * sgn, 90);
+  chassis.pid_wait();
+  set_drive(-10);
+  chassis.pid_wait();
+  chassis.pid_turn_set(180 * sgn, 90);
+  chassis.pid_wait();
+  intakeLift.toggle();
+  set_drive(100);
+  chassis.pid_wait_until(60);
+  intakeLift.toggle();
+  chassis.pid_wait();
+
+
 }

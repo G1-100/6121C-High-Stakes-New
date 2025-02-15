@@ -47,6 +47,8 @@ void testAuton();
 
 void safeFourRing(bool isBlue);
 
+void safeRingSide(bool isBlue);
+
 // ASSET(ringRushBlue_txt);
 // ASSET(ringRushBlueOld_txt);
 // ASSET(ringRushRed_txt);

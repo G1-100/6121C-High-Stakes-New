@@ -34,7 +34,7 @@ bool allianceColorBlue = true;
 // rotational sensor
 pros::Rotation LBRotation(15);
 
-pros::Optical optical(15);
+pros::Optical optical(11);
 
 pros::Distance autoClampSensor(1);
 
