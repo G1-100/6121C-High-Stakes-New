@@ -144,12 +144,12 @@ void autonomous() {
 
   //pros::Task logger_task(logger);
   
-
+  safeRingSide(allianceColorBlue);
   skills();
   //turn_example();
   //drive_example();
   
-  //ez::as::auton_selector.selected_auton_call();  // Calls selected auton from autonomous selector
+  // ez::as::auton_selector.selected_auton_call();  // Calls selected auton from autonomous selector
 }
 
 /**

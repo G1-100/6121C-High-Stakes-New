@@ -31,7 +31,7 @@ void default_constants() {
   chassis.pid_odom_boomerang_constants_set(5.8, 0.0, 32.5);  // Angular control for boomerang motions
 
   // Exit conditions
-  chassis.pid_turn_exit_condition_set(100_ms, 2_deg, 250_ms, 7_deg, 300_ms, 500_ms); // velocity original is 500 ms
+  chassis.pid_turn_exit_condition_set(100_ms, 2_deg, 250_ms, 7_deg, 150_ms, 500_ms); // velocity original is 500 ms
   chassis.pid_swing_exit_condition_set(90_ms, 3_deg, 250_ms, 7_deg, 500_ms, 500_ms);
   chassis.pid_drive_exit_condition_set(90_ms, 1_in, 250_ms, 3_in, 500_ms, 500_ms);
   chassis.pid_odom_turn_exit_condition_set(90_ms, 1_deg, 250_ms, 7_deg, 500_ms, 750_ms);
@@ -797,41 +797,66 @@ void safeRingSide(bool isBlue) {
 	chassis.odom_xyt_set(0, 0, (146) * sgn);
   LBState = PROPPED;
   //LBRotation.set_position(4600);
+// LB on aws
   ladybrown2.set_zero_position(-46);
   ChangeLBState(FULLEXTENDED);
   pros::delay(650);
   set_drive(-15, 2000);
   chassis.pid_wait();
   ChangeLBState(REST);
+
+// Wanna try to get the 2 stack early bc we start next to it
+
+// Get 2 stack next to aws
+  intake.move(127); // start intake
+  chassis.pid_turn_set(160, 120);
+  chassis.pid_wait();
+  intakeLift.toggle(); // lift intake
+  set_drive(10 + 10); // move into ring
+  chassis.pid_wait();
+  intake.move(0); // stop intake to keep ring on intake
+  intakeLift.toggle(); // lower intake on ring
+  pros::delay(200 + 200);
+  set_drive(-10 - 10); // move away from ring
+  chassis.pid_wait();
+
+
+// Getting mogo
   chassis.pid_turn_set(90 * sgn, 127);
   chassis.pid_wait();
   set_drive(-23 - 11 + 3, 2000, 0, 70);
   chassis.pid_wait_until(25 + 1);
   mogoClamp.toggle();
   chassis.pid_wait();
-  chassis.pid_turn_set((-45) * sgn, 90);
+
+  // Getting middle 2 stacks
+  chassis.pid_turn_set((-45 + 5) * sgn, 90); // Turn to first 2 stack
   chassis.pid_wait();
+  // Intake ring
   intake.move(127);
-  set_drive(21);
+  set_drive(21 + 2);
   chassis.pid_wait();
-  chassis.pid_turn_set((-10) * sgn, 90);
+  // Turn to last 2 stack
+  chassis.pid_turn_set((0) * sgn, 90);
+  chassis.pid_wait();
+  set_drive(20); // Intake 2 stack
+  chassis.pid_wait();
+  set_drive(-30 + 5); // Move back
+  chassis.pid_wait();
+  chassis.pid_turn_set((30+5) * sgn, 90); // Turn to final 2 stack on our quarter
   chassis.pid_wait();
   set_drive(20);
   chassis.pid_wait();
-  set_drive(-30);
+  chassis.pid_turn_set(65 * sgn, 90); // Turn to corner
   chassis.pid_wait();
-  chassis.pid_turn_set(30 * sgn, 90);
-  chassis.pid_wait();
-  set_drive(20);
-  chassis.pid_wait();
-  chassis.pid_turn_set(65 * sgn, 90);
-  chassis.pid_wait();
-  set_drive(45);
+  set_drive(45); // drive into corner
   chassis.pid_wait();
   chassis.pid_turn_set(45 * sgn, 90);
   chassis.pid_wait();
-  set_drive(-10);
+  set_drive(-10); // Move out of corner a bit
   chassis.pid_wait();
+
+  /*
   chassis.pid_turn_set(180 * sgn, 90);
   chassis.pid_wait();
   intakeLift.toggle();
@@ -839,6 +864,7 @@ void safeRingSide(bool isBlue) {
   chassis.pid_wait_until(60);
   intakeLift.toggle();
   chassis.pid_wait();
-
+  //Why do u guys need to do intake that ring like that
+*/
 
 }
