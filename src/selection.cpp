@@ -6,7 +6,7 @@
 AutonomousSelector* AutonomousSelector::instance = nullptr;
 
 // Implementation of the singleton constructor
-AutonomousSelector::AutonomousSelector() : currentRoutine(6) { // Default to Disabled
+AutonomousSelector::AutonomousSelector() : currentRoutine(3) { // Default to Disabled
     // Initialize selector UI
     pros::lcd::initialize();
     updateDisplay();
@@ -79,16 +79,11 @@ void AutonomousSelector::updateDisplay() {
 
 void AutonomousSelector::runSelectedAutonomous() {
     // Set brake modes before running autonomous
-    driveLeftBack.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
-    driveLeftMiddle.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
-    driveLeftFront.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
-    driveRightBack.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
-    driveRightMiddle.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
-    driveRightFront.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
 
     switch (currentRoutine) {
         case 0:
-            disruptRingRush(allianceColorBlue);
+            //disruptRingRush(allianceColorBlue);
+            safeRingSide(allianceColorBlue);
             break;
         case 1:
             simpleRing(allianceColorBlue);
@@ -97,7 +92,8 @@ void AutonomousSelector::runSelectedAutonomous() {
             newMogoRush(allianceColorBlue);
             break;
         case 3:
-            simpleMogo(allianceColorBlue);
+            //simpleMogo(allianceColorBlue);
+            safeFourRing(allianceColorBlue);
             break;
         case 4:
             verySimpleMogo(allianceColorBlue);

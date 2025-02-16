@@ -7,7 +7,7 @@ private:
     static AutonomousSelector* instance;
     int currentRoutine;
     const char* routineNames[10] = {
-        "Four Ring Ring Rush",
+        "Five Ring Side",
         "Two Ring Safe Ring",
         "Three Ring Mogo Rush",
         "Regional Solo AWP Mogo Side",

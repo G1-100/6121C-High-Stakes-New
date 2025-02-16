@@ -10,4 +10,7 @@ void setDoinker() {
     if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_Y)) {
         rightDoinker.toggle();
     }
+    if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_RIGHT)) {
+        leftDoinker.toggle();
+    }
 }

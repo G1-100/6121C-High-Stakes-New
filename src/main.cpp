@@ -22,7 +22,7 @@ void initialize() {
 	LBRotation.reset_position();
   ladybrown1.tare_position();
 	optical.set_led_pwm(100);
-	allianceColorBlue = false; // VERY IMPORTANT
+	allianceColorBlue = true; // VERY IMPORTANT
 	initColorSort();
 	std::cout << "initialize done" << "\n";
 	initializeSelector();
@@ -88,8 +88,8 @@ void logger() {
     //std::cout << "POSITION: (" + std::to_string(pose.x) + ", " + std::to_string(pose.y) + ", " + std::to_string(pose.theta) + ")\n";
 		//std::cout << lemlib::format_as(chassis.getPose()) << "\n";
 		//std::cout << ladybrown.get_actual_velocity() << "\n";
-	  std::cout << "Ladybrown Angle: " << ladybrown2.get_position() / 3.0 << " LBState: " << LBState << "\n";
-		//std::cout << "LBState: " << LBState << "\n";
+	  //std::cout << "Ladybrown Angle: " << ladybrown2.get_position() / 3.0 << " LBState: " << LBState << "\n";
+		//std::cout << "intake voltage: " << intake.get_voltage() << "\n";
 		//std::cout << "VELOCITY: " + std::to_string(intake.get_actual_velocity()) << " VOLTAGE: " + std::to_string(intake.get_voltage()) << "\n";
 		//std::cout << "PROXIMITY: " << optical.get_proximity() << " DIFFERENCE: " << std::to_string(optical.get_rgb().blue - optical.get_rgb().red) << "\n";
 		//std::cout << "LED PWM" << optical.get_led_pwm() << "\n";
@@ -145,8 +145,9 @@ void autonomous() {
 
   //pros::Task logger_task(logger);
   
-  safeRingSide(allianceColorBlue);
+  //safeRingSide(allianceColorBlue);
   //safeFourRing(allianceColorBlue);
+  selector->runSelectedAutonomous();
 
   //skills();
   //turn_example();

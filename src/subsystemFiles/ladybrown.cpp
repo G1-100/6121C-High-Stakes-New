@@ -40,6 +40,7 @@ long panicPressTime = 0;
  */
 void doIntakeUnstuck() {
     if (fabs(intake.get_actual_velocity()) < 2 && fabs(intake.get_voltage()) > 2000) { // if intake is stuck
+        //std::cout << pros::millis() - intakeStuckTime << "\n";
         if (intakeStuckTime == 0) {
             intakeStuckTime = pros::millis();
         // } else if (pros::millis() - intakeStuckTime > 300 && LBState == PROPPED) { // ring caught on ladybrown, extend a little
@@ -51,15 +52,19 @@ void doIntakeUnstuck() {
         //     }
         //     wrongColorDetected = false;
         } 
-        else if (pros::millis() - intakeStuckTime > 500 - 150 && LBState != PROPPED) {
+        else if (pros::millis() - intakeStuckTime > 500 && LBState != PROPPED) {
             master.rumble("-"); // short rumble to notify driver
             double intakePower = intake.get_power();
+            wrongColorDetected = true;
             intake.move(-127);
             pros::delay(400 - 100);
             intake.move(127);
+            wrongColorDetected = false;
             intakeStuckTime = 0;
         }
         
+    } else {
+        intakeStuckTime = 0;
     }
 }
 
@@ -373,11 +378,11 @@ void LBLoop() {
         if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_DOWN)) {
             LBExtend(3);
         }
-        if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_RIGHT)) {
-            chassis.pid_drive_set(-8, 127); // move back
-            chassis.pid_wait();
-            LBExtend(3);
-        }
+        // if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_RIGHT)) {
+        //     chassis.pid_drive_set(-8, 127); // move back
+        //     chassis.pid_wait();
+        //     LBExtend(3);
+        // }
         if (LBAutonGoal != prevLBAutonGoal) { // interact with LB in auton mode
             prevLBAutonGoal = LBAutonGoal;
             ChangeLBAuton(LBAutonGoal);
@@ -389,7 +394,6 @@ void LBLoop() {
         prevLBAutonGoal = LBAutonGoal;
         doLBAmbientAdjust(curAngle);
         if (intakeUnstuckActivated) {
-            std::cout << "Unstuck running" << "\n";
             doIntakeUnstuck();
         }
         pros::delay(20);

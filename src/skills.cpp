@@ -14,7 +14,10 @@ void skills() {
     intakeUnstuckActivated = true;
     ColorLoopActive = false;
 
-    pros::delay(650);
+    pros::delay(200);
+    intake.move(-127);
+    pros::delay(450);
+    intake.move(0);
 
     set_drive(-19.5 - 1, 1500, 0, 70); // move away from alliance stake
     chassis.pid_wait_until(16 + 1);
