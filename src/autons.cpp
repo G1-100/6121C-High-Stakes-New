@@ -18,6 +18,7 @@ const int SWING_SPEED = 90;
 
 // These are out of 127
 using namespace ez;
+
 ///
 // Constants
 ///
@@ -726,7 +727,7 @@ void safeFourRing(bool isBlue) {
   //go to second two stack
   chassis.pid_turn_set(45 * sgn, 127); 
   chassis.pid_wait();
-  set_drive(33+1.5-1.5, 2000, 50); 
+  set_drive(33 - 1, 2000, 50); 
   chassis.pid_wait();
   chassis.pid_turn_set(0 * sgn, 127); 
 
@@ -747,15 +748,15 @@ pros::delay(1000);
 
   set_drive(-15+3, 1500, 0, 50); // move back
 	chassis.pid_wait();
-  set_drive(6+2, 1500, 0, 50); // move back
+  set_drive(6+2, 1500, 0, 50); // move 
   	chassis.pid_wait();
     set_drive(-18-2, 1500, 50); // move back
 	chassis.pid_wait();
   chassis.pid_turn_set((-45 * sgn), 127);
   chassis.pid_wait();
 
-  set_drive(23, 2000, 120); // move to ladder
-  chassis.pid_wait_until(10);
+  set_drive(25, 2000, 120); // move to ladder
+  chassis.pid_wait_until(12);
   ChangeLBState(EXTENDED);
   
 // 	set_drive(-27, 1500); // move back
@@ -865,6 +866,54 @@ void safeRingSide(bool isBlue) {
   intakeLift.toggle();
   chassis.pid_wait();
   //Why do u guys need to do intake that ring like that
-*/
+*/	
+}
 
+void MogoSide(bool isBlue) {
+	chassis.odom_xyt_set(50_in,-36_in,114.3_deg); // Touching Red Ring Facing Mogo
+	chassis.pid_drive_set(-(19.5 - 1), 127); // Move to Mogo
+  chassis.pid_wait_until(17);
+  mogoClamp.toggle(); // Clamp Mogo
+  chassis.pid_wait();
+	setIntake(127); // Score Ring
+	chassis.pid_wait();
+  chassis.pid_turn_set(307.75, 127); // Turn to Face Rings
+  chassis.pid_wait();
+  chassis.pid_drive_set((29.5 - 1), 127); // Reach Rings
+  chassis.pid_wait_until(15);
+  (isBlue?leftDoinker:rightDoinker).toggle(); // Toggle Doinker Rush Mech
+  chassis.pid_wait();
+  chassis.pid_turn_set(337.75_deg, 127); // Turn to Other Ring
+  chassis.pid_wait();
+  (!isBlue?leftDoinker:rightDoinker).toggle(); // Toggle Second Doinker Rush Mech
+  chassis.pid_drive_set(-30, 127); // Move Back
+  chassis.pid_wait();
+  chassis.pid_turn_relative_set(30_deg, 127); // Turn To Ring
+  chassis.pid_wait();
+  chassis.pid_swing_set((!isBlue?ez::RIGHT_SWING:ez::LEFT_SWING), 180_deg, 90, 45); // Swing to Ring
+  chassis.pid_wait();
+  chassis.pid_turn_set({24,-48}, fwd, 127); // Turn to Ring 
+  chassis.pid_wait();
+  chassis.pid_drive_set(ez::util::distance_to_point({chassis.odom_x_get(),chassis.odom_y_get()},{24,-48}) - 1, 127); // Move to Ring
+  chassis.pid_wait();
+  chassis.pid_turn_set({66,66},fwd,127); // Turn to Corner
+  chassis.pid_wait();
+  chassis.pid_drive_set(ez::util::distance_to_point({chassis.odom_x_get(),chassis.odom_y_get()},{66,-66}) - 1, 127); // Move to Corner
+  ChangeLBState(PROPPED); // Prop Lady Brown
+  chassis.pid_wait();
+  pros::delay(500);
+  setIntake(0);
+  chassis.pid_drive_set(-20,127); // Move Back
+  chassis.pid_wait();
+  chassis.pid_turn_set({6,-66},fwd,127); // Turn to Wall Stake
+  chassis.pid_wait();
+  chassis.pid_drive_set(ez::util::distance_to_point({chassis.odom_x_get(),chassis.odom_y_get()},{6,-66}) - 2, 127); // Move to Wall Stake
+  chassis.pid_wait_quick();
+  chassis.pid_turn_set({0,-72},fwd,127); // Correct to Wall Stake
+  chassis.pid_wait_quick_chain();
+  chassis.pid_drive_set(2,127); // Correct to Wall Stake
+  chassis.pid_wait_quick();
+  ChangeLBAuton(EXTENDED); // Score Ring on Wall Stake
+  pros::delay(200);
+  ChangeLBAuton(REST); // Bring LB Back
 }

@@ -22,7 +22,7 @@ void initialize() {
 	LBRotation.reset_position();
   ladybrown1.tare_position();
 	optical.set_led_pwm(100);
-	allianceColorBlue = false; // VERY IMPORTANT
+	allianceColorBlue = true; // VERY IMPORTANT
 	initColorSort();
 	std::cout << "initialize done" << "\n";
 	initializeSelector();
@@ -144,8 +144,10 @@ void autonomous() {
 
   //pros::Task logger_task(logger);
   
-  safeRingSide(allianceColorBlue);
-  skills();
+  //safeRingSide(allianceColorBlue);
+  safeFourRing(allianceColorBlue);
+
+  //skills();
   //turn_example();
   //drive_example();
   
