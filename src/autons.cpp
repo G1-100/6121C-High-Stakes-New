@@ -866,7 +866,7 @@ void safeRingSide(bool isBlue) {
   chassis.pid_wait_quick_chain();
   intakeUnstuckActivated=false;
   set_drive(-41,3000,127);
-  chassis.pid_wait_until(-20);000000000000000.
+  chassis.pid_wait_until(-20);
   ChangeLBState(PROPPED);
   chassis.pid_wait();/*
   chassis.pid_turn_set(65 * sgn, 90); // Turn to corner

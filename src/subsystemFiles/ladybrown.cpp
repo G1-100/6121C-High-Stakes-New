@@ -39,7 +39,7 @@ long panicPressTime = 0;
  * ONLY supposed to be used when intaking full mogo and hooks get caught
  */
 void doIntakeUnstuck() {
-    if (fabs(intake.get_actual_velocity()) < 0.5 && fabs(intake.get_voltage()) > 2000) { // if intake is stuck
+    if (fabs(intake.get_actual_velocity()) < 2 && fabs(intake.get_voltage()) > 2000) { // if intake is stuck
         if (intakeStuckTime == 0) {
             intakeStuckTime = pros::millis();
         // } else if (pros::millis() - intakeStuckTime > 300 && LBState == PROPPED) { // ring caught on ladybrown, extend a little
@@ -389,6 +389,7 @@ void LBLoop() {
         prevLBAutonGoal = LBAutonGoal;
         doLBAmbientAdjust(curAngle);
         if (intakeUnstuckActivated) {
+            std::cout << "Unstuck running" << "\n";
             doIntakeUnstuck();
         }
         pros::delay(20);

@@ -276,8 +276,8 @@ void opcontrol() {
 	ColorLoopActive = true; // starts inactive until tested ambient colors
 
 	intakeUnstuckActivated = true;
-	//ChangeLBState(REST);
-  //LBState = REST;
+	ChangeLBState(REST);
+  LBState = REST;
 
   while (true) {
 
