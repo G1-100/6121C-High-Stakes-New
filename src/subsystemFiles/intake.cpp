@@ -4,6 +4,7 @@
 auto liftButton = pros::E_CONTROLLER_DIGITAL_A;
 bool wrongColorDetected;
 bool stopDriverIntake = false;
+bool manualLadybrownActivated = false;
 
 // Helper functions
 void setIntake(int power) {
@@ -21,6 +22,12 @@ void setIntakeMotors() {
     //   - R2: Intake inward (collect game elements) at 600 RPM
     //   - R1: Outtake/reverse (release game elements) at -600 RPM
     //   - Neither pressed: Stop intake (0 RPM)
+    if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_R1) && master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_R2) && master.get_digital(pros::E_CONTROLLER_DIGITAL_R1) && master.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) { // new double press at same time
+        intake.move(0);
+        manualLadybrownActivated = !manualLadybrownActivated;
+    }
+
+    
     
     int intakePower = 0;  // Default state: stopped
 
@@ -38,9 +45,15 @@ void setIntakeMotors() {
     // If neither button is pressed, intakeVelocity remains 0
     
     // Apply the calculated velocity to the intake motor
-    if (!wrongColorDetected) { // if color sort hasn't activated
-        setIntake(intakePower);
+    if (manualLadybrownActivated) {
+        ladybrown1.move(intakePower);
+        ladybrown2.move(intakePower);
+    } else {
+        if (!wrongColorDetected) { // if color sort hasn't activated
+            setIntake(intakePower);
+        }
     }
+    
     
 }
 

@@ -6,7 +6,7 @@
 /////
 
 long runStart;
-
+double averageTempFahrenheit = 0;
 
 /**
  * Runs initialization code. This occurs as soon as the program is started.
@@ -19,13 +19,15 @@ void initialize() {
   pros::delay(500);  // Stop the user from doing anything while legacy ports configure
 
   pros::lcd::initialize();
-	LBRotation.set_position(0);
 	LBRotation.reset_position();
+  ladybrown1.tare_position();
 	optical.set_led_pwm(100);
-	allianceColorBlue = false; // VERY IMPORTANT
+	allianceColorBlue = true; // VERY IMPORTANT
 	initColorSort();
 	std::cout << "initialize done" << "\n";
 	initializeSelector();
+
+  autoClampActivated = false;
 
 
   // Look at your horizontal tracking wheel and decide if it's in front of the midline of your robot or behind it
@@ -48,24 +50,6 @@ void initialize() {
   // These are already defaulted to these buttons, but you can change the left/right curve buttons here!
   // chassis.opcontrol_curve_buttons_left_set(pros::E_CONTROLLER_DIGITAL_LEFT, pros::E_CONTROLLER_DIGITAL_RIGHT);  // If using tank, only the left side is used.
   // chassis.opcontrol_curve_buttons_right_set(pros::E_CONTROLLER_DIGITAL_Y, pros::E_CONTROLLER_DIGITAL_A);
-
-  // Autonomous Selector using LLEMU
-  // ez::as::auton_selector.autons_add({
-  //     {"Drive\n\nDrive forward and come back", drive_example},
-  //     {"Turn\n\nTurn 3 times.", turn_example},
-  //     {"Drive and Turn\n\nDrive forward, turn, come back", drive_and_turn},
-  //     {"Drive and Turn\n\nSlow down during drive", wait_until_change_speed},
-  //     {"Swing Turn\n\nSwing in an 'S' curve", swing_example},
-  //     {"Motion Chaining\n\nDrive forward, turn, and come back, but blend everything together :D", motion_chaining},
-  //     {"Combine all 3 movements", combining_movements},
-  //     {"Interference\n\nAfter driving forward, robot performs differently if interfered or not", interfered_example},
-  //     {"Simple Odom\n\nThis is the same as the drive example, but it uses odom instead!", odom_drive_example},
-  //     {"Pure Pursuit\n\nGo to (0, 30) and pass through (6, 10) on the way.  Come back to (0, 0)", odom_pure_pursuit_example},
-  //     {"Pure Pursuit Wait Until\n\nGo to (24, 24) but start running an intake once the robot passes (12, 24)", odom_pure_pursuit_wait_until_example},
-  //     {"Boomerang\n\nGo to (0, 24, 45) then come back to (0, 0, 0)", odom_boomerang_example},
-  //     {"Boomerang Pure Pursuit\n\nGo to (0, 24, 45) on the way to (24, 24) then come back to (0, 0, 0)", odom_boomerang_injected_pure_pursuit_example},
-  //     {"Measure Offsets\n\nThis will turn the robot a bunch of times and calculate your offsets for your tracking wheels.", measure_offsets},
-  // });
 
   // Initialize chassis and auton selector
   chassis.initialize();
@@ -100,14 +84,17 @@ void logger() {
         //std::cout << "RED: " << std::to_string(optical.get_rgb().red) << " BLUE: " << std::to_string(optical.get_rgb().blue) << "\n";
 		//std::cout << "DIFFERENCE: " << std::to_string(optical.get_rgb().blue - optical.get_rgb().red) << "\n";
 		//std::cout << "HUE: " + to_string(optical.get_hue()) << "\n";
+    auto pose = chassis.odom_pose_get();
+    //std::cout << "POSITION: (" + std::to_string(pose.x) + ", " + std::to_string(pose.y) + ", " + std::to_string(pose.theta) + ")\n";
 		//std::cout << lemlib::format_as(chassis.getPose()) << "\n";
 		//std::cout << ladybrown.get_actual_velocity() << "\n";
-		//std::cout << LBRotation.get_position() / 100.0 << "\n";
+	  std::cout << "Ladybrown Angle: " << ladybrown2.get_position() / 3.0 << " LBState: " << LBState << "\n";
 		//std::cout << "LBState: " << LBState << "\n";
 		//std::cout << "VELOCITY: " + std::to_string(intake.get_actual_velocity()) << " VOLTAGE: " + std::to_string(intake.get_voltage()) << "\n";
 		//std::cout << "PROXIMITY: " << optical.get_proximity() << " DIFFERENCE: " << std::to_string(optical.get_rgb().blue - optical.get_rgb().red) << "\n";
 		//std::cout << "LED PWM" << optical.get_led_pwm() << "\n";
 		//std::cout << stopDriverIntake << "\n";
+    //std::cout << "ladybrown velocity: " << ladybrown2.get_actual_velocity() << "\n";
         pros::delay(50);
         
         // Add a way to break the loop if needed
@@ -152,11 +139,19 @@ void autonomous() {
 	intakeUnstuckActivated = true;
 
 	pros::Task lb_task(LBLoop);
-	ladybrown.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+	ladybrown1.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+  ladybrown2.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
 
-  skills();
+  //pros::Task logger_task(logger);
+  
+  //safeRingSide(allianceColorBlue);
+  safeFourRing(allianceColorBlue);
 
-  //ez::as::auton_selector.selected_auton_call();  // Calls selected auton from autonomous selector
+  //skills();
+  //turn_example();
+  //drive_example();
+  
+  // ez::as::auton_selector.selected_auton_call();  // Calls selected auton from autonomous selector
 }
 
 /**
@@ -209,7 +204,7 @@ void ez_screen_task() {
     pros::delay(ez::util::DELAY_TIME);
   }
 }
-pros::Task ezScreenTask(ez_screen_task);
+//pros::Task ezScreenTask(ez_screen_task);
 
 /**
  * Gives you some extras to run in your opcontrol:
@@ -265,39 +260,43 @@ void ez_template_extras() {
 void opcontrol() {
   // This is preference to what you like to drive on
   chassis.drive_brake_set(MOTOR_BRAKE_COAST);
-  brakeModeCoast();
+  //brakeModeCoast();
 
   if (!LBLoopActive) { 
 		pros::Task lb_task(LBLoop);
 	}
   runStart = pros::millis();
-	ladybrown.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+	ladybrown1.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+  ladybrown2.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
 
   pros::Task logger_task(logger);
 	pros::Task temp_task(checkTemp);
 	
 	ColorLoopActive = true; // starts inactive until tested ambient colors
 
-	intakeUnstuckActivated = false;
-	//callLBReset();
+	intakeUnstuckActivated = true;
 	ChangeLBState(REST);
+  LBState = REST;
 
   while (true) {
 
-    runArcadeDrive();
+    //runArcadeDrive();
       	// Activate Intake Logic
+    //master.set_text(0, 0, "Avg Temp: " + std::to_string(averageTempFahrenheit) + "F");
 		setIntakeMotors();
 		// Activate Doinker Logic
 		setDoinker();
       	// Activate Mogo Logic
 		setMogoMotors();
 
+    setIntakeLift();
+
 		checkLBBroken();
     // Gives you some extras to make EZ-Template ezier
     //ez_template_extras();
 
     //chassis.opcontrol_tank();  // Tank control
-    // chassis.opcontrol_arcade_standard(ez::SPLIT);   // Standard split arcade
+     chassis.opcontrol_arcade_standard(ez::SPLIT);   // Standard split arcade
     // chassis.opcontrol_arcade_standard(ez::SINGLE);  // Standard single arcade
     // chassis.opcontrol_arcade_flipped(ez::SPLIT);    // Flipped split arcade
     // chassis.opcontrol_arcade_flipped(ez::SINGLE);   // Flipped single arcade
@@ -312,23 +311,31 @@ void opcontrol() {
 
 void checkTemp() {
 	int count;
-  std::vector<double> left_side_temps;
-  std::vector<double> right_side_temps;
 	double totalTemp;
     while (true) {
         totalTemp = 0.0;
         count = 0;
-        left_side_temps = left_side_motors.get_temperature_all();
-        right_side_temps = right_side_motors.get_temperature_all();
+        std::vector<double> left_side_temps = left_side_motors.get_temperature_all();
+        std::vector<double> right_side_temps = right_side_motors.get_temperature_all();
+        //std::cout << "Left Side Temps: " << left_side_temps[0] << ", " << left_side_temps[1] << ", " << left_side_temps[2] << "\n";
+        //std::cout << "Right Side Temps: " << right_side_temps[0] << ", " << right_side_temps[1] << ", " << right_side_temps[2] << "\n";
         
-        if (left_side_temps.size() != 3 || right_side_temps.size() != 3) {
-            master.set_text(0, 0, "MOTOR UNPLUGGED");
+        
+          for (int i = 0; i < left_side_temps.size(); i++) {
+            totalTemp += left_side_temps[i];
+            count++;
+          }
+          for (int i = 0; i < right_side_temps.size(); i++) {
+            totalTemp += right_side_temps[i];
+            count++;
+          }
+
+          if (count < 6) {
+            //master.set_text(0, 0, "MOTOR UNPLUGGED");
             master.rumble("---");
-        }
-        totalTemp = std::accumulate(left_side_temps.begin(), right_side_temps.end(), 0.0) + std::accumulate(right_side_temps.begin(), right_side_temps.end(), 0.0);
-        
+          }
         if (IMU.get_heading() == NAN) {
-          master.set_text(0, 0, "IMU unplugged.");
+          //master.set_text(0, 0, "IMU unplugged.");
           pros::delay(250);
           master.rumble("---");
 			  }
@@ -337,15 +344,15 @@ void checkTemp() {
 			double tempFahrenheit = intake.get_temperature() * 9.0 / 5.0 + 32.0;
 			master.set_text(0, 0, "Intake Temp: " + std::to_string(tempFahrenheit) + "F");
 		} else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_RIGHT)) {
-			double tempFarenheit = ladybrown.get_temperature() * 9.0 / 5.0 + 32.0;
+			double tempFarenheit = ((ladybrown1.get_temperature() + ladybrown2.get_temperature()) / 2.0) * 9.0 / 5.0 + 32.0;
 			master.set_text(0, 0, "LB Temp: " + std::to_string(tempFarenheit) + "F");
-		} else if (count == 0) {
-			master.set_text(0, 0, "No motors found.");
 		} else {
 			double averageTempCelsius = totalTemp / 6;
-			double averageTempFahrenheit = averageTempCelsius * 9.0 / 5.0 + 32.0;
-			master.set_text(0, 0, "Avg Temp: " + std::to_string(averageTempFahrenheit) + "F");
+			averageTempFahrenheit = averageTempCelsius * 9.0f / 5.0 + 32.0;
+      //std::cout << "Average Temp: " << averageTempFahrenheit << "\n";
+      //master.clear_line(0);
+			//master.set_text(0, 0, "Avg Temp: " + std::to_string(averageTempFahrenheit) + "F");
 		}
-		pros::delay(500);
+		pros::delay(10);
     }
 }
