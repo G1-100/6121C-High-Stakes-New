@@ -726,7 +726,7 @@ void safeFourRing(bool isBlue) {
   //go to second two stack
   chassis.pid_turn_set(45 * sgn, 127); 
   chassis.pid_wait();
-  set_drive(33+1.5-1.5, 2000, 50); 
+  set_drive(33 - 1, 2000, 50); 
   chassis.pid_wait();
   chassis.pid_turn_set(0 * sgn, 127); 
 
@@ -747,15 +747,15 @@ pros::delay(1000);
 
   set_drive(-15+3, 1500, 0, 50); // move back
 	chassis.pid_wait();
-  set_drive(6+2, 1500, 0, 50); // move back
+  set_drive(6+2, 1500, 0, 50); // move 
   	chassis.pid_wait();
     set_drive(-18-2, 1500, 50); // move back
 	chassis.pid_wait();
   chassis.pid_turn_set((-45 * sgn), 127);
   chassis.pid_wait();
 
-  set_drive(23, 2000, 120); // move to ladder
-  chassis.pid_wait_until(10);
+  set_drive(25, 2000, 120); // move to ladder
+  chassis.pid_wait_until(12);
   ChangeLBState(EXTENDED);
   
 // 	set_drive(-27, 1500); // move back

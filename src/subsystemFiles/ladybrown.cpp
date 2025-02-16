@@ -10,7 +10,7 @@ double RESTANGLE = 0; // actual -30
 double STOP1 = 16 + 1; // 42.57
 double STOP1_5 = STOP1 + 45 - 15;
 double STOP2 = 190 - 30; // angle of stop 2 - 130
-double STOP3 = 250 + 450 - 450;
+double STOP3 = 250  - 60;
 
 double REST = 0;
 double PROPPED = 1;
@@ -51,11 +51,11 @@ void doIntakeUnstuck() {
         //     }
         //     wrongColorDetected = false;
         } 
-        else if (pros::millis() - intakeStuckTime > 500 && LBState != PROPPED) {
+        else if (pros::millis() - intakeStuckTime > 500 - 150 && LBState != PROPPED) {
             master.rumble("-"); // short rumble to notify driver
             double intakePower = intake.get_power();
             intake.move(-127);
-            pros::delay(400);
+            pros::delay(400 - 100);
             intake.move(127);
             intakeStuckTime = 0;
         }

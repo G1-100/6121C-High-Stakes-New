@@ -69,7 +69,7 @@ void skills() {
     startColorUntil(1);
     chassis.pid_wait_until(12);
 
-    setIntake(0);
+    //setIntake(0);
 
     ChangeLBState(EXTENDED); // extend ladybrown
     pros::delay(350 + 50);
@@ -81,7 +81,7 @@ void skills() {
 
     set_drive(8);
     chassis.pid_wait_until(1);
-    intake.move(127);
+    intake.move(127); 
     chassis.pid_wait();
     
     pros::delay(200);
