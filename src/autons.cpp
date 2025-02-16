@@ -18,6 +18,7 @@ const int SWING_SPEED = 90;
 
 // These are out of 127
 using namespace ez;
+
 ///
 // Constants
 ///
@@ -729,4 +730,53 @@ void safeFourRing(bool isBlue) {
   chassis.pid_wait();
   ChangeLBState(EXTENDED);
 	
+}
+
+void MogoSide(bool isBlue) {
+	chassis.odom_xyt_set(50_in,-36_in,114.3_deg); // Touching Red Ring Facing Mogo
+	chassis.pid_drive_set(-(19.5 - 1), 127); // Move to Mogo
+  chassis.pid_wait_until(17);
+  mogoClamp.toggle(); // Clamp Mogo
+  chassis.pid_wait();
+	setIntake(127); // Score Ring
+	chassis.pid_wait();
+  chassis.pid_turn_set(307.75, 127); // Turn to Face Rings
+  chassis.pid_wait();
+  chassis.pid_drive_set((29.5 - 1), 127); // Reach Rings
+  chassis.pid_wait_until(15);
+  (isBlue?doinkerLeft:doinkerRight).toggle(); // Toggle Doinker Rush Mech
+  chassis.pid_wait();
+  chassis.pid_turn_set(337.75_deg, 127); // Turn to Other Ring
+  chassis.pid_wait();
+  (!isBlue?doinkerLeft:doinkerRight).toggle(); // Toggle Second Doinker Rush Mech
+  chassis.pid_drive_set(-30, 127); // Move Back
+  chassis.pid_wait();
+  chassis.pid_turn_relative_set(30_deg, 127); // Turn To Ring
+  chassis.pid_wait();
+  chassis.pid_swing_set((!isBlue?ez::RIGHT_SWING:ez::LEFT_SWING), 180_deg, 90, 45); // Swing to Ring
+  chassis.pid_wait();
+  chassis.pid_turn_set({24,-48}, fwd, 127); // Turn to Ring 
+  chassis.pid_wait();
+  chassis.pid_drive_set(ez::util::distance_to_point({chassis.odom_x_get(),chassis.odom_y_get()},{24,-48}) - 1, 127); // Move to Ring
+  chassis.pid_wait();
+  chassis.pid_turn_set({66,66},fwd,127); // Turn to Corner
+  chassis.pid_wait();
+  chassis.pid_drive_set(ez::util::distance_to_point({chassis.odom_x_get(),chassis.odom_y_get()},{66,-66}) - 1, 127); // Move to Corner
+  ChangeLBState(PROPPED); // Prop Lady Brown
+  chassis.pid_wait();
+  pros::delay(500);
+  setIntake(0);
+  chassis.pid_drive_set(-20,127); // Move Back
+  chassis.pid_wait();
+  chassis.pid_turn_set({6,-66},fwd,127); // Turn to Wall Stake
+  chassis.pid_wait();
+  chassis.pid_drive_set(ez::util::distance_to_point({chassis.odom_x_get(),chassis.odom_y_get()},{6,-66}) - 2, 127); // Move to Wall Stake
+  chassis.pid_wait_quick();
+  chassis.pid_turn_set({0,-72},fwd,127); // Correct to Wall Stake
+  chassis.pid_wait_quick_chain();
+  chassis.pid_drive_set(2,127); // Correct to Wall Stake
+  chassis.pid_wait_quick();
+  ChangeLBAuton(EXTENDED); // Score Ring on Wall Stake
+  pros::delay(200);
+  ChangeLBAuton(REST); // Bring LB Back
 }
