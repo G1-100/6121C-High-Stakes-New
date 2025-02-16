@@ -881,11 +881,11 @@ void MogoSide(bool isBlue) {
   chassis.pid_wait();
   chassis.pid_drive_set((29.5 - 1), 127); // Reach Rings
   chassis.pid_wait_until(15);
-  (isBlue?doinkerLeft:doinkerRight).toggle(); // Toggle Doinker Rush Mech
+  (isBlue?leftDoinker:rightDoinker).toggle(); // Toggle Doinker Rush Mech
   chassis.pid_wait();
   chassis.pid_turn_set(337.75_deg, 127); // Turn to Other Ring
   chassis.pid_wait();
-  (!isBlue?doinkerLeft:doinkerRight).toggle(); // Toggle Second Doinker Rush Mech
+  (!isBlue?leftDoinker:rightDoinker).toggle(); // Toggle Second Doinker Rush Mech
   chassis.pid_drive_set(-30, 127); // Move Back
   chassis.pid_wait();
   chassis.pid_turn_relative_set(30_deg, 127); // Turn To Ring
