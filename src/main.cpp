@@ -22,7 +22,7 @@ void initialize() {
 	LBRotation.reset_position();
   ladybrown1.tare_position();
 	optical.set_led_pwm(100);
-	allianceColorBlue = true; // VERY IMPORTANT
+	allianceColorBlue = false; // VERY IMPORTANT
 	initColorSort();
 	std::cout << "initialize done" << "\n";
 	initializeSelector();
@@ -136,16 +136,17 @@ void autonomous() {
   brakeModeHold();
 
 	ColorLoopActive = true;
-	intakeUnstuckActivated = true;
+	intakeUnstuckActivated = false;
 
 	pros::Task lb_task(LBLoop);
 	ladybrown1.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
   ladybrown2.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+  //disruptRingRush(false);
 
   //pros::Task logger_task(logger);
   
-  //safeRingSide(allianceColorBlue);
-  safeFourRing(allianceColorBlue);
+  safeRingSide(allianceColorBlue);
+  //safeFourRing(allianceColorBlue);
 
   //skills();
   //turn_example();
@@ -275,8 +276,8 @@ void opcontrol() {
 	ColorLoopActive = true; // starts inactive until tested ambient colors
 
 	intakeUnstuckActivated = true;
-	ChangeLBState(REST);
-  LBState = REST;
+	//ChangeLBState(REST);
+  //LBState = REST;
 
   while (true) {
 
