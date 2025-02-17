@@ -711,7 +711,7 @@ void safeFourRing(bool isBlue) {
   callLBReset();
   set_drive(-17, 2000, 70);
     chassis.pid_wait();
-  set_drive(-12, 1500, 0, 45); // move slower
+  set_drive(-10.5, 1500, 0, 45); // move slower
   chassis.pid_wait_until(-9);
   mogoClamp.toggle();
   chassis.pid_wait();
@@ -720,11 +720,11 @@ void safeFourRing(bool isBlue) {
 	chassis.pid_wait();
 	// set_drive(27, 2000); // intake ring
 	// chassis.pid_wait();
-  	intake.move_voltage(0);
+  	intake.move_voltage(12000);
   	set_drive(19-3-1.5, 2000, 90); // intake ring
 	chassis.pid_wait();
   intake.move_voltage(12000);
-  	set_drive(7.5, 2000, 90); 
+  	set_drive(7.5 + 1, 2000, 90); 
 	chassis.pid_wait();
 	pros::delay(300);
   //go to second two stack
@@ -752,15 +752,25 @@ pros::delay(1000);
   set_drive(-15+3, 1500, 0, 50); // move back
 	chassis.pid_wait();
   set_drive(6+2, 1500, 0, 50); // move 
-  	chassis.pid_wait();
-    set_drive(-18-2, 1500, 50); // move back
-	chassis.pid_wait();
-  chassis.pid_turn_set((-45 * sgn), 127);
   chassis.pid_wait();
+  set_drive(-20, 1500, 50); // move back
+	chassis.pid_wait();
+  intake.move(0);
+  chassis.pid_turn_set(-90 * sgn, 90); // turn to middle mogo
+  chassis.pid_wait();
+  mogoClamp.toggle(); // release mogo
+  chassis.pid_turn_set(90 * sgn, 90); // turn to middle mogo
+  chassis.pid_wait();
+  set_drive(-20 - 5, 2000, 110); // move to middle mogo
+  chassis.pid_wait();
+  chassis.pid_turn_set(60 * sgn, 90); // turn to middle mogo
+  chassis.pid_wait();
+  // chassis.pid_turn_set((-45 * sgn), 127);
+  // chassis.pid_wait();
 
-  set_drive(25, 2000, 120); // move to ladder
-  chassis.pid_wait_until(12);
-  ChangeLBState(EXTENDED);
+  // set_drive(25, 2000, 120); // move to ladder
+  // chassis.pid_wait_until(12);
+  // ChangeLBState(EXTENDED);
   
 // 	set_drive(-27, 1500); // move back
 
@@ -861,6 +871,7 @@ void safeRingSide(bool isBlue) {
   }
   //chassis.pid_turn_set((-45) * sgn, 90); // Turn to first 2 stack
   chassis.pid_wait();
+  stopColorUntilFunction();
   // Intake ring
   intake.move(127);
   intake.move(127);
@@ -909,7 +920,7 @@ void safeRingSide(bool isBlue) {
   set_drive(-41,3000,127);
   chassis.pid_wait_until(15);
   ChangeLBState(PROPPED);
-
+  
   chassis.pid_wait();/*
   chassis.pid_turn_set(65 * sgn, 90); // Turn to corner
   chassis.pid_wait();

@@ -22,7 +22,7 @@ void initialize() {
 	LBRotation.reset_position();
   ladybrown1.tare_position();
 	optical.set_led_pwm(100);
-	allianceColorBlue = true; // VERY IMPORTANT
+	allianceColorBlue = false; // VERY IMPORTANT
 	initColorSort();
 	std::cout << "initialize done" << "\n";
 	initializeSelector();
@@ -147,9 +147,9 @@ void autonomous() {
   
   //safeRingSide(allianceColorBlue);
   //safeFourRing(allianceColorBlue);
-  selector->runSelectedAutonomous();
+  //selector->runSelectedAutonomous();
 
-  //skills();
+  skills();
   //turn_example();
   //drive_example();
   
@@ -355,6 +355,6 @@ void checkTemp() {
       //master.clear_line(0);
 			//master.set_text(0, 0, "Avg Temp: " + std::to_string(averageTempFahrenheit) + "F");
 		}
-		pros::delay(10);
+		pros::delay(500);
     }
 }
