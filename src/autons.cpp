@@ -26,7 +26,8 @@ void default_constants() {
   // P, I, D, and Start I
   chassis.pid_drive_constants_set(16.0, 0.0, 100.0);         // ez::fwd/rev constants, used for odom and non odom motions
   chassis.pid_heading_constants_set(9.5, 0.0, 20);        // Holds the robot straight while going forward without odom
-  chassis.pid_turn_constants_set(3.7, 0, 20, 15.0);     // Turn in place constants, old are 3.05, 0.05, 25.5, 15, negative kI are 2.5, -0.1, 10, 15
+  chassis.pid_turn_constants_set(4.2 + 0.5, -0.05, 30, 15.0);     // Turn in place constants, old are 3.05, 0.05, 25.5, 15, negative kI are 2.5, -0.1, 10, 15
+  // WITHOUT MOGO: chassis.pid_turn_constants_set(3.7, 0, 20, 15.0);     // Turn in place constants, old are 3.05, 0.05, 25.5, 15, negative kI are 2.5, -0.1, 10, 15
   chassis.pid_swing_constants_set(6.0, 0.0, 65.0);           // Swing constants
   chassis.pid_odom_angular_constants_set(6.5, 0.0, 52.5);    // Angular control for odom motions
   chassis.pid_odom_boomerang_constants_set(5.8, 0.0, 32.5);  // Angular control for boomerang motions
@@ -34,7 +35,7 @@ void default_constants() {
   // Exit conditions
   chassis.pid_turn_exit_condition_set(100_ms, 3_deg, 250_ms, 7_deg, 150_ms, 500_ms); // velocity original is 500 ms
   chassis.pid_swing_exit_condition_set(90_ms, 3_deg, 250_ms, 7_deg, 500_ms, 500_ms);
-  chassis.pid_drive_exit_condition_set(90_ms, 1_in, 250_ms, 3_in, 500_ms, 500_ms);
+  chassis.pid_drive_exit_condition_set(90_ms, 1_in, 250_ms, 3_in, 200_ms, 500_ms);
   chassis.pid_odom_turn_exit_condition_set(90_ms, 1_deg, 250_ms, 7_deg, 500_ms, 750_ms);
   chassis.pid_odom_drive_exit_condition_set(90_ms, 1_in, 250_ms, 3_in, 500_ms, 750_ms);
   chassis.pid_turn_chain_constant_set(3_deg);
@@ -990,4 +991,81 @@ void MogoSide(bool isBlue) {
   ChangeLBAuton(EXTENDED); // Score Ring on Wall Stake
   pros::delay(200);
   ChangeLBAuton(REST); // Bring LB Back
+}
+
+
+void stateSoloAwp(bool isBlue) {
+
+
+    // GETS CORNER
+
+  int sgn=isBlue?1:-1;
+  chassis.odom_xyt_set(0, 0, (180 - 34 + .3) * sgn);
+
+  // AWS
+
+  LBState = PROPPED; // Prop LB for preload
+  //LBRotation.set_position(4400);
+  ladybrown2.set_zero_position(-46);
+  ChangeLBState(EXTENDED); // Extend LB for AWS
+  pros::delay(200);
+  intake.move(-127);
+  pros::delay(400);
+
+  set_drive(-11 -1-1.5, 2000, 80); // move back from AWS
+  chassis.pid_wait();
+  ChangeLBState(REST); // retract ladybrown
+  chassis.pid_turn_set(90 * sgn, 90);
+  chassis.pid_wait();
+  callLBReset();
+  set_drive(-29.5 - 1, 2000, 90);
+  chassis.pid_wait_until(-15);
+  chassis.pid_speed_max_set(-60);
+  chassis.pid_wait();
+  mogoClamp.toggle(); // get mogo
+  chassis.pid_wait();
+  intake.move_voltage(12000);
+  chassis.pid_turn_set(0, 100); // turn to first two stack next to mogo
+  chassis.pid_wait();
+  // set_drive(27, 2000); // intake ring
+  // chassis.pid_wait();
+  intake.move_voltage(12000);
+  set_drive(19 + 4, 2000, 110); // intake ring
+  chassis.pid_wait();
+  pros::delay(300);
+  chassis.pid_turn_set(-135, 127);  // turns to go to where the mogo will be released
+  chassis.pid_wait();
+  set_drive(31 + 0.5, 2000); // drive to where the mogo will be released
+  chassis.pid_wait();
+  chassis.pid_turn_set(180, 127); // turn to the middle two stack
+  chassis.pid_wait();
+  mogoClamp.toggle(); // release mogo 
+  chassis.pid_wait();
+  ColorLoopActive = false;
+  intake.move(127);
+  set_drive(24, 3000, 0, 110); // intake middle two stack
+  chassis.pid_wait();
+  set_drive(21, 3000, 0, 110); // intake middle red ring
+  chassis.pid_wait();
+  ColorLoopActive = true;
+  startColorUntil(1);
+  intake.move(100);
+  chassis.pid_turn_set((90 + 1) * sgn, 90); // turn to other mogo
+  chassis.pid_wait();
+  set_drive(-24 + 1.5, 200, 0, 90); // drive to other mogo
+  chassis.pid_wait();
+  mogoClamp.toggle(); // clamp other mogo
+  chassis.pid_wait();
+  chassis.pid_turn_set(180, 90); // turn to final two stack
+  chassis.pid_wait();
+  stopColorUntilFunction();
+  intake.move(127);
+  set_drive(24, 3000, 100, 127); // intake final two stack
+  chassis.pid_wait_quick_chain();
+  set_drive(-26, 3000, 0, 127); // drive to ladder
+  chassis.pid_wait_quick_chain();
+  chassis.pid_turn_set(-45 * sgn, 90); // turn to ladder
+  ChangeLBState(EXTENDED); // touch ladder
+  chassis.pid_wait();
+  
 }

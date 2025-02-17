@@ -88,7 +88,7 @@ void logger() {
     //std::cout << "POSITION: (" + std::to_string(pose.x) + ", " + std::to_string(pose.y) + ", " + std::to_string(pose.theta) + ")\n";
 		//std::cout << lemlib::format_as(chassis.getPose()) << "\n";
 		//std::cout << ladybrown.get_actual_velocity() << "\n";
-	  //std::cout << "Ladybrown Angle: " << ladybrown2.get_position() / 3.0 << " LBState: " << LBState << "\n";
+	  std::cout << "Ladybrown Angle: " << ladybrown2.get_position() / 3.0 << " LBState: " << LBState << "\n";
 		//std::cout << "intake voltage: " << intake.get_voltage() << "\n";
 		//std::cout << "VELOCITY: " + std::to_string(intake.get_actual_velocity()) << " VOLTAGE: " + std::to_string(intake.get_voltage()) << "\n";
 		//std::cout << "PROXIMITY: " << optical.get_proximity() << " DIFFERENCE: " << std::to_string(optical.get_rgb().blue - optical.get_rgb().red) << "\n";
@@ -141,6 +141,7 @@ void autonomous() {
 	pros::Task lb_task(LBLoop);
 	ladybrown1.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
   ladybrown2.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+  ladybrown2.tare_position();
   //disruptRingRush(false);
 
   //pros::Task logger_task(logger);
@@ -149,9 +150,11 @@ void autonomous() {
   //safeFourRing(allianceColorBlue);
   //selector->runSelectedAutonomous();
 
-  skills();
+  //skills();
+  //mogoClamp.toggle();
   //turn_example();
   //drive_example();
+  stateSoloAwp(allianceColorBlue);
   
   // ez::as::auton_selector.selected_auton_call();  // Calls selected auton from autonomous selector
 }

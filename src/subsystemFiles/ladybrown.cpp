@@ -7,7 +7,7 @@
 #include "main.h"
 #include <string>
 double RESTANGLE = 0; // actual -30
-double STOP1 = 16 + 1; // 42.57
+double STOP1 = 17 + 0.5; // 42.57
 double STOP1_5 = STOP1 + 45 - 15;
 double STOP2 = 190 - 30; // angle of stop 2 - 130
 double STOP3 = 250  - 60;
@@ -52,12 +52,12 @@ void doIntakeUnstuck() {
             }
             wrongColorDetected = false;
         } 
-        else if (pros::millis() - intakeStuckTime > 500 && LBState != PROPPED) {
+        else if (pros::millis() - intakeStuckTime > 400 && LBState != PROPPED) {
             master.rumble("-"); // short rumble to notify driver
             double intakePower = intake.get_power();
             wrongColorDetected = true;
             intake.move(-127);
-            pros::delay(400 - 100);
+            pros::delay(400);
             intake.move(127);
             wrongColorDetected = false;
             intakeStuckTime = 0;
@@ -120,7 +120,7 @@ void tempFunction(double state, double stop,
 
 
 void doLBAmbientAdjust(double curAngle) {
-    tempFunction(PROPPED, STOP1, curAngle, 0.5, -1.5, 10, -3, 3);
+    tempFunction(PROPPED, STOP1, curAngle, 0.5, -.5, 10, -5, 3);
     tempFunction(SEMIEXTENDED, STOP1_5, curAngle, 10, -10, 13, -8, 7);
     tempFunction(EXTENDED, STOP2, curAngle, 5, -10, 10, -5, 0);
     // if (LBState == FULLEXTENDED) {
@@ -150,7 +150,7 @@ void LBExtend(double point) {
         GOALANGLE = STOP1;
         power = 70 * 0.01;
         if (curAngle > GOALANGLE) { // over and going back
-            negPower = -30;
+            negPower = -50;
         } else {
             negPower = -5;
         }
@@ -197,8 +197,18 @@ void LBExtend(double point) {
         curAngle = ladybrown2.get_position() / 3.0;
         //std::cout << "Current Angle: " << curAngle << "\n";
         if (curAngle > GOALANGLE) {
-            ladybrown1.move(negPower);
-            ladybrown2.move(negPower);
+            if (point == 1) {
+                totalError += abs(GOALANGLE - curAngle);
+                double total = abs(GOALANGLE - curAngle) * kP;
+                if (total > 127) {
+                    total = 127;
+                }
+                ladybrown1.move(-total);
+                ladybrown2.move(-total);
+            } else {
+                ladybrown1.move(negPower);
+                ladybrown2.move(negPower);
+            }
         } else {
             if (point == 1) {
                 totalError += abs(GOALANGLE - curAngle);

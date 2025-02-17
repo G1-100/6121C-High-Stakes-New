@@ -45,6 +45,8 @@ void newMogoRush(bool isBlue);
 
 void testAuton();
 
+void stateSoloAwp(bool isBlue);
+
 void safeFourRing(bool isBlue);
 
 void safeRingSide(bool isBlue);
