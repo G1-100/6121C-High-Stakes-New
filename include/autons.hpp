@@ -50,6 +50,7 @@ void stateSoloAwp(bool isBlue);
 void safeFourRing(bool isBlue);
 
 void safeRingSide(bool isBlue);
+void RingRush6(bool isBlue);
 
 // ASSET(ringRushBlue_txt);
 // ASSET(ringRushBlueOld_txt);

@@ -999,19 +999,22 @@ void RingRush6(bool isBlue) {
     chassis.odom_theta_flip();
   }
   LBState=REST;
-  chassis.odom_xyt_set(-48.5, 30, 75);
-  chassis.pid_drive_set(63.5,127); // Drive to Middle Ring
-  chassis.pid_wait();
+  chassis.odom_xyt_set(-48.5, 30, 73.5);
+  chassis.pid_drive_set(50 - 2,127); // Drive to Middle Ring
+  chassis.pid_wait_until(30 - 5);
   (isBlue?rightDoinker:leftDoinker).toggle(); // Grab Ring
+  chassis.pid_wait();
   pros::delay(100);
   chassis.pid_drive_set(-19,127); // Move Back
   chassis.pid_wait_quick_chain();
   chassis.pid_turn_set(90,127);
+  chassis.pid_wait();
+  chassis.pid_drive_set(-15,127); // drive back more
+  chassis.pid_wait();
   (isBlue?rightDoinker:leftDoinker).toggle(); // Release Ring
+  chassis.pid_turn_set(-30,100);
   chassis.pid_wait();
-  chassis.pid_turn_set(-45,127);
-  chassis.pid_wait();
-  chassis.pid_drive_set(10,127);
+  chassis.pid_drive_set(-20,127);
   chassis.pid_wait();
   mogoClamp.toggle(); // Grab Mogo
   chassis.pid_turn_set(20,127);
@@ -1020,7 +1023,7 @@ void RingRush6(bool isBlue) {
   chassis.pid_drive_set(30,127);
   chassis.pid_wait();
   pros::delay(300);
-  chassis.pid_turn_set(75,127);
+  chassis.pid_turn_set(-75,127);
   chassis.pid_wait();
   chassis.pid_drive_set(40,127); // Go To Corner
   chassis.pid_wait();
