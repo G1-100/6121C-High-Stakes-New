@@ -9,6 +9,7 @@
 double RESTANGLE = 0; // actual -30
 double STOP1 = 17 + 0.5; // 42.57
 double STOP1_5 = STOP1 + 45 - 15;
+double STOP1_75 = STOP1 + 70;
 double STOP2 = 190 - 30; // angle of stop 2 - 130
 double STOP3 = 250  - 60;
 
@@ -17,6 +18,7 @@ double PROPPED = 1;
 double EXTENDED = 2;
 double FULLEXTENDED = 3;
 double SEMIEXTENDED = 1.5;
+double DESCOREEXTENDED = 1.75;
 double ALMOSTFULLEXTENDED = 2.8;
 double LBState = REST;
 
@@ -182,6 +184,13 @@ void LBExtend(double point) {
         angleChange = STOP1_5 - STOP1;
         iterationsRequired = 1;
         timeOut = 1500;
+    } else if (point == 1.75) {
+        GOALANGLE = STOP1_75;
+        power = 70;
+        negPower = -8;
+        angleChange = STOP1_5 - STOP1;
+        iterationsRequired = 1;
+        timeOut = 2000;
     }
 
     long startTime = pros::millis();
@@ -372,7 +381,7 @@ void LBLoop() {
                     if (curAngle < STOP1 - 10) { // at stopping point 1
                         std::cout << "At rest, extending to point 1\n";
                         LBExtend(1); // go to stopping point 2
-                    } else if ((curAngle < STOP2 - 5) && LBState != EXTENDED) { // at 1.5
+                    } else if ((curAngle < STOP2 - 5) && LBState != EXTENDED && LBState != DESCOREEXTENDED) { // at 1.5
                         std::cout << "At stopping point 1, going to stopping point 2\n";
                         LBExtend(2); // go to rest
                     } else { // at rest
@@ -387,6 +396,8 @@ void LBLoop() {
         }
         if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_DOWN)) {
             LBExtend(3);
+        } else if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_UP)) {
+            LBExtend(DESCOREEXTENDED);
         }
         // if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_RIGHT)) {
         //     chassis.pid_drive_set(-8, 127); // move back

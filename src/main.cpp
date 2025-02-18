@@ -289,7 +289,13 @@ void opcontrol() {
 
     //runArcadeDrive();
       	// Activate Intake Logic
-    //master.set_text(0, 0, "Avg Temp: " + std::to_string(averageTempFahrenheit) + "F");
+    if (master.get_digital(pros::E_CONTROLLER_DIGITAL_LEFT)) {
+      double tempFahrenheit = intake.get_temperature() * 9.0 / 5.0 + 32.0;
+      master.set_text(0, 0, "Intake Temp: " + std::to_string(tempFahrenheit) + "F");
+    } else {
+      master.set_text(0, 0, "Avg Temp: " + std::to_string(averageTempFahrenheit) + "F");
+    }
+
 		setIntakeMotors();
 		// Activate Doinker Logic
 		setDoinker();

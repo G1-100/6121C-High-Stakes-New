@@ -496,66 +496,49 @@ void simpleMogo(bool isBlue) {
 }
 
 void newMogoRush(bool isBlue) {
+
+  // PRELOAD near corner, set up to intake two stack during first movement
+
   int sgn=isBlue?1:-1;
   chassis.odom_xyt_set(0, 0, -110 * sgn); // Set position
-  LBState = PROPPED;
-  //LBRotation.set_position(4600);
-  ladybrown2.set_zero_position(-46);
   set_drive(37 + 2, 2500, 126, 127); // Move to first mogo
   chassis.pid_wait_until(11 + 1);
-  ChangeLBState(ALMOSTFULLEXTENDED);
-  chassis.pid_wait();
+  intake.move(127);
+  startColorUntil(1);
+  leftDoinker.toggle();
+  chassis.pid_wait_quick_chain();
   // pros::delay(500);
   // chassis.pid_turn_set(-150 * sgn); // Turn mogo to disrupt
   // chassis.pid_wait();
-  set_drive(-19.5 - 25 + 12, 1500, 120); // Move back
-  chassis.pid_wait_until(30 - 14);
-  ChangeLBState(FULLEXTENDED);
+  leftDoinker.toggle();
+  set_drive(-15, 1500, 120); // Move back
   chassis.pid_wait();
-  ChangeLBState(REST);
-  chassis.pid_turn_set((-180 - 60 -10+3) * sgn, 127); // Turn to second mogo
-  pros::delay(100);
-  callLBReset();
+  leftDoinker.toggle();
+  set_drive(-5, 1500, 120); // Move back
   chassis.pid_wait();
-  set_drive(-36.5 + 15, 2000); // Move to second mogo
-  chassis.pid_wait_until(33 - 15);
+  leftDoinker.toggle();
+  
+  chassis.pid_turn_set((110) * sgn, 127); // Turn to first mogo
+  chassis.pid_wait();
+  set_drive(-25, 2000); // Move to first mogo
+  chassis.pid_wait_until(-20);
   mogoClamp.toggle(); // Clamp second mogo
   chassis.pid_wait();
-  set_drive(20, 2000, 65, 127); // Move back
+  intake.move(127);
+  set_drive(40, 2000, 65, 127); // Move to corner
   chassis.pid_wait();
-  chassis.pid_turn_set((-140 + 5 + 5 + 5) * sgn, 127); // Turn to two stack
+  startColorUntil(1);
+  chassis.pid_turn_set(90 * sgn, 110); // turn to go back a bit
   chassis.pid_wait();
-  intake.move(127); // Turn on intake
-  set_drive(34.5 - 3 + 4, 2000); // Move to two stack
+  set_drive(-8);
   chassis.pid_wait();
-  pros::delay(200);
-  chassis.pid_turn_set(isBlue?(106-10 + 5):-106, 127); // turn to corner
+  mogoClamp.toggle();
+  chassis.pid_turn_set(150 * sgn, 110);
   chassis.pid_wait();
-  rightDoinker.toggle();
-  set_drive(40 - 5, 1500, 60, 127); // Move to corner
-  chassis.pid_wait();
-  pros::delay(500);
-  chassis.pid_turn_set(isBlue?-180:310, 127); // Turn to knock away corner rings
-  chassis.pid_wait();
-  rightDoinker.toggle();
-  chassis.pid_turn_set(-260 * sgn, 127); // Turn to 2nd mogo
-  chassis.pid_wait();
-  set_drive(15 - 5, 2000, 60, 120); // Move forward
-  chassis.pid_wait();
-  set_drive(-10, 2000); // Move back
-  chassis.pid_wait();
-  // chassis.pid_turn_set(-300 * sgn); // Turn to 2nd ring
-  // chassis.pid_wait();
-  // set_drive(17 - 1, 2000); // Move to 2nd ring
-  // chassis.pid_wait();
-  //pros::delay(200);
-  //chassis.pid_turn_set(300);
-  // set_drive(-15 + 3, 2000); // Move back
-  // chassis.pid_wait();
+  set_drive(-35);
+  chassis.pid_wait_until(-28);
+  mogoClamp.toggle();
   chassis.pid_turn_set(-40 * sgn, 127); // Turn to ladder
-  chassis.pid_wait();
-  set_drive(46, 2000); // Move to ladder
-  ChangeLBState(SEMIEXTENDED);
   chassis.pid_wait();
   ChangeLBState(EXTENDED);
 }
@@ -1028,28 +1011,33 @@ void RingRush6(bool isBlue) {
   chassis.pid_drive_set(40,127); // Go To Corner
   chassis.pid_wait();
   pros::delay(500);
-  chassis.pid_turn_set(45,127);
+  chassis.pid_turn_set(-45,127); 
   chassis.pid_wait();
-  chassis.pid_drive_set(-15,127);
+  chassis.pid_drive_set(-15,127); // move back from corner
   chassis.pid_wait();
-  chassis.pid_turn_set(180,127);
+  chassis.pid_turn_set(180,127); // turn to intake two rings
   chassis.pid_wait();
+  chassis.pid_drive_set(30, 127); // move to intake two rings
+  chassis.pid_wait_until(20);
   intakeLift.toggle();
-  ChangeLBState(PROPPED);
-  chassis.pid_drive_set(30, 127);
   chassis.pid_wait();
+  ChangeLBState(PROPPED);
   pros::delay(300);
+  rightDoinker.toggle();
   chassis.pid_turn_set(-90,127);
   chassis.pid_wait();
-  chassis.pid_drive_set(5,127);
+  rightDoinker.toggle();
+  chassis.pid_drive_set(10, 127);
   chassis.pid_wait();
-  ChangeLBState(EXTENDED);
+  chassis.pid_drive_set(-8,127);
+  ChangeLBState(FULLEXTENDED);
   chassis.pid_wait();
-  pros::delay(500);
   ChangeLBState(REST);
   chassis.pid_turn_set(90,127);
   chassis.pid_wait();
-  chassis.pid_drive_set(30,127);  
+  chassis.pid_drive_set(50,127);
+  chassis.pid_wait_until(10);
+  chassis.pid_targets_reset();
 }
 
 void stateSoloAwp(bool isBlue) {
