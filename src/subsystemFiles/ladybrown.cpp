@@ -7,9 +7,9 @@
 #include "main.h"
 #include <string>
 double RESTANGLE = 0; // actual -30
-double STOP1 = 17 + 0.5; // 42.57
+double STOP1 = 17.5 + 1; // 42.57
 double STOP1_5 = STOP1 + 45 - 15;
-double STOP1_75 = STOP1 + 70;
+double STOP1_75 = STOP1 + 110;
 double STOP2 = 190 - 30; // angle of stop 2 - 130
 double STOP3 = 250  - 60;
 
@@ -122,7 +122,7 @@ void tempFunction(double state, double stop,
 
 
 void doLBAmbientAdjust(double curAngle) {
-    tempFunction(PROPPED, STOP1, curAngle, 0.5, -.5, 10, -5, 3);
+    tempFunction(PROPPED, STOP1, curAngle, 0.5, -.5, 14 + 4, -5, 3);
     tempFunction(SEMIEXTENDED, STOP1_5, curAngle, 10, -10, 13, -8, 7);
     tempFunction(EXTENDED, STOP2, curAngle, 5, -10, 10, -5, 0);
     // if (LBState == FULLEXTENDED) {
@@ -156,7 +156,7 @@ void LBExtend(double point) {
         } else {
             negPower = -5;
         }
-        iterationsRequired = 40;
+        iterationsRequired = 40 - 38;
         angleChange = STOP1 - 0;
         timeOut = 1500;
     } else if (point == 2) {

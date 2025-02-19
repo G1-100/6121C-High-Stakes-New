@@ -153,9 +153,12 @@ void autonomous() {
   //skills();
   //mogoClamp.toggle();
   //turn_example();
+  LBExtend(EXTENDED);
+  pros::delay(1000);
+  LBExtend(PROPPED);
   //drive_example();
   //stateSoloAwp(allianceColorBlue);
-  RingRush6(allianceColorBlue);
+  //RingRush6(allianceColorBlue);
   
   
   // ez::as::auton_selector.selected_auton_call();  // Calls selected auton from autonomous selector
