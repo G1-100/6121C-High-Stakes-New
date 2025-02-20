@@ -62,8 +62,8 @@ void doColorSort() {
             ambientColorDiff = currentColorDiff;
         }
 
-        const int PROXIMITYDIFFREQUIRED = 70; // used to activate color sort as a prerequisite
-        const int PROXIMITYCUSHION = 22 + 9; // acts as an earlier activation for color sort
+        const int PROXIMITYDIFFREQUIRED = 60; // used to activate color sort as a prerequisite
+        const int PROXIMITYCUSHION = 31 + 4; // acts as an earlier activation for color sort
        
         if (ColorLoopActive) {
             if (curProximity - ambientProximity > PROXIMITYDIFFREQUIRED && !rightRingBeingSeen) { // ring detected
@@ -79,7 +79,7 @@ void doColorSort() {
                             pros::delay(10);
                         }
                         setIntake(-127);
-                        pros::delay(150 + 50);
+                        pros::delay(200);
                         setIntake(127);
                         wrongColorDetected = false;
                     } else { // right color
@@ -88,7 +88,7 @@ void doColorSort() {
                             rightRingBeingSeen = true;
                             if (ringsSeen >= colorUntilRings) { // stop color until
                                 intake.move(-127);
-                                pros::delay(100);
+                                pros::delay(75 - 30);
                                 intake.move(0);
                                 colorUntilActivated = false;
                             } else if (safeScoring) { // wait until not scoring
@@ -112,7 +112,7 @@ void doColorSort() {
                             pros::delay(10);
                         }
                         setIntake(-127);
-                        pros::delay(150 + 50);
+                        pros::delay(200);
                         setIntake(127);
                         wrongColorDetected = false;
                     } else { // right color
@@ -122,7 +122,7 @@ void doColorSort() {
                             if (ringsSeen >= colorUntilRings) {
                                 std::cout <<"right red seen" << "\n";
                                 intake.move(-127);
-                                pros::delay(100);
+                                pros::delay(75 - 30);
                                 intake.move(0);
                                 colorUntilActivated = false;
                             }

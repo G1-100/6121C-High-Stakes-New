@@ -150,13 +150,11 @@ void autonomous() {
   //safeFourRing(allianceColorBlue);
   //selector->runSelectedAutonomous();
 
-  //skills();
+  skills();
   //mogoClamp.toggle();
   //turn_example();
-  LBExtend(EXTENDED);
-  pros::delay(1000);
-  LBExtend(PROPPED);
   //drive_example();
+
   //stateSoloAwp(allianceColorBlue);
   //RingRush6(allianceColorBlue);
   
@@ -288,6 +286,8 @@ void opcontrol() {
 	ChangeLBState(REST);
   LBState = REST;
 
+  //skillsMacro();
+
   while (true) {
 
     //runArcadeDrive();
@@ -309,7 +309,7 @@ void opcontrol() {
 
 		checkLBBroken();
     // Gives you some extras to make EZ-Template ezier
-    //ez_template_extras();
+    ez_template_extras();
 
     //chassis.opcontrol_tank();  // Tank control
      chassis.opcontrol_arcade_standard(ez::SPLIT);   // Standard split arcade

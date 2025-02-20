@@ -399,11 +399,11 @@ void LBLoop() {
         } else if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_UP)) {
             LBExtend(DESCOREEXTENDED);
         }
-        // if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_RIGHT)) {
-        //     chassis.pid_drive_set(-8, 127); // move back
-        //     chassis.pid_wait();
-        //     LBExtend(3);
-        // }
+        if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_X)) {
+            chassis.pid_drive_set(-8, 127); // move back
+            chassis.pid_wait();
+            LBExtend(3);
+        }
         if (LBAutonGoal != prevLBAutonGoal) { // interact with LB in auton mode
             prevLBAutonGoal = LBAutonGoal;
             ChangeLBAuton(LBAutonGoal);

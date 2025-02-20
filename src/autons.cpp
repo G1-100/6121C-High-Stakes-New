@@ -446,52 +446,44 @@ void verySimpleMogo(bool isBlue) {
 }
 
 void simpleMogo(bool isBlue) {
-	int sgn=isBlue?1:-1;
+	int sgn=isBlue?1:-1; // variable to reverse autonomous
 	chassis.odom_xyt_set(0, 0, (33 + 1) * sgn);
+
+  // Set up ladybrown position
   LBState = PROPPED;
-  //LBRotation.set_position(4600);
-  ladybrown2.set_zero_position(-46);
+  ladybrown2.set_zero_position(-46); // ladybrown currently 46 degrees above
   ChangeLBState(FULLEXTENDED);
-  pros::delay(650);
+  pros::delay(650); // delay until ladybrown finishes scoring
   set_drive(-15, 2000);
   chassis.pid_wait();
   ChangeLBState(REST);
-  chassis.pid_turn_set(90 * sgn, 127);
+  chassis.pid_turn_set(90 * sgn, 127); // turn to mobile goal
   chassis.pid_wait();
   set_drive(-23 - 11 + 3, 2000, 0, 70);
   chassis.pid_wait_until(25 + 1);
-  mogoClamp.toggle();
+  mogoClamp.toggle(); // clamp mobile goal
   chassis.pid_wait();
-
-	// set_drive(-34, 2000);
-	// chassis.pid_wait_until(32 - 4);
-	// mogoClamp.toggle();
-	// chassis.pid_wait();
 	intake.move_voltage(12000);
-	//pros::delay(1000);
-	chassis.pid_turn_set(180, 127);
+	chassis.pid_turn_set(180, 127); // turn to two stack ring
 	chassis.pid_wait();
-	set_drive(21, 2000);
+	set_drive(21, 2000); // score first ring
 	chassis.pid_wait();
 	pros::delay(500);
 	set_drive(-20, 1500);
 	chassis.pid_wait();
-	//chassis.pid_turn_set(0);
-  chassis.pid_turn_set((45 - 2) * sgn, 127);
+  chassis.pid_turn_set((45 - 2) * sgn, 127); // turn to middle two stack
 	chassis.pid_wait();
-	set_drive(50 - 20, 2000, 0, 60);
+	set_drive(30, 2000, 0, 60); // move to color sort wrong ring
 	chassis.pid_wait();
   intake.move(127);
   pros::delay(1000);
-  set_drive(15, 1500);
+  set_drive(15, 1500); // intake correct ring
   chassis.pid_wait();
   set_drive(-24 - 15, 1500, 70, 120);
   chassis.pid_wait();
-  chassis.pid_turn_set(-45 * sgn, 127);
+  chassis.pid_turn_set(-45 * sgn, 127); // turn to ladder
   chassis.pid_wait();
-  // set_drive(5 + 1, 2000, 70, 120);
-  // chassis.pid_wait();
-  ChangeLBState(EXTENDED);
+  ChangeLBState(EXTENDED); // touch ladder
 	
 }
 
