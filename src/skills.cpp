@@ -49,9 +49,9 @@ void skills() {
     chassis.pid_turn_set(109 - 10, 90); // turn to go back
     chassis.pid_wait();
     intake.move_voltage(12000);
-    chassis.pid_drive_set(-43 + 20 - 3.25 + 1, 100); // move back a bit
+    chassis.pid_drive_set(-43 + 20 - 3.25 + 1 - 5, 100); // move back a bit
     chassis.pid_wait();
-    chassis.pid_turn_set(180, 90); // turn to wall stake
+    chassis.pid_turn_set(180 - 5, 90); // turn to wall stake
     chassis.pid_wait();
     setIntake(0);
     ChangeLBState(SEMIEXTENDED);
@@ -198,17 +198,18 @@ void skills() {
     //chassis.cancelMotion();
     set_drive(28.3 + 3 + 1, 2500, 0, 40 + 15); // intake rings slowly
     chassis.pid_wait();
+    pros::delay(200);
     std::cout << "POSITION: " << chassis.odom_x_get() << " " << chassis.odom_y_get() << " " << chassis.odom_theta_get() << std::endl;
     //pros::delay(800 - 200);
     chassis.pid_turn_set(40, 60); // turn to last ring before corner
     chassis.pid_wait_quick_chain();
     set_drive(11.5 + 2, 1500, 75, 120); // move to ring before corner
     chassis.pid_wait_quick_chain();
-
+    pros::delay(100);
     chassis.pid_turn_set(112 + 5, 100 - 45); // turn to corner
     chassis.pid_wait_quick_chain();
 
-    set_drive(-16 + 3, 1000, 70, 120); // back INto corner
+    set_drive(-16 + 3, 1000, 70, 120); // back into corner
     chassis.pid_wait();
     callLBReset();
 
@@ -225,9 +226,11 @@ void skills() {
     chassis.pid_turn_set(135 + 3, 90); // turn to intake ring
     chassis.pid_wait();
     startColorUntil(1); // stop first red ring at top
-    set_drive(80, 3000, 80, 127); // go to intake ring
+    set_drive(80+3, 3000, 80, 127); // go to intake ring
     chassis.pid_wait_until(50);
     intake.move(110);
+    chassis.pid_wait();
+    set_drive(-3,3000,80,110);
     chassis.pid_wait();
     chassis.pid_turn_set(45, 90); // turn to second ring
     chassis.pid_wait();
@@ -238,7 +241,7 @@ void skills() {
     chassis.pid_wait_until(27 + 2);
     intake.move_voltage(12000);
     chassis.pid_wait();
-    pros::delay(300 - 100);
+    pros::delay(300 - 100 + 50);
     setIntake(0);
     ChangeLBState(SEMIEXTENDED);
     pros::delay(200);
@@ -249,13 +252,13 @@ void skills() {
     chassis.pid_drive_set(-5, 110); // move back
     chassis.pid_wait();
 
-    chassis.pid_turn_set(-45 + 7, 90); // turn to mogo
+    chassis.pid_turn_set(-45 + 7 - 2, 90); // turn to mogo
     chassis.pid_wait();
     pros::delay(200);
     intake.move(110);
     startColorUntil(1);
     pros::delay(200);
-    chassis.pid_drive_set(-35 + 1, 2000); // move to mogo
+    chassis.pid_drive_set(-35 + 1 -0.5, 2000); // move to mogo
     chassis.pid_wait_until(-15 + 1);
     chassis.pid_speed_max_set(70);
     chassis.pid_wait_until(-32 + 1);
@@ -273,13 +276,13 @@ void skills() {
     chassis.pid_drive_set(15, 2500, 0, 70); // move to AWS
     chassis.pid_wait();
     ChangeLBState(FULLEXTENDED); // extend ladybrown
-    pros::delay(50);
+    //pros::delay(50);
     chassis.pid_drive_set(-16, 1500); // move back
     chassis.pid_wait();
     ChangeLBState(REST); // retract ladybrown
     chassis.pid_turn_set(-135, 90); // turn to get ring outside of ladder
     chassis.pid_wait();
-    set_drive(28 + 2); // move to ring outside ladder
+    set_drive(28 + 2 + 3); // move to ring outside ladder
     chassis.pid_wait();
     chassis.pid_turn_set(135 + 1, 60); // turn to intake first two stack 
     chassis.pid_wait();
@@ -305,7 +308,7 @@ void skills() {
     set_drive(-5); // move back
     chassis.pid_wait();
     
-    rightDoinker.toggle();
+    //rightDoinker.toggle();
     leftDoinker.toggle();
     // chassis.pid_turn_set(120, 127);
     // chassis.pid_wait();
@@ -328,7 +331,7 @@ void skills() {
     chassis.pid_wait_until(-15 + 2);
     setIntake(0);
     mogoClamp.toggle(); // release mogo
-    rightDoinker.toggle();
+    //rightDoinker.toggle();
     leftDoinker.toggle();
     set_drive(21 - 7);
     chassis.pid_wait_quick_chain();
@@ -344,13 +347,13 @@ void skills() {
     chassis.pid_wait_until(80);
     setDrive(127, 127);
     long start = pros::millis();
-    while (pros::millis() - start < 800 + 1000) { // manual timeout of 1 second
+    while (pros::millis() - start < 800 + 1000 - 1000) { // manual timeout of 1 second
         pros::delay(20);
     }
     //ChangeLBState(SEMIEXTENDED);
     chassis.pid_turn_set(45, 90); // turn to hang on ladder
     chassis.pid_wait_quick_chain();
-    // chassis.pid_drive_set(-65 - 5, 127, false);
+    chassis.pid_drive_set(-65 - 5 + 50, 127, false);
     // chassis.pid_wait_until(-50);
     // chassis.pid_speed_max_set(70 + 10);
 

@@ -492,25 +492,26 @@ void newMogoRush(bool isBlue) {
   // PRELOAD near corner, set up to intake two stack during first movement
 
   int sgn=isBlue?1:-1;
-  chassis.odom_xyt_set(0, 0, -110 * sgn); // Set position
-  set_drive(37 + 2, 2500, 126, 127); // Move to first mogo
-  chassis.pid_wait_until(11 + 1);
+  //chassis.odom_xyt_set(0, 0, (-63+180) * sgn); // Set position
+  chassis.odom_xyt_set(0, 0, (-113) * sgn); // Set position
+  set_drive(39 + 3, 2500, 126, 127); // Move to first mogo
   intake.move(127);
   startColorUntil(1);
   leftDoinker.toggle();
-  chassis.pid_wait_quick_chain();
+  chassis.pid_wait_until(37);
   // pros::delay(500);
   // chassis.pid_turn_set(-150 * sgn); // Turn mogo to disrupt
   // chassis.pid_wait();
   leftDoinker.toggle();
-  set_drive(-15, 1500, 120); // Move back
+  set_drive(-13, 1500, 120); // Move back
   chassis.pid_wait();
   leftDoinker.toggle();
-  set_drive(-5, 1500, 120); // Move back
+  set_drive(-7);
   chassis.pid_wait();
   leftDoinker.toggle();
+  std::cout <<"CUR THETA: " << chassis.odom_theta_get() << std::endl;
   
-  chassis.pid_turn_set((110) * sgn, 127); // Turn to first mogo
+  chassis.pid_turn_set((70) * sgn, 127); // Turn to first mogo
   chassis.pid_wait();
   set_drive(-25, 2000); // Move to first mogo
   chassis.pid_wait_until(-20);
@@ -846,11 +847,11 @@ void safeRingSide(bool isBlue) {
 
 // Get 2 stack next to aws
   intake.move(127); // start intake
-  if (isBlue) {
-    chassis.pid_turn_set(-(158 + 10)*sgn, 120);
-  } else {
-    chassis.pid_turn_set(-(158)*sgn, 120);
-  }
+  //if (isBlue) {
+  //  chassis.pid_turn_set(-(158 + 10)*sgn, 120);
+  //} else {
+    chassis.pid_turn_set(-(158 + 5)*sgn, 120);
+  //}
   
   chassis.pid_wait();
   intakeLift.toggle(); // lift intake
@@ -858,17 +859,17 @@ void safeRingSide(bool isBlue) {
   chassis.pid_wait();
   intakeLift.toggle(); // lower intake on ring
   startColorUntil(1);
-  set_drive(10,3000, 0, 70);
-  //intake.move(127);
-  intake.move(90); // stop intake to keep ring on intake
+  //set_drive(10,3000, 0, 70);
+  intake.move(127);
+  //intake.move(90); // stop intake to keep ring on intake
   chassis.pid_wait();
   pros::delay(400-100);
   //pros::delay(200 + 200);
-  if (isBlue) {
-    set_drive(-31 + 4); // move away from ring
-  } else {
-    set_drive(-31); // move away from ring
-  }
+  //if (isBlue) {
+  //  set_drive(-31 + 4); // move away from ring
+  //} else {
+    set_drive(-31 + 10); // move away from ring
+  //}
   //set_drive(-31); // move away from ring
   
   chassis.pid_wait();
@@ -877,8 +878,8 @@ void safeRingSide(bool isBlue) {
 // Getting mogo
   chassis.pid_turn_set(90 * sgn, 90);
   chassis.pid_wait();
-  set_drive(-23 - 11 + 3, 2000, 0, 100);
-  chassis.pid_wait_until(25 + 1);
+  set_drive(-31, 2000, 0, 100);
+  chassis.pid_wait_until(-31 + 4);
   mogoClamp.toggle();
   //intakeUnstuckActivated=true;
   chassis.pid_wait();
@@ -895,27 +896,27 @@ void safeRingSide(bool isBlue) {
   // Intake ring
   intake.move(127);
   intake.move(127);
-  if (isBlue) {
-    set_drive(21 - 4.5 + 2); // Move to first 2 stack
-  } else {
-    set_drive(21 - 4.5); // Move to first 2 stack
-  }
+  //if (isBlue) {
+  //  set_drive(21 - 4.5 + 2); // Move to first 2 stack
+  //} else {
+    set_drive(16.5 + 1.5); // Move to first 2 stack
+  //}
   
   chassis.pid_wait();
   // Turn to last 2 stack
-  chassis.pid_turn_set((0) * sgn, 100);
+  chassis.pid_turn_set((-8) * sgn, 100);
   chassis.pid_wait();
   intake.move(127);
-  set_drive(12); // Intake 2 stack
+  set_drive(12 + 10); // Intake 2 stack
   chassis.pid_wait();
-  chassis.pid_turn_relative_set(-5*sgn,127);
-  chassis.pid_wait();
-  pros::delay(200-100);
-  if (isBlue) {
-    set_drive(15 - 5.5); // forward
-  } else {
-    set_drive(14+1); // forward
-  }
+  // chassis.pid_turn_relative_set(-5*sgn,127);
+  // chassis.pid_wait();
+  //pros::delay(200-100);
+  // if (isBlue) {
+  //   set_drive(15 - 5.5); // forward
+  // } else {
+  //   set_drive(14+1); // forward
+  // }
   //set_drive(14+1); // forward
   chassis.pid_wait();
   pros::delay(500-150);
@@ -936,10 +937,12 @@ void safeRingSide(bool isBlue) {
   chassis.pid_wait();
   chassis.pid_turn_relative_set(-20*sgn,127);
   chassis.pid_wait_quick_chain();
-  intakeUnstuckActivated=false;
-  set_drive(-41,3000,127);
-  chassis.pid_wait_until(15);
-  ChangeLBState(PROPPED);
+  //intakeUnstuckActivated=false;
+  //set_drive(-41,3000,127);
+  //ChangeLBState(SEMIEXTENDED);
+  chassis.pid_turn_set(70 * sgn, 100);
+  chassis.pid_wait();
+  set_drive(40, 2000, 127);
   
   chassis.pid_wait();/*
   chassis.pid_turn_set(65 * sgn, 90); // Turn to corner

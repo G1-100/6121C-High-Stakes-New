@@ -91,12 +91,12 @@ void logger() {
 	  //std::cout << "Ladybrown Angle: " << ladybrown2.get_position() / 3.0 << " LBState: " << LBState << "\n";
 		//std::cout << "intake voltage: " << intake.get_voltage() << "\n";
 		//std::cout << "VELOCITY: " + std::to_string(intake.get_actual_velocity()) << " VOLTAGE: " + std::to_string(intake.get_voltage()) << "\n";
-    std::cout << "DISTANCE: " + std::to_string(rightAlignmentSensor.get_confidence()) << "\n";
-		//std::cout << "PROXIMITY: " << optical.get_proximity() << " DIFFERENCE: " << std::to_string(optical.get_rgb().blue - optical.get_rgb().red) << "\n";
+    //std::cout << "DISTANCE: " + std::to_string(rightAlignmentSensor.get_confidence()) << "\n";
+		std::cout << "PROXIMITY: " << optical.get_proximity() << " DIFFERENCE: " << std::to_string(optical.get_rgb().blue - optical.get_rgb().red) << "\n";
 		//std::cout << "LED PWM" << optical.get_led_pwm() << "\n";
 		//std::cout << stopDriverIntake << "\n";
     //std::cout << "ladybrown velocity: " << ladybrown2.get_actual_velocity() << "\n";
-        pros::delay(50);
+        pros::delay(20);
         
         // Add a way to break the loop if needed
         if (pros::competition::is_disabled()) break;
@@ -147,18 +147,17 @@ void autonomous() {
 
   //pros::Task logger_task(logger);
   
-  //safeRingSide(allianceColorBlue);
+  safeRingSide(allianceColorBlue);
   //safeFourRing(allianceColorBlue);
   //selector->runSelectedAutonomous();
 
-  skills();
+  //skills();
   //mogoClamp.toggle();
   //turn_example();
   //drive_example();
-
   //stateSoloAwp(allianceColorBlue);
   //RingRush6(allianceColorBlue);
-  
+  //newMogoRush(allianceColorBlue);
   
   // ez::as::auton_selector.selected_auton_call();  // Calls selected auton from autonomous selector
 }
