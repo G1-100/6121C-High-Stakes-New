@@ -37,6 +37,8 @@ pros::Rotation LBRotation(15);
 pros::Optical optical(11);
 
 pros::Distance autoClampSensor(1);
+pros::Distance rightAlignmentSensor(15);
+pros::Distance leftAlignmentSensor(1);
 
 
 //CONTROLLERS

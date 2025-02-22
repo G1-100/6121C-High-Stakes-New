@@ -88,9 +88,10 @@ void logger() {
     //std::cout << "POSITION: (" + std::to_string(pose.x) + ", " + std::to_string(pose.y) + ", " + std::to_string(pose.theta) + ")\n";
 		//std::cout << lemlib::format_as(chassis.getPose()) << "\n";
 		//std::cout << ladybrown.get_actual_velocity() << "\n";
-	  std::cout << "Ladybrown Angle: " << ladybrown2.get_position() / 3.0 << " LBState: " << LBState << "\n";
+	  //std::cout << "Ladybrown Angle: " << ladybrown2.get_position() / 3.0 << " LBState: " << LBState << "\n";
 		//std::cout << "intake voltage: " << intake.get_voltage() << "\n";
 		//std::cout << "VELOCITY: " + std::to_string(intake.get_actual_velocity()) << " VOLTAGE: " + std::to_string(intake.get_voltage()) << "\n";
+    std::cout << "DISTANCE: " + std::to_string(rightAlignmentSensor.get_confidence()) << "\n";
 		//std::cout << "PROXIMITY: " << optical.get_proximity() << " DIFFERENCE: " << std::to_string(optical.get_rgb().blue - optical.get_rgb().red) << "\n";
 		//std::cout << "LED PWM" << optical.get_led_pwm() << "\n";
 		//std::cout << stopDriverIntake << "\n";
@@ -347,11 +348,11 @@ void checkTemp() {
           }
 
           if (count < 6) {
-            //master.set_text(0, 0, "MOTOR UNPLUGGED");
+            master.set_text(0, 0, "MOTOR UNPLUGGED");
             master.rumble("---");
           }
         if (IMU.get_heading() == NAN) {
-          //master.set_text(0, 0, "IMU unplugged.");
+          master.set_text(0, 0, "IMU unplugged.");
           pros::delay(250);
           master.rumble("---");
 			  }
@@ -366,8 +367,8 @@ void checkTemp() {
 			double averageTempCelsius = totalTemp / 6;
 			averageTempFahrenheit = averageTempCelsius * 9.0f / 5.0 + 32.0;
       //std::cout << "Average Temp: " << averageTempFahrenheit << "\n";
-      //master.clear_line(0);
-			//master.set_text(0, 0, "Avg Temp: " + std::to_string(averageTempFahrenheit) + "F");
+      master.clear_line(0);
+			master.set_text(0, 0, "Avg Temp: " + std::to_string(averageTempFahrenheit) + "F");
 		}
 		pros::delay(500);
     }

@@ -7,7 +7,7 @@
 #include "main.h"
 #include <string>
 double RESTANGLE = 0; // actual -30
-double STOP1 = 17.5 + 1; // 42.57
+double STOP1 = 18.5 + 0.6; // 42.57
 double STOP1_5 = STOP1 + 45 - 15;
 double STOP1_75 = STOP1 + 110;
 double STOP2 = 190 - 30; // angle of stop 2 - 130
@@ -313,11 +313,18 @@ void LBRetract() {
         //curAngle = -LBRotation.get_position() / 100.0;
         curAngle = ladybrown2.get_position() / 3.0;
         pros::delay(10);
+
+        if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_L2)) {
+            ladybrown1.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+            ladybrown2.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+            LBExtend(PROPPED);
+            return;
+        }
     }
 
     ladybrown1.move(0);
     ladybrown2.move(0);
-    pros::delay(500);
+    pros::delay(500 - 200);
     LBState = REST;
     LBAutonGoal = REST;
     prevLBAutonGoal = REST;

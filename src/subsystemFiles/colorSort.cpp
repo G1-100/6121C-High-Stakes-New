@@ -4,7 +4,7 @@ using namespace std;
 
 bool ColorLoopActive = false;
 bool colorUntilActivated = false;
-double ambientColorDiff = -4; // TODO: NEEDS TO BE TUNED AT COMPETITION
+double ambientColorDiff = -3; // TODO: NEEDS TO BE TUNED AT COMPETITION
 double ambientProximity = 35; // TODO: NEEDS TO BE TUNED AT COMPETITION
 bool colorLoopStarted = false;
 int ringsSeen = 0;
@@ -63,7 +63,7 @@ void doColorSort() {
         }
 
         const int PROXIMITYDIFFREQUIRED = 60; // used to activate color sort as a prerequisite
-        const int PROXIMITYCUSHION = 31 + 4; // acts as an earlier activation for color sort
+        const int PROXIMITYCUSHION = 35 - 1; // acts as an earlier activation for color sort
        
         if (ColorLoopActive) {
             if (curProximity - ambientProximity > PROXIMITYDIFFREQUIRED && !rightRingBeingSeen) { // ring detected
@@ -88,7 +88,7 @@ void doColorSort() {
                             rightRingBeingSeen = true;
                             if (ringsSeen >= colorUntilRings) { // stop color until
                                 intake.move(-127);
-                                pros::delay(75 - 30);
+                                pros::delay(75);
                                 intake.move(0);
                                 colorUntilActivated = false;
                             } else if (safeScoring) { // wait until not scoring
@@ -122,7 +122,7 @@ void doColorSort() {
                             if (ringsSeen >= colorUntilRings) {
                                 std::cout <<"right red seen" << "\n";
                                 intake.move(-127);
-                                pros::delay(75 - 30);
+                                pros::delay(75);
                                 intake.move(0);
                                 colorUntilActivated = false;
                             }

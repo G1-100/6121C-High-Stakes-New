@@ -41,6 +41,8 @@ extern pros::Rotation vertTracking;
 extern pros::Rotation LBRotation;
 
 extern pros::Distance autoClampSensor;
+extern pros::Distance rightAlignmentSensor;
+extern pros::Distance leftAlignmentSensor;
 
 //CONTROLLER
 extern pros::Controller master;
