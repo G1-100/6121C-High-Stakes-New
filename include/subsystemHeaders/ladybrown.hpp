@@ -15,6 +15,8 @@ extern double SEMIEXTENDED;
 extern double FULLEXTENDED;
 extern double ALMOSTFULLEXTENDED;
 
+extern bool calledMoveBackForAWS;
+
 extern bool LBLoopActive;
 
 extern bool calledLBReset;

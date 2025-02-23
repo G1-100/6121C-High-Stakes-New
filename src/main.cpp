@@ -139,7 +139,10 @@ void autonomous() {
 	ColorLoopActive = true;
 	intakeUnstuckActivated = false;
 
-	pros::Task lb_task(LBLoop);
+	if (!LBLoopActive) {
+    pros::Task lb_task(LBLoop);
+  }
+
 	ladybrown1.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
   ladybrown2.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
   ladybrown2.tare_position();
@@ -152,6 +155,11 @@ void autonomous() {
   //selector->runSelectedAutonomous();
 
   //skills();
+  // LBExtend(PROPPED);
+  // pros::delay(1000);
+  // LBExtend(EXTENDED);
+  // pros::delay(300);
+  // LBExtend(PROPPED);
   //mogoClamp.toggle();
   //turn_example();
   //drive_example();
@@ -283,10 +291,12 @@ void opcontrol() {
 	ColorLoopActive = true; // starts inactive until tested ambient colors
 
 	intakeUnstuckActivated = true;
-	ChangeLBState(REST);
+	
+  
+  ChangeLBState(REST);
   LBState = REST;
-
   //skillsMacro();
+
 
   while (true) {
 
@@ -309,7 +319,14 @@ void opcontrol() {
 
 		checkLBBroken();
     // Gives you some extras to make EZ-Template ezier
-    ez_template_extras();
+    //ez_template_extras();
+
+    if (calledMoveBackForAWS) {
+      chassis.pid_drive_set(-7, 1500, false, false); // move back
+      chassis.pid_wait();
+      ChangeLBState(FULLEXTENDED); // extend ladybrown
+      calledMoveBackForAWS = false;
+    }
 
     //chassis.opcontrol_tank();  // Tank control
      chassis.opcontrol_arcade_standard(ez::SPLIT);   // Standard split arcade

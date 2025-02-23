@@ -7,11 +7,14 @@
 #include "main.h"
 #include <string>
 double RESTANGLE = 0; // actual -30
-double STOP1 = 18.5 + 0.6; // 42.57
+double STOP1 = 19.1 + 1.75; // 42.57
 double STOP1_5 = STOP1 + 45 - 15;
 double STOP1_75 = STOP1 + 110;
-double STOP2 = 190 - 30; // angle of stop 2 - 130
+double STOP2 = 190 - 30 - 15; // angle of stop 2 - 130
 double STOP3 = 250  - 60;
+
+
+bool calledMoveBackForAWS = false;
 
 double REST = 0;
 double PROPPED = 1;
@@ -122,7 +125,7 @@ void tempFunction(double state, double stop,
 
 
 void doLBAmbientAdjust(double curAngle) {
-    tempFunction(PROPPED, STOP1, curAngle, 0.5, -.5, 14 + 4, -5, 3);
+    tempFunction(PROPPED, STOP1, curAngle, 0.5, -.5, 14 + 4, -5 + 2, 3);
     tempFunction(SEMIEXTENDED, STOP1_5, curAngle, 10, -10, 13, -8, 7);
     tempFunction(EXTENDED, STOP2, curAngle, 5, -10, 10, -5, 0);
     // if (LBState == FULLEXTENDED) {
@@ -324,7 +327,7 @@ void LBRetract() {
 
     ladybrown1.move(0);
     ladybrown2.move(0);
-    pros::delay(500 - 200);
+    pros::delay(500 - 200 - 100);
     LBState = REST;
     LBAutonGoal = REST;
     prevLBAutonGoal = REST;
@@ -407,9 +410,10 @@ void LBLoop() {
             LBExtend(DESCOREEXTENDED);
         }
         if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_X)) {
-            chassis.pid_drive_set(-8, 127); // move back
-            chassis.pid_wait();
-            LBExtend(3);
+            // chassis.pid_drive_set(-8, 127); // move back
+            // chassis.pid_wait();
+            // LBExtend(3);
+            calledMoveBackForAWS = true;
         }
         if (LBAutonGoal != prevLBAutonGoal) { // interact with LB in auton mode
             prevLBAutonGoal = LBAutonGoal;

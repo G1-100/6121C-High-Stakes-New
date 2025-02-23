@@ -661,184 +661,185 @@ void disruptRingRushBlue() {
 
 
 
-void safeFourRing(bool isBlue) {
+// void safeFourRing(bool isBlue) {
 
 
-    // GETS CORNER
-// Note: it does need to be this fast
+//     // GETS CORNER
+// // Note: it does need to be this fast
 
-	int sgn=isBlue?1:-1;
-	chassis.odom_xyt_set(0, 0, (33 + 1) * sgn);
+// 	int sgn=isBlue?1:-1;
+// 	chassis.odom_xyt_set(0, 0, (33 + 1) * sgn);
 
-// AWS
+// // AWS
 
-  LBState = PROPPED; // Prop LB for preload
-  //LBRotation.set_position(4400);
-  ladybrown2.set_zero_position(-46);
-  ChangeLBState(EXTENDED); // Extend LB for AWS
-  pros::delay(200);
-  intake.move(-127);
-  pros::delay(400);
+//   LBState = PROPPED; // Prop LB for preload
+//   //LBRotation.set_position(4400);
+//   ladybrown2.set_zero_position(-46);
+//   ChangeLBState(EXTENDED); // Extend LB for AWS
+//   pros::delay(200);
+//   intake.move(-127);
+//   pros::delay(400);
   
-  set_drive(-11 -1-1.5, 2000, 80); // move back from AWS
-  chassis.pid_wait();
-  ChangeLBState(REST); // retract ladybrown
-  chassis.pid_turn_set(90 * sgn, 127);
-  chassis.pid_wait();
-  callLBReset();
-  set_drive(-17 - 10.5 - 1.5, 2000, 110);
-  chassis.pid_wait_until(-17 + 3);
-  chassis.pid_speed_max_set(60);
-  // set_drive(-10.5, 1500, 0, 45); // move slower
-  chassis.pid_wait_until(-9 - 17);
-  mogoClamp.toggle(); //clamp mogo
-  chassis.pid_wait();
-	intake.move_voltage(12000);
-	chassis.pid_turn_set(180, 127); // turn to two stack
-	chassis.pid_wait();
-	// set_drive(27, 2000); // intake ring
-	// chassis.pid_wait();
-  	intake.move_voltage(12000);
-    //ChangeLBState(PROPPED);
-  	set_drive(14.5 + 8.5, 2000, 110); // intake ring
-	chassis.pid_wait();
-  intake.move_voltage(12000);
-  // 	set_drive(7.5 + 1, 2000, 90); 
-	// chassis.pid_wait();
-	pros::delay(300);
-
-  /*chassis.pid_turn_set(225*sgn, 90); // Turn to wall stake
-  chassis.pid_wait();
-  chassis.pid_drive_set(25,90);// Move to wall stake
-  chassis.pid_wait_until(15);
-  ChangeLBState(EXTENDED); // Score on wall stake
-  chassis.pid_wait();
-  pros::delay(400);
-  chassis.pid_drive_set(-20,90);// Move back
-  chassis.pid_wait();
-  */chassis.pid_turn_set(120 * sgn, 90); // turn to corner
-  chassis.pid_wait();
-  set_drive(40, 2000, 110); // move to corner
-  chassis.pid_wait();
-  set_drive(-10);
-  chassis.pid_wait();
-  set_drive(10);
-  chassis.pid_wait();
-  set_drive(-15); // move back
-  chassis.pid_wait();
-  pros::delay(500);
-
-  chassis.pid_turn_set(0 * sgn, 90); // turn to middle stack
-  chassis.pid_wait();
-
-  set_drive(51); // move to middle stack
-  chassis.pid_wait_until(30);
-  chassis.pid_speed_max_set(50);
-  //intakeLift.toggle();
-  chassis.pid_wait();
-  //intakeLift.toggle();
-
-  
-
-  //go to second two stack
-  // chassis.pid_turn_set(45 * sgn, 90); 
-  // chassis.pid_wait();
-  // set_drive(33 - 1, 2000, 50); 
-  // chassis.pid_wait();
-  // chassis.pid_turn_set(0 * sgn, 127); 
-
-  // NOTE TO GAVIN: TURN OFF ANTI JAM HERE
-  //intakeUnstuckActivated = false;
-  
-  // chassis.pid_wait();
-  // set_drive(26-3-8-1.5+1, 2000, 50); 
-  // intakeLift.toggle();
-  // chassis.pid_wait();
-  // intakeLift.toggle();
-  pros::delay(500);
-	// set_drive(-27, 1500, 0, 50); // move back
-
-    //YOU CAN TURN IT BACK ON HERE
-    //intakeUnstuckActivated = true;
-
-
-  // set_drive(-15+3, 1500, 0, 50); // move back
-	// chassis.pid_wait();
-  set_drive(8 + 7, 1500, 0, 50); // move 
-  chassis.pid_wait();
-  set_drive(-20 + 10, 1500, 50); // move back
-	chassis.pid_wait();
-  chassis.pid_turn_set(-90 * sgn, 90); // turn to ladder
-  chassis.pid_wait();
-  set_drive(12, 2000, 110); // move to ladder
-  chassis.pid_wait();
-  ChangeLBState(EXTENDED); // touch ladder
-  intake.move(0);
-
-  // chassis.pid_turn_set(-90 * sgn, 90); // turn to middle mogo
-  // chassis.pid_wait();
-  // mogoClamp.toggle(); // release mogo
-  // chassis.pid_turn_set(90 * sgn, 90); // turn to middle mogo
-  // chassis.pid_wait();
-  // set_drive(-20 - 5, 2000, 110); // move to middle mogo
-  // chassis.pid_wait();
-  // chassis.pid_turn_set(60 * sgn, 90); // turn to middle mogo
-  // chassis.pid_wait();
-
-
-  // chassis.pid_turn_set((-45 * sgn), 127);
-  // chassis.pid_wait();
-
-  // set_drive(25, 2000, 120); // move to ladder
-  // chassis.pid_wait_until(12);
-  // ChangeLBState(EXTENDED);
-  
-// 	set_drive(-27, 1500); // move back
-
-//   chassis.pid_turn_set(100 * sgn, 100); // turn to corner
+//   set_drive(-11 -1-1.5, 2000, 80); // move back from AWS
 //   chassis.pid_wait();
-//   set_drive(40); // move to corner
+//   ChangeLBState(REST); // retract ladybrown
+//   chassis.pid_turn_set(90 * sgn, 127);
+//   chassis.pid_wait();
+//   callLBReset();
+//   set_drive(-17 - 10.5 - 1.5, 2000, 110);
+//   chassis.pid_wait_until(-17 + 3);
+//   chassis.pid_speed_max_set(60);
+//   // set_drive(-10.5, 1500, 0, 45); // move slower
+//   chassis.pid_wait_until(-9 - 17);
+//   mogoClamp.toggle(); //clamp mogo
+//   chassis.pid_wait();
+// 	intake.move_voltage(12000);
+// 	chassis.pid_turn_set(180, 127); // turn to two stack
+// 	chassis.pid_wait();
+// 	// set_drive(27, 2000); // intake ring
+// 	// chassis.pid_wait();
+//   	intake.move_voltage(12000);
+//     //ChangeLBState(PROPPED);
+//   	set_drive(14.5 + 8.5, 2000, 110); // intake ring
+// 	chassis.pid_wait();
+//   intake.move_voltage(12000);
+//   // 	set_drive(7.5 + 1, 2000, 90); 
+// 	// chassis.pid_wait();
+// 	pros::delay(300);
+
+//   /*chassis.pid_turn_set(225*sgn, 90); // Turn to wall stake
+//   chassis.pid_wait();
+//   chassis.pid_drive_set(25,90);// Move to wall stake
+//   chassis.pid_wait_until(15);
+//   ChangeLBState(EXTENDED); // Score on wall stake
+//   chassis.pid_wait();
+//   pros::delay(400);
+//   chassis.pid_drive_set(-20,90);// Move back
+//   chassis.pid_wait();
+//   */chassis.pid_turn_set(120 * sgn, 90); // turn to corner
+//   chassis.pid_wait();
+//   set_drive(40, 2000, 110); // move to corner
+//   chassis.pid_wait();
+//   set_drive(-10);
+//   chassis.pid_wait();
+//   set_drive(10);
+//   chassis.pid_wait();
+//   set_drive(-15); // move back
 //   chassis.pid_wait();
 //   pros::delay(500);
-//   set_drive(-10); // move back
-//   chassis.pid_wait();
-//   set_drive(10); // intake 2nd ring
-//   chassis.pid_wait();
-//   set_drive(-10); // move back for real
+
+//   chassis.pid_turn_set(0 * sgn, 90); // turn to middle stack
 //   chassis.pid_wait();
 
-//   chassis.pid_turn_set(0 * sgn, 127); // turn to middle two stack
+//   set_drive(51); // move to middle stack
+//   chassis.pid_wait_until(30);
+//   chassis.pid_speed_max_set(50);
+//   //intakeLift.toggle();
 //   chassis.pid_wait();
+//   //intakeLift.toggle();
 
-//   set_drive(51, 2000, 50); // move to middle two stack
-//   intakeLift.toggle();
-//   chassis.pid_wait();
-//   intakeLift.toggle();
-// pros::delay(500);
   
-// 	set_drive(-27, 1500); // move back
-// 	chassis.pid_wait();
-//   chassis.pid_turn_set((-30) * sgn, 127);
-//   chassis.pid_wait();
 
-  // set_drive(20, 2000, 120); // move to ladder
-  // chassis.pid_wait();
-  // ChangeLBState(EXTENDED);
+//   //go to second two stack
+//   // chassis.pid_turn_set(45 * sgn, 90); 
+//   // chassis.pid_wait();
+//   // set_drive(33 - 1, 2000, 50); 
+//   // chassis.pid_wait();
+//   // chassis.pid_turn_set(0 * sgn, 127); 
+
+//   // NOTE TO GAVIN: TURN OFF ANTI JAM HERE
+//   //intakeUnstuckActivated = false;
+  
+//   // chassis.pid_wait();
+//   // set_drive(26-3-8-1.5+1, 2000, 50); 
+//   // intakeLift.toggle();
+//   // chassis.pid_wait();
+//   // intakeLift.toggle();
+//   pros::delay(500);
+// 	// set_drive(-27, 1500, 0, 50); // move back
+
+//     //YOU CAN TURN IT BACK ON HERE
+//     //intakeUnstuckActivated = true;
+
+
+//   // set_drive(-15+3, 1500, 0, 50); // move back
+// 	// chassis.pid_wait();
+//   set_drive(8 + 7, 1500, 0, 50); // move 
+//   chassis.pid_wait();
+//   set_drive(-20 + 10, 1500, 50); // move back
+// 	chassis.pid_wait();
+//   chassis.pid_turn_set(-90 * sgn, 90); // turn to ladder
+//   chassis.pid_wait();
+//   set_drive(12, 2000, 110); // move to ladder
+//   chassis.pid_wait();
+//   ChangeLBState(EXTENDED); // touch ladder
+//   intake.move(0);
+
+//   // chassis.pid_turn_set(-90 * sgn, 90); // turn to middle mogo
+//   // chassis.pid_wait();
+//   // mogoClamp.toggle(); // release mogo
+//   // chassis.pid_turn_set(90 * sgn, 90); // turn to middle mogo
+//   // chassis.pid_wait();
+//   // set_drive(-20 - 5, 2000, 110); // move to middle mogo
+//   // chassis.pid_wait();
+//   // chassis.pid_turn_set(60 * sgn, 90); // turn to middle mogo
+//   // chassis.pid_wait();
+
+
+//   // chassis.pid_turn_set((-45 * sgn), 127);
+//   // chassis.pid_wait();
+
+//   // set_drive(25, 2000, 120); // move to ladder
+//   // chassis.pid_wait_until(12);
+//   // ChangeLBState(EXTENDED);
+  
+// // 	set_drive(-27, 1500); // move back
+
+// //   chassis.pid_turn_set(100 * sgn, 100); // turn to corner
+// //   chassis.pid_wait();
+// //   set_drive(40); // move to corner
+// //   chassis.pid_wait();
+// //   pros::delay(500);
+// //   set_drive(-10); // move back
+// //   chassis.pid_wait();
+// //   set_drive(10); // intake 2nd ring
+// //   chassis.pid_wait();
+// //   set_drive(-10); // move back for real
+// //   chassis.pid_wait();
+
+// //   chassis.pid_turn_set(0 * sgn, 127); // turn to middle two stack
+// //   chassis.pid_wait();
+
+// //   set_drive(51, 2000, 50); // move to middle two stack
+// //   intakeLift.toggle();
+// //   chassis.pid_wait();
+// //   intakeLift.toggle();
+// // pros::delay(500);
+  
+// // 	set_drive(-27, 1500); // move back
+// // 	chassis.pid_wait();
+// //   chassis.pid_turn_set((-30) * sgn, 127);
+// //   chassis.pid_wait();
+
+//   // set_drive(20, 2000, 120); // move to ladder
+//   // chassis.pid_wait();
+//   // ChangeLBState(EXTENDED);
 	
-}
+// }
 
 void safeRingSide(bool isBlue) {
 	int sgn=isBlue?1:-1;
-  intakeUnstuckActivated = false;
+  intakeUnstuckActivated = true;
 	chassis.odom_xyt_set(0, 0, (146) * sgn);
-  LBState = PROPPED;
+  //LBState = PROPPED;
   //LBRotation.set_position(4600);
 // LB on aws
-  ladybrown2.set_zero_position(-46);
-  ChangeLBState(FULLEXTENDED);
-  pros::delay(250);
+  //ladybrown2.set_zero_position(-46);
+  //ChangeLBState(FULLEXTENDED);
+  //pros::delay(250);
   intake.move(-127);
-  pros::delay(400);
+  pros::delay(400 - 100);
+  intake.move(127);
   set_drive(-15, 2000, 90);
   chassis.pid_wait();
   ChangeLBState(REST);
@@ -846,50 +847,54 @@ void safeRingSide(bool isBlue) {
 // Wanna try to get the 2 stack early bc we start next to it
 
 // Get 2 stack next to aws
-  intake.move(127); // start intake
+  intake.move(90); // start intake
   //if (isBlue) {
   //  chassis.pid_turn_set(-(158 + 10)*sgn, 120);
   //} else {
-    chassis.pid_turn_set(-(158 + 5)*sgn, 120);
+    //chassis.pid_turn_set(-(158 + 5)*sgn, 120);
   //}
   
-  chassis.pid_wait();
-  intakeLift.toggle(); // lift intake
-  set_drive(10 + 10); // move into ring
-  chassis.pid_wait();
-  intakeLift.toggle(); // lower intake on ring
+  //chassis.pid_wait();
+  //intakeLift.toggle(); // lift intake
+  //set_drive(10 + 10); // move into ring
+  //chassis.pid_wait();
+  //intakeLift.toggle(); // lower intake on ring
   startColorUntil(1);
   //set_drive(10,3000, 0, 70);
-  intake.move(127);
+  //intake.move(127);
   //intake.move(90); // stop intake to keep ring on intake
-  chassis.pid_wait();
-  pros::delay(400-100);
+  //chassis.pid_wait();
+  //pros::delay(400-100);
+  //set_drive(-15);
+  //chassis.pid_wait();
+  //set_drive(10);
+  //chassis.pid_wait();
   //pros::delay(200 + 200);
   //if (isBlue) {
   //  set_drive(-31 + 4); // move away from ring
   //} else {
-    set_drive(-31 + 10); // move away from ring
+    //set_drive(-21 + 5, 2000, 0, 70); // move away from ring
   //}
   //set_drive(-31); // move away from ring
   
-  chassis.pid_wait();
+  //chassis.pid_wait();
 
 
 // Getting mogo
   chassis.pid_turn_set(90 * sgn, 90);
   chassis.pid_wait();
-  set_drive(-31, 2000, 0, 100);
-  chassis.pid_wait_until(-31 + 4);
-  mogoClamp.toggle();
+  set_drive(-31 + .5, 2000, 0, 60);
+  chassis.pid_wait_until(-27 - 1);
+  mogoClamp.toggle();  
   //intakeUnstuckActivated=true;
   chassis.pid_wait();
   
   // Getting middle 2 stacks
-  if (isBlue) {
-    chassis.pid_turn_set((-45 + 5) * sgn, 90); // Turn to first 2 stack
-  } else {
+  // if (isBlue) {
+  //   chassis.pid_turn_set((-45 + 5) * sgn, 90); // Turn to first 2 stack
+  // } else {
     chassis.pid_turn_set((-45) * sgn, 90); // Turn to first 2 stack
-  }
+  //}
   //chassis.pid_turn_set((-45) * sgn, 90); // Turn to first 2 stack
   chassis.pid_wait();
   stopColorUntilFunction();
@@ -904,7 +909,7 @@ void safeRingSide(bool isBlue) {
   
   chassis.pid_wait();
   // Turn to last 2 stack
-  chassis.pid_turn_set((-8) * sgn, 100);
+  chassis.pid_turn_set((-5) * sgn, 100);
   chassis.pid_wait();
   intake.move(127);
   set_drive(12 + 10); // Intake 2 stack
@@ -925,6 +930,7 @@ void safeRingSide(bool isBlue) {
   } else {
     set_drive(-28); // back
   }
+  setIntake(0);
   chassis.pid_wait();
   if (isBlue) {
     chassis.pid_turn_set((70-25 + 10) * sgn, 127); // Turn to final 2 stack on our quarter
@@ -934,9 +940,11 @@ void safeRingSide(bool isBlue) {
   //chassis.pid_turn_set((70-25) * sgn, 127); // Turn to final 2 stack on our quarter
   chassis.pid_wait();
   set_drive(25,3000,127);
+  chassis.pid_wait_until(5);
+  intake.move(127);
   chassis.pid_wait();
-  chassis.pid_turn_relative_set(-20*sgn,127);
-  chassis.pid_wait_quick_chain();
+  //chassis.pid_turn_relative_set(-20*sgn,127);
+  //    1chassis.pid_wait_quick_chain();
   //intakeUnstuckActivated=false;
   //set_drive(-41,3000,127);
   //ChangeLBState(SEMIEXTENDED);
@@ -1153,4 +1161,91 @@ void stateSoloAwp(bool isBlue) {
   ChangeLBState(EXTENDED); // touch ladder
   chassis.pid_wait();
   
+}
+
+void safeFourRing(bool isBlue) {
+
+
+  // GETS CORNER
+// Note: it does need to be this fast
+
+int sgn=isBlue?1:-1;
+chassis.odom_xyt_set(0, 0, (33 + 1) * sgn);
+
+// AWS
+
+LBState = PROPPED; // Prop LB for preload
+//LBRotation.set_position(4400);
+ladybrown2.set_zero_position(-(46 - 15));
+ChangeLBState(EXTENDED); // Extend LB for AWS
+pros::delay(200);
+intake.move(-127);
+pros::delay(400);
+
+set_drive(-11 -1-1.5, 2000, 80); // move back from AWS
+chassis.pid_wait();
+ChangeLBState(REST); // retract ladybrown
+chassis.pid_turn_set(90 * sgn, 127);
+chassis.pid_wait();
+callLBReset();
+set_drive(-17, 2000, 70);
+  chassis.pid_wait();
+set_drive(-12, 1500, 0, 45); // move slower
+chassis.pid_wait_until(-9);
+mogoClamp.toggle();
+chassis.pid_wait();
+intake.move_voltage(12000);
+chassis.pid_turn_set(180, 127); // turn to two stack
+chassis.pid_wait();
+// set_drive(27, 2000); // intake ring
+// chassis.pid_wait();
+  intake.move_voltage(12000);
+  set_drive(19-3-1.5, 2000, 90); // intake ring
+chassis.pid_wait();
+intake.move_voltage(12000);
+  set_drive(7.5, 2000, 90); 
+chassis.pid_wait();
+pros::delay(300);
+//go to second two stack
+chassis.pid_turn_set(45 * sgn, 127); 
+chassis.pid_wait();
+set_drive(33 - 1, 2000, 50); 
+chassis.pid_wait();
+chassis.pid_turn_set(0 * sgn, 127); 
+
+// NOTE TO GAVIN: TURN OFF ANTI JAM HERE
+//intakeUnstuckActivated = false;
+
+chassis.pid_wait();
+set_drive(26-11.5 + 3, 2000, 50); 
+chassis.pid_wait();
+//intakeLift.toggle();
+pros::delay(300);
+// set_drive(-27, 1500, 0, 50); // move back
+
+  //YOU CAN TURN IT BACK ON HERE
+  //intakeUnstuckActivated = true;
+
+
+// set_drive(-15+3, 1500, 0, 50); // move back
+// chassis.pid_wait();
+set_drive(13 + 3, 1500, 0, 110); // move 
+  chassis.pid_wait();
+
+chassis.pid_turn_set(10 * sgn, 127); 
+chassis.pid_wait();
+  set_drive(-28 - 3, 1500, 110); // move back
+chassis.pid_wait();
+
+chassis.pid_turn_set((-90 * sgn), 127);
+chassis.pid_wait();
+mogoClamp.toggle();
+chassis.pid_turn_set((90 * sgn), 127);
+chassis.pid_wait();
+set_drive(-15);
+chassis.pid_wait();
+
+//set_drive(25 - 3, 2000, 120); // move to ladder
+//chassis.pid_wait_until(12);
+//ChangeLBState(EXTENDED);
 }
