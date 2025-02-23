@@ -1103,7 +1103,7 @@ void stateSoloAwp(bool isBlue) {
   ChangeLBState(EXTENDED); // Extend LB for AWS
   pros::delay(200);
   intake.move(-127);
-  pros::delay(400);
+  pros::delay(300);
 
   set_drive(-11 -1-1.5, 2000, 80); // move back from AWS
   chassis.pid_wait();
@@ -1117,49 +1117,69 @@ void stateSoloAwp(bool isBlue) {
   chassis.pid_wait();
   mogoClamp.toggle(); // get mogo
   chassis.pid_wait();
+  intake.move(127);
+
+
   intake.move_voltage(12000);
-  chassis.pid_turn_set(0, 100); // turn to first two stack next to mogo
+  chassis.pid_turn_set(45 + 10-3, 100); // Turn to center line 2 stacks, first 2 stack there
   chassis.pid_wait();
-  // set_drive(27, 2000); // intake ring
-  // chassis.pid_wait();
   intake.move_voltage(12000);
-  set_drive(19 + 4, 2000, 110); // intake ring
+  set_drive(20 + 0.5, 1500, 110); // intake ring
   chassis.pid_wait();
   pros::delay(300);
-  chassis.pid_turn_set(-135, 127);  // turns to go to where the mogo will be released
+  
+  // Code for getting other ring in center 2 stacks
+  // chassis.pid_turn_set(10 + 1-0.5, 127);  // turns to other 2 stack in middle 2 stacks
+  // chassis.pid_wait();
+  // set_drive(20-6.5, 2000, 50, 90); // drive to other 2 stack
+  // chassis.pid_wait();
+  // set_drive(-13.5, 2000, 50, 90); // drive to other 2 stack
+  // chassis.pid_wait();
+
+  // Discarded swing turn mode for getting other ting in center 2 stacks
+  // chassis.pid_swing_set(ez::RIGHT_SWING, 30_deg, 127);
+  // chassis.pid_turn_set(30, 127); 
+  // chassis.pid_wait();
+  // set_drive(-12, 2000, 50, 90); 
+  // chassis.pid_wait();
+  intake.move(127);
+  chassis.pid_turn_set(325-10, 127); // turn to final 2 stack in this quarter
   chassis.pid_wait();
-  set_drive(31 + 0.5, 2000); // drive to where the mogo will be released
+  set_drive(20-8, 3000);
   chassis.pid_wait();
-  chassis.pid_turn_set(180, 127); // turn to the middle two stack
+
+  chassis.pid_turn_set(270, 127); 
+  chassis.pid_wait();
+  set_drive(24 + 3, 2000, 50, 90); 
+  chassis.pid_wait();
+
+  intake.move(127);
+  chassis.pid_turn_set(180 + 4, 127);
   chassis.pid_wait();
   mogoClamp.toggle(); // release mogo 
+  startColorUntil(2);
+  set_drive(66 +1, 3000, 0, 85); // intake both rings of middle 2 stack
+  chassis.pid_wait_until(40);
   chassis.pid_wait();
-  ColorLoopActive = false;
-  intake.move(127);
-  set_drive(24, 3000, 0, 110); // intake middle two stack
+  chassis.pid_turn_set(270, 115); // turn to other mogo
   chassis.pid_wait();
-  set_drive(21, 3000, 0, 110); // intake middle red ring
-  chassis.pid_wait();
-  ColorLoopActive = true;
-  startColorUntil(1);
-  intake.move(100);
-  chassis.pid_turn_set((90 + 1) * sgn, 90); // turn to other mogo
-  chassis.pid_wait();
-  set_drive(-24 + 1.5, 200, 0, 90); // drive to other mogo
+  set_drive(-24 + 1, 200, 0, 90); // drive to other mogo
   chassis.pid_wait();
   mogoClamp.toggle(); // clamp other mogo
-  chassis.pid_wait();
-  chassis.pid_turn_set(180, 90); // turn to final two stack
+  stopColorUntilFunction();
+  intake.move(127);
+  chassis.pid_turn_set(180, 110); // turn to final two stack
   chassis.pid_wait();
   stopColorUntilFunction();
   intake.move(127);
-  set_drive(24, 3000, 100, 127); // intake final two stack
-  chassis.pid_wait_quick_chain();
+  set_drive(24 + 10, 3000); // intake final two stack
+  chassis.pid_wait();
   set_drive(-26, 3000, 0, 127); // drive to ladder
   chassis.pid_wait_quick_chain();
-  chassis.pid_turn_set(-45 * sgn, 90); // turn to ladder
+  chassis.pid_turn_set(-30 * sgn, 90); // turn to ladder
   ChangeLBState(EXTENDED); // touch ladder
   chassis.pid_wait();
+  set_drive(5);
   
 }
 

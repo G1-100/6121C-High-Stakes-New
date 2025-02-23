@@ -150,9 +150,10 @@ void autonomous() {
 
   //pros::Task logger_task(logger);
   
-  safeRingSide(allianceColorBlue);
+  //safeRingSide(allianceColorBlue);
   //safeFourRing(allianceColorBlue);
   //selector->runSelectedAutonomous();
+  stateSoloAwp(allianceColorBlue);
 
   //skills();
   // LBExtend(PROPPED);
