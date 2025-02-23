@@ -112,11 +112,11 @@ void skills() {
 
     std::cout << "NEW POSITION: " << chassis.odom_x_get() << " " << chassis.odom_y_get() << " " << chassis.odom_theta_get() << std::endl;
     set_drive(-79 - 4 + 1.5, 110); // move to mogo
-    //chassis.pid_odom_set({{-48, 20}, rev, 110});
+    chassis.pid_wait_until(-45);
+    chassis.pid_odom_set({{-48, 20}, rev, 60});
     //chassis.pid_wait_until_point({-48, -10});
-    chassis.pid_wait_until(-40 - 10);
-    chassis.pid_speed_max_set(70 - 15);
-    chassis.pid_wait_until(-78);
+    //chassis.pid_speed_max_set(70 - 15);
+    chassis.pid_wait_until(-78 + 45);
     mogoClamp.toggle(); // clamp mogo
     chassis.pid_wait();
 
