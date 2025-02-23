@@ -8,7 +8,7 @@
 
 //drive
 pros::MotorGroup left_side_motors({-8, 9, -10}, pros::v5::MotorGears::blue, pros::v5::MotorUnits::degrees);
-pros::MotorGroup right_side_motors({4, 1, -2}, pros::v5::MotorGears::blue, pros::v5::MotorUnits::degrees);
+pros::MotorGroup right_side_motors({4, -1, 2}, pros::v5::MotorGears::blue, pros::v5::MotorUnits::degrees);
 // pros::MotorGroup left_side_motors({5, -6, 10}, pros::v5::MotorGears::blue, pros::v5::MotorUnits::degrees);
 // pros::MotorGroup right_side_motors({-2, 1, -7}, pros::v5::MotorGears::blue, pros::v5::MotorUnits::degrees);
 

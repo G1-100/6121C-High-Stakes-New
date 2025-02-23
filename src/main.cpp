@@ -7,6 +7,7 @@
 
 long runStart;
 double averageTempFahrenheit = 0;
+double offset;
 
 /**
  * Runs initialization code. This occurs as soon as the program is started.
@@ -53,6 +54,9 @@ void initialize() {
 
   // Initialize chassis and auton selector
   chassis.initialize();
+  offset = 72 - rightAlignmentSensor.get() * 0.0393701;
+
+  std::cout << "offset: " << offset << "\n";
   //ez::as::initialize();
   master.rumble(chassis.drive_imu_calibrated() ? "." : "---");
 }
@@ -85,18 +89,20 @@ void logger() {
 		//std::cout << "DIFFERENCE: " << std::to_string(optical.get_rgb().blue - optical.get_rgb().red) << "\n";
 		//std::cout << "HUE: " + to_string(optical.get_hue()) << "\n";
     auto pose = chassis.odom_pose_get();
+    double wallDist = (rightAlignmentSensor.get_distance() * 0.0393701 + offset) * abs(cos(chassis.odom_theta_get() * M_PI / 180));
     //std::cout << "POSITION: (" + std::to_string(pose.x) + ", " + std::to_string(pose.y) + ", " + std::to_string(pose.theta) + ")\n";
 		//std::cout << lemlib::format_as(chassis.getPose()) << "\n";
 		//std::cout << ladybrown.get_actual_velocity() << "\n";
-	  //std::cout << "Ladybrown Angle: " << ladybrown2.get_position() / 3.0 << " LBState: " << LBState << "\n";
+	  std::cout << "Ladybrown Angle: " << ladybrown2.get_position() / 3.0 << " LBState: " << LBState << "\n";
 		//std::cout << "intake voltage: " << intake.get_voltage() << "\n";
 		//std::cout << "VELOCITY: " + std::to_string(intake.get_actual_velocity()) << " VOLTAGE: " + std::to_string(intake.get_voltage()) << "\n";
     //std::cout << "DISTANCE: " + std::to_string(rightAlignmentSensor.get_confidence()) << "\n";
-		std::cout << "PROXIMITY: " << optical.get_proximity() << " DIFFERENCE: " << std::to_string(optical.get_rgb().blue - optical.get_rgb().red) << "\n";
+		//std::cout << "PROXIMITY: " << optical.get_proximity() << " DIFFERENCE: " << std::to_string(optical.get_rgb().blue - optical.get_rgb().red) << "\n";
 		//std::cout << "LED PWM" << optical.get_led_pwm() << "\n";
 		//std::cout << stopDriverIntake << "\n";
+    //std::cout << "distance: " << wallDist << "\n";
     //std::cout << "ladybrown velocity: " << ladybrown2.get_actual_velocity() << "\n";
-        pros::delay(20);
+        pros::delay(50);
         
         // Add a way to break the loop if needed
         if (pros::competition::is_disabled()) break;
@@ -153,9 +159,10 @@ void autonomous() {
   //safeRingSide(allianceColorBlue);
   //safeFourRing(allianceColorBlue);
   //selector->runSelectedAutonomous();
-  stateSoloAwp(allianceColorBlue);
+  //stateSoloAwp(allianceColorBlue);
 
-  //skills();
+  skills();
+  //setDrive(80, 80);
   // LBExtend(PROPPED);
   // pros::delay(1000);
   // LBExtend(EXTENDED);

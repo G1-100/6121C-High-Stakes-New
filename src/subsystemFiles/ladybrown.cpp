@@ -7,7 +7,7 @@
 #include "main.h"
 #include <string>
 double RESTANGLE = 0; // actual -30
-double STOP1 = 19.1 + 1.75; // 42.57
+double STOP1 = 21.75; // 42.57
 double STOP1_5 = STOP1 + 45 - 15;
 double STOP1_75 = STOP1 + 110;
 double STOP2 = 190 - 30 - 15; // angle of stop 2 - 130
@@ -57,7 +57,7 @@ void doIntakeUnstuck() {
             }
             wrongColorDetected = false;
         } 
-        else if (pros::millis() - intakeStuckTime > 400 && LBState != PROPPED) {
+        else if (pros::millis() - intakeStuckTime > 300 && LBState != PROPPED) {
             master.rumble("-"); // short rumble to notify driver
             double intakePower = intake.get_power();
             wrongColorDetected = true;
@@ -125,7 +125,7 @@ void tempFunction(double state, double stop,
 
 
 void doLBAmbientAdjust(double curAngle) {
-    tempFunction(PROPPED, STOP1, curAngle, 0.5, -.5, 14 + 4, -5 + 2, 3);
+    tempFunction(PROPPED, STOP1, curAngle, 0.5, -0.5, 14, -3, 5);
     tempFunction(SEMIEXTENDED, STOP1_5, curAngle, 10, -10, 13, -8, 7);
     tempFunction(EXTENDED, STOP2, curAngle, 5, -10, 10, -5, 0);
     // if (LBState == FULLEXTENDED) {
@@ -142,7 +142,7 @@ void LBExtend(double point) {
     double negPower;
     double angleChange;
     double iterationsRequired;
-    const double kP = 6;
+    const double kP = 6 - 1;
     const double kI = 0;
     const double kD = 0; 
     double totalError = 0;
@@ -159,7 +159,7 @@ void LBExtend(double point) {
         } else {
             negPower = -5;
         }
-        iterationsRequired = 40 - 38;
+        iterationsRequired = 40 - 20;
         angleChange = STOP1 - 0;
         timeOut = 1500;
     } else if (point == 2) {
@@ -306,7 +306,7 @@ void LBRetract() {
     double power;
     ladybrown1.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
     ladybrown2.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
-    while (curAngle > 15 + 10 && pros::millis() - startTime < 1500) { // wait for motors to stop
+    while (curAngle > 25 - 15 && pros::millis() - startTime < 1500) { // wait for motors to stop
         power = curAngle + 5;
         if (power > 127) {
             power = 127;

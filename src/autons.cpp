@@ -1099,11 +1099,11 @@ void stateSoloAwp(bool isBlue) {
 
   LBState = PROPPED; // Prop LB for preload
   //LBRotation.set_position(4400);
-  ladybrown2.set_zero_position(-46);
+  ladybrown2.set_zero_position(-46 + 20);
   ChangeLBState(EXTENDED); // Extend LB for AWS
   pros::delay(200);
   intake.move(-127);
-  pros::delay(300);
+  pros::delay(300 - 50);
 
   set_drive(-11 -1-1.5, 2000, 80); // move back from AWS
   chassis.pid_wait();
@@ -1111,17 +1111,17 @@ void stateSoloAwp(bool isBlue) {
   chassis.pid_turn_set(90 * sgn, 90);
   chassis.pid_wait();
   callLBReset();
-  set_drive(-29.5 - 1, 2000, 90);
+  set_drive(-30.5 + 2, 2000, 90);
   chassis.pid_wait_until(-15);
   chassis.pid_speed_max_set(-60);
-  chassis.pid_wait();
+  chassis.pid_wait_until(-24 + 2);
   mogoClamp.toggle(); // get mogo
-  chassis.pid_wait();
+  chassis.pid_wait_until(-29.5 + 2);
   intake.move(127);
 
 
   intake.move_voltage(12000);
-  chassis.pid_turn_set(45 + 10-3, 100); // Turn to center line 2 stacks, first 2 stack there
+  chassis.pid_turn_set(-52 * sgn, 90); // Turn to center line 2 stacks, first 2 stack there
   chassis.pid_wait();
   intake.move_voltage(12000);
   set_drive(20 + 0.5, 1500, 110); // intake ring
@@ -1143,7 +1143,7 @@ void stateSoloAwp(bool isBlue) {
   // set_drive(-12, 2000, 50, 90); 
   // chassis.pid_wait();
   intake.move(127);
-  chassis.pid_turn_set(325-10, 127); // turn to final 2 stack in this quarter
+  chassis.pid_turn_set(-315 * sgn, 90); // turn to final 2 stack in this quarter
   chassis.pid_wait();
   set_drive(20-8, 3000);
   chassis.pid_wait();
@@ -1154,7 +1154,7 @@ void stateSoloAwp(bool isBlue) {
   chassis.pid_wait();
 
   intake.move(127);
-  chassis.pid_turn_set(180 + 4, 127);
+  chassis.pid_turn_set(180 + 4, 110);
   chassis.pid_wait();
   mogoClamp.toggle(); // release mogo 
   startColorUntil(2);
@@ -1168,13 +1168,13 @@ void stateSoloAwp(bool isBlue) {
   mogoClamp.toggle(); // clamp other mogo
   stopColorUntilFunction();
   intake.move(127);
-  chassis.pid_turn_set(180, 110); // turn to final two stack
-  chassis.pid_wait();
+  chassis.pid_turn_set(180, 70); // turn to final two stack
+  chassis.pid_wait_quick_chain();
   stopColorUntilFunction();
   intake.move(127);
-  set_drive(24 + 10, 3000); // intake final two stack
+  set_drive(24, 3000); // intake final two stack
   chassis.pid_wait();
-  set_drive(-26, 3000, 0, 127); // drive to ladder
+  set_drive(-26 + 5, 3000, 0, 127); // drive to ladder
   chassis.pid_wait_quick_chain();
   chassis.pid_turn_set(-30 * sgn, 90); // turn to ladder
   ChangeLBState(EXTENDED); // touch ladder
