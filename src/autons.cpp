@@ -526,7 +526,7 @@ void newMogoRush(bool isBlue) {
   set_drive(-8);
   chassis.pid_wait();
   mogoClamp.toggle();
-  chassis.pid_turn_set(150 * sgn, 110);
+  chassis.pid_turn_set((150-10) * sgn, 110);
   chassis.pid_wait();
   set_drive(-35);
   chassis.pid_wait_until(-28);
