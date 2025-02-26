@@ -161,7 +161,7 @@ void autonomous() {
   //selector->runSelectedAutonomous();
   //stateSoloAwp(allianceColorBlue);
 
-  skills();
+  //skills();
   //setDrive(80, 80);
   // LBExtend(PROPPED);
   // pros::delay(1000);
@@ -173,7 +173,7 @@ void autonomous() {
   //drive_example();
   //stateSoloAwp(allianceColorBlue);
   //RingRush6(allianceColorBlue);
-  //newMogoRush(allianceColorBlue);
+  newMogoRush(allianceColorBlue);
   
   // ez::as::auton_selector.selected_auton_call();  // Calls selected auton from autonomous selector
 }
