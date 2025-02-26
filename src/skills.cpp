@@ -54,12 +54,17 @@ void skills() {
     setIntake(0);
     ChangeLBState(SEMIEXTENDED);
 
-    chassis.pid_drive_set(14, 80, false, false);
-    chassis.pid_wait_until(5);
-    intake.move(127);
-    //chassis.pid_wait_until(14);
-    chassis.pid_wait();
+    // chassis.pid_drive_set(14, 80, false, false);
+    // chassis.pid_wait_until(5);
+    // intake.move(127);
+    // //chassis.pid_wait_until(14);
+    // chassis.pid_wait();
+
+
     setDrive(110, 110);
+    pros::delay(150);
+    intake.move(127);
+    pros::delay(400);
 
     ChangeLBState(EXTENDED); // extend ladybrown
     pros::delay(400);
