@@ -161,7 +161,7 @@ void autonomous() {
   //selector->runSelectedAutonomous();
   //stateSoloAwp(allianceColorBlue);
 
-  //skills();
+  skills();
   //setDrive(80, 80);
   // LBExtend(PROPPED);
   // pros::delay(1000);
@@ -173,7 +173,7 @@ void autonomous() {
   //drive_example();
   //stateSoloAwp(allianceColorBlue);
   //RingRush6(allianceColorBlue);
-  newMogoRush(allianceColorBlue);
+  //newMogoRush(allianceColorBlue);
   
   // ez::as::auton_selector.selected_auton_call();  // Calls selected auton from autonomous selector
 }
@@ -304,18 +304,18 @@ void opcontrol() {
   ChangeLBState(REST);
   LBState = REST;
   //skillsMacro();
-
+  chassis.opcontrol_curve_buttons_toggle();
 
   while (true) {
 
     //runArcadeDrive();
       	// Activate Intake Logic
-    if (master.get_digital(pros::E_CONTROLLER_DIGITAL_LEFT)) {
-      double tempFahrenheit = intake.get_temperature() * 9.0 / 5.0 + 32.0;
-      master.set_text(0, 0, "Intake Temp: " + std::to_string(tempFahrenheit) + "F");
-    } else {
-      master.set_text(0, 0, "Avg Temp: " + std::to_string(averageTempFahrenheit) + "F");
-    }
+    // if (master.get_digital(pros::E_CONTROLLER_DIGITAL_LEFT)) {
+    //   double tempFahrenheit = intake.get_temperature() * 9.0 / 5.0 + 32.0;
+    //   master.set_text(0, 0, "Intake Temp: " + std::to_string(tempFahrenheit) + "F");
+    // } else {
+    //   master.set_text(0, 0, "Avg Temp: " + std::to_string(averageTempFahrenheit) + "F");
+    // }
 
 		setIntakeMotors();
 		// Activate Doinker Logic

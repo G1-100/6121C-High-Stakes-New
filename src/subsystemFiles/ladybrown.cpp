@@ -7,11 +7,11 @@
 #include "main.h"
 #include <string>
 double RESTANGLE = 0; // actual -30
-double STOP1 = 21.75; // 42.57
-double STOP1_5 = STOP1 + 45 - 15;
+double STOP1 = 21.75 + 0.75; // 42.57
+double STOP1_5 = STOP1 + 30;
 double STOP1_75 = STOP1 + 110;
-double STOP2 = 190 - 30 - 15; // angle of stop 2 - 130
-double STOP3 = 250  - 60;
+double STOP2 = 190 - 45 + 15; // angle of stop 2 - 130
+double STOP3 = 250 - 60 + 1;
 
 
 bool calledMoveBackForAWS = false;
