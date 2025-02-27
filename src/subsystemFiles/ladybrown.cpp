@@ -45,7 +45,6 @@ long panicPressTime = 0;
  */
 void doIntakeUnstuck() {
     if (fabs(intake.get_actual_velocity()) < 2 && fabs(intake.get_voltage()) > 2000) { // if intake is stuck
-        //std::cout << pros::millis() - intakeStuckTime << "\n";
         if (intakeStuckTime == 0) {
             intakeStuckTime = pros::millis();
         } else if (pros::millis() - intakeStuckTime > 400 && LBState == PROPPED) { // ring caught on ladybrown, extend a little
@@ -104,19 +103,16 @@ void tempFunction(double state, double stop,
     {
         if(stop - curAng > degreeOne)
         {
-            //std::cout << "AMBIENT ADJUST UP" << "\n";
             ladybrown1.move(moveOne);
             ladybrown2.move(moveOne);
         }
         else if(stop - curAng < degreeTwo)
         {
-            //std::cout << "AMBIENT ADJUST DOWN" << "\n";
             ladybrown1.move(moveTwo);
             ladybrown2.move(moveTwo);
         }
         else
         {
-            //std::cout << "AMBIENT ADJUST NORMAL" << "\n";
             ladybrown1.move(moveThree);
             ladybrown2.move(moveThree);
         }
@@ -128,10 +124,7 @@ void doLBAmbientAdjust(double curAngle) {
     tempFunction(PROPPED, STOP1, curAngle, 0.5, -0.5, 14, -3, 5);
     tempFunction(SEMIEXTENDED, STOP1_5, curAngle, 10, -10, 13, -8, 7);
     tempFunction(EXTENDED, STOP2, curAngle, 5, -10, 10, -5, 0);
-    // if (LBState == FULLEXTENDED) {
-    //     ladybrown1.move(-5);
-    //     ladybrown2.move(-5);
-    // }
+
 }
 
 
@@ -144,7 +137,7 @@ void LBExtend(double point) {
     double iterationsRequired;
     const double kP = 6 - 1;
     const double kI = 0;
-    const double kD = 0; 
+    const double kD = 0.02; 
     double totalError = 0;
 
     //double curAngle = -LBRotation.get_position() / 100.0;

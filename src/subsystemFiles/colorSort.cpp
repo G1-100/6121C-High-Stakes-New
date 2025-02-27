@@ -11,6 +11,7 @@ int ringsSeen = 0;
 int colorUntilRings = 0;
 bool safeScoring = false;
 bool rightRingBeingSeen = false;
+bool colorFiltrationActive = false; // on/off specifically for color sort
 double prevHeading = 0;
 long prevTime = 0;
 
@@ -68,7 +69,7 @@ void doColorSort() {
         if (ColorLoopActive) {
             if (curProximity - ambientProximity > PROXIMITYDIFFREQUIRED && !rightRingBeingSeen) { // ring detected
                 if (currentColorDiff - ambientColorDiff > 5) { // blue ring
-                    if (!allianceColorBlue) { // wrong color
+                    if (!allianceColorBlue && colorFiltrationActive) { // wrong color
                         cout << "BLUE DETECTED" << "\n";
                         master.rumble(". .");
                         wrongColorDetected = true; // stop driver intake when color sorting
@@ -101,7 +102,7 @@ void doColorSort() {
                         }
                     }
                 } else if (currentColorDiff - ambientColorDiff < -5) { // red ring
-                    if (allianceColorBlue)  { // wrong color
+                    if (allianceColorBlue && colorFiltrationActive)  { // wrong color
                         wrongColorDetected = true; // stop driver intake
                         master.rumble(". .");
                         cout << "RED DETECTED" << "\n";

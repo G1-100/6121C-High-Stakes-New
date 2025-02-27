@@ -143,6 +143,7 @@ void autonomous() {
   brakeModeHold();
 
 	ColorLoopActive = true;
+  colorFiltrationActive = true;
 	intakeUnstuckActivated = false;
 
 	if (!LBLoopActive) {
@@ -304,7 +305,7 @@ void opcontrol() {
   ChangeLBState(REST);
   LBState = REST;
   //skillsMacro();
-  chassis.opcontrol_curve_buttons_toggle();
+  chassis.opcontrol_curve_buttons_toggle(false);
 
   while (true) {
 
@@ -391,7 +392,7 @@ void checkTemp() {
 			double averageTempCelsius = totalTemp / 6;
 			averageTempFahrenheit = averageTempCelsius * 9.0f / 5.0 + 32.0;
       //std::cout << "Average Temp: " << averageTempFahrenheit << "\n";
-      master.clear_line(0);
+      //master.clear_line(0);
 			master.set_text(0, 0, "Avg Temp: " + std::to_string(averageTempFahrenheit) + "F");
 		}
 		pros::delay(500);

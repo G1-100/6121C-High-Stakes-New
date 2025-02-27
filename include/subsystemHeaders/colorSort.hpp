@@ -15,6 +15,8 @@ extern bool colorUntilActivated;
 extern int ringsSeen;
 extern int colorUntilRings;
 
+extern bool colorFiltrationActive;
+
 extern bool safeScoring;
 extern double prevHeading;
 
