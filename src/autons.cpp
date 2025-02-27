@@ -1269,3 +1269,137 @@ chassis.pid_wait();
 //chassis.pid_wait_until(12);
 //ChangeLBState(EXTENDED);
 }
+
+void positiveSideQuals(bool isRed) {
+  double sign = isRed ? 1 : -1;
+
+  chassis.drive_angle_set(-51 * sign);
+
+  LBState = PROPPED;
+  ladybrown2.set_zero_position(-46);
+  ChangeLBState(EXTENDED);
+
+
+  pros::delay(600);
+
+  if (!isRed) {
+    chassis.pid_swing_set(ez::RIGHT_SWING,-70 * sign, -SWING_SPEED, 0);
+    pros::delay(100);
+    chassis.pid_wait();
+  } else {
+    chassis.pid_swing_set(ez::LEFT_SWING,-70 * sign, -SWING_SPEED, 0);
+    pros::delay(100);
+    chassis.pid_wait();
+  }
+
+  mogoClamp.set_value(true);
+  chassis.pid_drive_set(-38, 70, true);
+  chassis.pid_wait_until(-36);
+  mogoClamp.set_value(false);
+  chassis.pid_wait();
+  pros::delay(100);
+
+  chassis.pid_turn_set(42 * sign, TURN_SPEED);
+  pros::delay(100);
+  chassis.pid_wait();
+
+  chassis.pid_drive_set(20, DRIVE_SPEED, true);
+  pros::delay(300);
+  intake.move(0);
+  chassis.pid_wait_until(16);
+
+
+  isRed ? leftDoinker.set_value(true) : rightDoinker.set_value(true);
+
+  pros::delay(250);
+
+  chassis.pid_turn_set(65 * sign, TURN_SPEED);
+  pros::delay(100);
+  chassis.pid_wait();
+  
+  if (!isRed) {
+    chassis.pid_drive_set(4, DRIVE_SPEED, false);
+    chassis.pid_wait();
+  } else {
+    chassis.pid_drive_set(4, DRIVE_SPEED, false);
+    chassis.pid_wait();
+  }
+
+  isRed ? rightDoinker.set_value(true) : leftDoinker.set_value(true);
+
+  pros::delay(250);
+
+  if (!isRed) {
+    chassis.pid_swing_set(ez::RIGHT_SWING,45 * sign, -SWING_SPEED, 0);
+    pros::delay(100);
+    chassis.pid_wait();
+  } else {
+    chassis.pid_swing_set(ez::LEFT_SWING,45 * sign, -SWING_SPEED, 0);
+    pros::delay(100);
+    chassis.pid_wait();
+  }
+
+
+  chassis.pid_drive_set(-45, DRIVE_SPEED, true);
+  pros::delay(100);
+  chassis.pid_wait_until(-43);
+
+  leftDoinker.set_value(false);
+  rightDoinker.set_value(false);
+
+  pros::delay(250);
+
+  chassis.pid_turn_set(-10 * sign, TURN_SPEED);
+  pros::delay(100);
+  chassis.pid_wait();
+
+  intake.move_velocity(600);
+
+  if (!isRed) {
+    chassis.pid_swing_set(ez::RIGHT_SWING,200 * sign, SWING_SPEED, 20);
+    pros::delay(100);
+    chassis.pid_wait();
+  } else {
+    chassis.pid_swing_set(ez::LEFT_SWING,200 * sign, SWING_SPEED, 20);
+    pros::delay(100);
+    chassis.pid_wait();
+  }
+
+  chassis.pid_drive_set(30, DRIVE_SPEED, false);
+  pros::delay(100);
+  chassis.pid_wait_until(28);
+
+  chassis.pid_turn_set(260.5 * sign, TURN_SPEED);
+  pros::delay(100);
+  chassis.pid_wait();
+
+  chassis.pid_drive_set(30.5, DRIVE_SPEED, false);
+  pros::delay(100);
+  chassis.pid_wait_until(7);
+  isRed ? rightDoinker.set_value(true) : leftDoinker.set_value(true);
+  chassis.pid_wait_until(28.5);
+
+  intake.move(0);
+
+  chassis.pid_turn_set(340 * sign, TURN_SPEED);
+  pros::delay(200);
+  chassis.pid_wait();
+
+  mogoClamp.set_value(true);
+
+
+  chassis.pid_drive_set(15, DRIVE_SPEED, false);
+  pros::delay(100);
+  chassis.pid_wait_until(10);
+
+  leftDoinker.set_value(false);
+  rightDoinker.set_value(false);
+
+  chassis.pid_turn_set(405 * sign, TURN_SPEED);
+  pros::delay(100);
+  chassis.pid_wait_until(403 * sign);
+
+  chassis.pid_drive_set(54, DRIVE_SPEED, false);
+  pros::delay(100);
+  chassis.pid_wait_until(54);
+}
