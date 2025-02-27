@@ -56,3 +56,5 @@ void RingRush6(bool isBlue);
 // ASSET(ringRushBlueOld_txt);
 // ASSET(ringRushRed_txt);
 // ASSET(ringRushRedOld_txt);
+
+void positiveSideQuals(bool isRed);
