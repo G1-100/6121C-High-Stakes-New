@@ -281,6 +281,13 @@ void skills() {
     intake.move(127);
     chassis.pid_drive_set(15, 90, false, false); // move to AWS
     chassis.pid_wait();
+
+    //reset at wall stake
+    double x_pos = 72 - (8.5) * sin(chassis.odom_theta_get() * M_PI / 180.0);
+    double y_pos = -cos(chassis.odom_theta_get() * M_PI / 180.0) * 8;
+
+    chassis.odom_xy_set(x_pos, y_pos);
+
     pros::delay(90);
     ChangeLBState(FULLEXTENDED); // extend ladybrown
     chassis.pid_drive_set(-16, 1500, false, false); // move back
