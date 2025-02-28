@@ -23,7 +23,7 @@ void initialize() {
 	LBRotation.reset_position();
   ladybrown1.tare_position();
 	optical.set_led_pwm(100);
-	allianceColorBlue = false; // VERY IMPORTANT
+	allianceColorBlue = true; // VERY IMPORTANT
 	initColorSort();
 	std::cout << "initialize done" << "\n";
 	initializeSelector();
@@ -144,7 +144,7 @@ void autonomous() {
 
 	ColorLoopActive = true;
   colorFiltrationActive = true;
-	intakeUnstuckActivated = false;
+	intakeUnstuckActivated = true;
 
 	if (!LBLoopActive) {
     pros::Task lb_task(LBLoop);
@@ -162,7 +162,8 @@ void autonomous() {
   //selector->runSelectedAutonomous();
   //stateSoloAwp(allianceColorBlue);
 
-  skills();
+  //skills();
+  RingRush6(allianceColorBlue);
   //setDrive(80, 80);
   // LBExtend(PROPPED);
   // pros::delay(1000);
@@ -298,6 +299,7 @@ void opcontrol() {
 	pros::Task temp_task(checkTemp);
 	
 	ColorLoopActive = true; // starts inactive until tested ambient colors
+  colorFiltrationActive = true;
 
 	intakeUnstuckActivated = true;
 	

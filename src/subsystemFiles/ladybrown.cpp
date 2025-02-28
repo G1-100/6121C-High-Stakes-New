@@ -7,11 +7,11 @@
 #include "main.h"
 #include <string>
 double RESTANGLE = 0; // actual -30
-double STOP1 = 21.75 + 0.75; // 42.57
+double STOP1 = 29.5; // 42.57
 double STOP1_5 = STOP1 + 30;
 double STOP1_75 = STOP1 + 110;
-double STOP2 = 190 - 45 + 15; // angle of stop 2 - 130
-double STOP3 = 250 - 60 + 1;
+double STOP2 = 190 - 45; // angle of stop 2 - 130
+double STOP3 = 250 - 60 + 1 + 3;
 
 
 bool calledMoveBackForAWS = false;
@@ -297,9 +297,7 @@ void LBRetract() {
     double prevAngle = ladybrown2.get_position() / 3.0;
     double curAngle = prevAngle;
     double power;
-    ladybrown1.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
-    ladybrown2.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
-    while (curAngle > 25 - 15 && pros::millis() - startTime < 1500) { // wait for motors to stop
+    while (curAngle > 25 && pros::millis() - startTime < 1500) { // wait for motors to stop
         power = curAngle + 5;
         if (power > 127) {
             power = 127;
@@ -317,10 +315,17 @@ void LBRetract() {
             return;
         }
     }
-
+    while (fabs(ladybrown2.get_actual_velocity()) > 1 && pros::millis() - startTime < 2000) {
+        std::cout << "Hi" << "\n";
+        ladybrown1.move(-20);
+        ladybrown2.move(-20);
+        pros::delay(10);
+    }
+    ladybrown1.move(-18);
+    ladybrown2.move(-18);
+    pros::delay(300);
     ladybrown1.move(0);
     ladybrown2.move(0);
-    pros::delay(500 - 200 - 100);
     LBState = REST;
     LBAutonGoal = REST;
     prevLBAutonGoal = REST;

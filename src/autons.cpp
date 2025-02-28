@@ -1028,33 +1028,43 @@ void RingRush6(bool isBlue) {
     chassis.odom_x_flip();
     chassis.odom_theta_flip();
   }
+  int sgn = isBlue?1:-1;
   LBState=REST;
-  chassis.odom_xyt_set(-48.5, 30, 73.5);
-  chassis.pid_drive_set(50 - 2,127); // Drive to Middle Ring
-  chassis.pid_wait_until(30 - 5);
+  chassis.odom_xyt_set(-48.5, 30, -68.4 * sgn);
+  intake.move(-127);
+  chassis.pid_drive_set(43,127); // Drive to Middle Ring
   (isBlue?rightDoinker:leftDoinker).toggle(); // Grab Ring
-  chassis.pid_wait();
-  pros::delay(100);
+  chassis.pid_wait_until(20);
+  intake.move(127);
+  startColorUntil(1);
+  chassis.pid_wait_until(39.5);
+  //pros::delay(100);
   chassis.pid_drive_set(-19,127); // Move Back
   chassis.pid_wait_quick_chain();
   chassis.pid_turn_set(90,127);
   chassis.pid_wait();
-  chassis.pid_drive_set(-15,127); // drive back more
+  chassis.pid_drive_set(-8,127); // drive back more
   chassis.pid_wait();
   (isBlue?rightDoinker:leftDoinker).toggle(); // Release Ring
-  chassis.pid_turn_set(-30,100);
+  pros::delay(100);
+  chassis.pid_turn_set(-55,100);
   chassis.pid_wait();
   chassis.pid_drive_set(-20,127);
-  chassis.pid_wait();
+  chassis.pid_wait_until(-18);
   mogoClamp.toggle(); // Grab Mogo
-  chassis.pid_turn_set(20,127);
-  chassis.pid_wait_quick_chain();
+  chassis.pid_wait();
+  stopColorUntilFunction();
   intake.move(127);
-  chassis.pid_drive_set(30,127);
+  chassis.pid_turn_set(-15,127);
+  chassis.pid_wait();
+  intake.move(127);
+  intake.move(127);
+  chassis.pid_drive_set(30 - 5,127);
   chassis.pid_wait();
   pros::delay(300);
-  chassis.pid_turn_set(-75,127);
+  chassis.pid_turn_set(-75 + 15,127);
   chassis.pid_wait();
+  intake.move(127);
   chassis.pid_drive_set(40,127); // Go To Corner
   chassis.pid_wait();
   pros::delay(500);
@@ -1064,12 +1074,13 @@ void RingRush6(bool isBlue) {
   chassis.pid_wait();
   chassis.pid_turn_set(180,127); // turn to intake two rings
   chassis.pid_wait();
-  chassis.pid_drive_set(30, 127); // move to intake two rings
-  chassis.pid_wait_until(20);
+  intakeLift.toggle();
+  chassis.pid_drive_set(48, 90); // move to intake two rings
+  chassis.pid_wait_until(47 - 3);
+  ChangeLBState(PROPPED);
   intakeLift.toggle();
   chassis.pid_wait();
-  ChangeLBState(PROPPED);
-  pros::delay(300);
+  //pros::delay(200);
   rightDoinker.toggle();
   chassis.pid_turn_set(-90,127);
   chassis.pid_wait();
