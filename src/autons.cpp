@@ -1270,136 +1270,134 @@ chassis.pid_wait();
 //ChangeLBState(EXTENDED);
 }
 
-void positiveSideQuals(bool isRed) {
-  double sign = isRed ? 1 : -1;
+void positiveSideQuals(bool isBlue) {
+  double sgn = isBlue?1 : -1;
+  chassis.odom_xyt_set(0, 0, -45 * sgn);
 
-  chassis.drive_angle_set(-51 * sign);
+  chassis.drive_angle_set(-51 * sgn);
 
   LBState = PROPPED;
   ladybrown2.set_zero_position(-46);
   ChangeLBState(EXTENDED);
 
-
   pros::delay(600);
 
-  if (!isRed) {
-    chassis.pid_swing_set(ez::RIGHT_SWING,-70 * sign, -SWING_SPEED, 0);
-    pros::delay(100);
-    chassis.pid_wait();
-  } else {
-    chassis.pid_swing_set(ez::LEFT_SWING,-70 * sign, -SWING_SPEED, 0);
-    pros::delay(100);
-    chassis.pid_wait();
-  }
+// Get to and turn towards mogo
+  set_drive(-13, 110); // move backwards to about mogo
+  chassis.pid_wait();
+  chassis.pid_turn_set(0 * sgn, 80); // turn to mogo
+  chassis.pid_wait();
+  set_drive(-10); // move slightly more into the mogo
 
-  mogoClamp.set_value(true);
-  chassis.pid_drive_set(-38, 70, true);
-  chassis.pid_wait_until(-36);
-  mogoClamp.set_value(false);
+
+  ChangeLBState(REST);
+  chassis.pid_wait();
+  mogoClamp.toggle();
+  set_drive(-30, 127);
+  chassis.pid_wait_until(-28);
+  mogoClamp.toggle();
   chassis.pid_wait();
   pros::delay(100);
 
-  chassis.pid_turn_set(42 * sign, TURN_SPEED);
+  chassis.pid_turn_set(-42 * sgn, 100);
   pros::delay(100);
   chassis.pid_wait();
 
-  chassis.pid_drive_set(20, DRIVE_SPEED, true);
+  set_drive(20, 127);
   pros::delay(300);
   intake.move(0);
   chassis.pid_wait_until(16);
 
-
-  isRed ? leftDoinker.set_value(true) : rightDoinker.set_value(true);
+  isBlue ? rightDoinker.toggle() : leftDoinker.toggle();
 
   pros::delay(250);
 
-  chassis.pid_turn_set(65 * sign, TURN_SPEED);
+  chassis.pid_turn_set(65 * sgn, 100);
   pros::delay(100);
   chassis.pid_wait();
   
-  if (!isRed) {
-    chassis.pid_drive_set(4, DRIVE_SPEED, false);
+  if (!isBlue) {
+    set_drive(4, 127);
     chassis.pid_wait();
   } else {
-    chassis.pid_drive_set(4, DRIVE_SPEED, false);
+    set_drive(4, 127);
     chassis.pid_wait();
   }
 
-  isRed ? rightDoinker.set_value(true) : leftDoinker.set_value(true);
+  isBlue ? leftDoinker.toggle() : rightDoinker.toggle();
 
   pros::delay(250);
 
-  if (!isRed) {
-    chassis.pid_swing_set(ez::RIGHT_SWING,45 * sign, -SWING_SPEED, 0);
+  if (!isBlue) {
+    chassis.pid_swing_set(ez::RIGHT_SWING,45 * sgn, -100, 0);
     pros::delay(100);
     chassis.pid_wait();
   } else {
-    chassis.pid_swing_set(ez::LEFT_SWING,45 * sign, -SWING_SPEED, 0);
+    chassis.pid_swing_set(ez::LEFT_SWING,45 * sgn, -100, 0);
     pros::delay(100);
     chassis.pid_wait();
   }
 
-
-  chassis.pid_drive_set(-45, DRIVE_SPEED, true);
+  set_drive(-45, 127);
   pros::delay(100);
   chassis.pid_wait_until(-43);
 
-  leftDoinker.set_value(false);
-  rightDoinker.set_value(false);
+  // idk if need to be used, delete if it makes it to the commit
+  //leftDoinker.set_value(false);
+  //rightDoinker.set_value(false);
 
   pros::delay(250);
 
-  chassis.pid_turn_set(-10 * sign, TURN_SPEED);
+  chassis.pid_turn_set(-10 * sgn, 100);
   pros::delay(100);
   chassis.pid_wait();
 
   intake.move_velocity(600);
 
-  if (!isRed) {
-    chassis.pid_swing_set(ez::RIGHT_SWING,200 * sign, SWING_SPEED, 20);
+  if (!isBlue) {
+    chassis.pid_swing_set(ez::RIGHT_SWING,200 * sgn, 100, 20);
     pros::delay(100);
     chassis.pid_wait();
   } else {
-    chassis.pid_swing_set(ez::LEFT_SWING,200 * sign, SWING_SPEED, 20);
+    chassis.pid_swing_set(ez::LEFT_SWING,200 * sgn, 100, 20);
     pros::delay(100);
     chassis.pid_wait();
   }
 
-  chassis.pid_drive_set(30, DRIVE_SPEED, false);
+  set_drive(30, 127);
   pros::delay(100);
   chassis.pid_wait_until(28);
 
-  chassis.pid_turn_set(260.5 * sign, TURN_SPEED);
+  chassis.pid_turn_set(260.5 * sgn, 100);
   pros::delay(100);
   chassis.pid_wait();
 
-  chassis.pid_drive_set(30.5, DRIVE_SPEED, false);
+  set_drive(30.5, 127);
   pros::delay(100);
   chassis.pid_wait_until(7);
-  isRed ? rightDoinker.set_value(true) : leftDoinker.set_value(true);
+  isBlue ? leftDoinker.toggle()  : rightDoinker.toggle();
   chassis.pid_wait_until(28.5);
 
   intake.move(0);
 
-  chassis.pid_turn_set(340 * sign, TURN_SPEED);
+  chassis.pid_turn_set(340 * sgn, 100);
   pros::delay(200);
   chassis.pid_wait();
 
-  mogoClamp.set_value(true);
+  mogoClamp.toggle();
 
-
-  chassis.pid_drive_set(15, DRIVE_SPEED, false);
+  set_drive(15, 127);
   pros::delay(100);
   chassis.pid_wait_until(10);
 
-  leftDoinker.set_value(false);
-  rightDoinker.set_value(false);
+  leftDoinker.toggle();
+  leftDoinker.toggle();
 
-  chassis.pid_turn_set(405 * sign, TURN_SPEED);
+  chassis.pid_turn_set(405 * sgn, 100);
   pros::delay(100);
-  chassis.pid_wait_until(403 * sign);
+  chassis.pid_wait_until(403 * sgn);
 
-  chassis.pid_drive_set(54, DRIVE_SPEED, false);
+  set_drive(54, 127);
   pros::delay(100);
   chassis.pid_wait_until(54);
 }

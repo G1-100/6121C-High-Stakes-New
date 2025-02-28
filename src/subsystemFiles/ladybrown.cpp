@@ -9,7 +9,7 @@
 double RESTANGLE = 0; // actual -30
 double STOP1 = 21.75 + 0.75; // 42.57
 double STOP1_5 = STOP1 + 30;
-double STOP1_75 = STOP1 + 110;
+double STOP1_75 = STOP1 + 110 - 2;
 double STOP2 = 190 - 45 + 15; // angle of stop 2 - 130
 double STOP3 = 250 - 60 + 1;
 
@@ -417,7 +417,9 @@ void LBLoop() {
             calledLBReset = false;
         }
         prevLBAutonGoal = LBAutonGoal;
-        doLBAmbientAdjust(curAngle);
+
+        // Ambiend Adjust here
+        //doLBAmbientAdjust(curAngle);
         if (intakeUnstuckActivated) {
             doIntakeUnstuck();
         }
