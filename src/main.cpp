@@ -173,6 +173,7 @@ void autonomous() {
   //turn_example();
   //drive_example();
   //stateSoloAwp(allianceColorBlue);
+  stateSoloAwpCenterGet(allianceColorBlue);
   //RingRush6(allianceColorBlue);
   //newMogoRush(allianceColorBlue);
   positiveSideQuals(allianceColorBlue);
