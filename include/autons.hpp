@@ -51,6 +51,8 @@ void safeFourRing(bool isBlue);
 
 void safeRingSide(bool isBlue);
 void RingRush6(bool isBlue);
+void positiveSideQuals(bool isBlue);
+void stateSoloAwpCenterGet(bool isBlue);
 
 // ASSET(ringRushBlue_txt);
 // ASSET(ringRushBlueOld_txt);

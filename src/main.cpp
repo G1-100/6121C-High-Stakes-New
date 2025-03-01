@@ -174,8 +174,10 @@ void autonomous() {
   //turn_example();
   //drive_example();
   //stateSoloAwp(allianceColorBlue);
+  stateSoloAwpCenterGet(allianceColorBlue);
   //RingRush6(allianceColorBlue);
   //newMogoRush(allianceColorBlue);
+  positiveSideQuals(allianceColorBlue);
   
   // ez::as::auton_selector.selected_auton_call();  // Calls selected auton from autonomous selector
 }
