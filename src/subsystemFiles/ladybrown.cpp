@@ -12,9 +12,9 @@ double STOP1_5 = STOP1 + 30;
 double STOP1_75 = STOP1 + 110;
 double STOP2 = 190 - 45; // angle of stop 2 - 130
 double STOP3 = 250 - 60 + 1 + 3;
-double STOP1_75 = STOP1 + 110 - 2;
-double STOP2 = 190 - 45 + 15; // angle of stop 2 - 130
-double STOP3 = 250 - 60 + 1;
+// double STOP1_75 = STOP1 + 110 - 2;
+// double STOP2 = 190 - 45 + 15; // angle of stop 2 - 130
+// double STOP3 = 250 - 60 + 1;
 
 
 bool calledMoveBackForAWS = false;
