@@ -7,10 +7,10 @@
 #include "main.h"
 #include <string>
 double RESTANGLE = 0; // actual -30
-double STOP1 = 29.5; // 42.57
+double STOP1 = 22 - 0.5; // 42.57
 double STOP1_5 = STOP1 + 30;
-double STOP1_75 = STOP1 + 110;
-double STOP2 = 190 - 45; // angle of stop 2 - 130
+double STOP1_75 = STOP1 + 105;
+double STOP2 = 190 - 30; // angle of stop 2 - 130
 double STOP3 = 250 - 60 + 1 + 3;
 // double STOP1_75 = STOP1 + 110 - 2;
 // double STOP2 = 190 - 45 + 15; // angle of stop 2 - 130
@@ -58,7 +58,7 @@ void doIntakeUnstuck() {
                 intake.move(127); // restart intake if autonomous running
             }
             wrongColorDetected = false;
-        } 
+        }
         else if (pros::millis() - intakeStuckTime > 300 && LBState != PROPPED) {
             master.rumble("-"); // short rumble to notify driver
             double intakePower = intake.get_power();
@@ -124,8 +124,8 @@ void tempFunction(double state, double stop,
 
 
 void doLBAmbientAdjust(double curAngle) {
-    tempFunction(PROPPED, STOP1, curAngle, 0.5, -0.5, 14, -3, 5);
-    tempFunction(SEMIEXTENDED, STOP1_5, curAngle, 10, -10, 13, -8, 7);
+    tempFunction(PROPPED, STOP1, curAngle, 0.5, -0.5, 8, -2.5, 1);
+    tempFunction(SEMIEXTENDED, STOP1_5, curAngle, 10, -10, 13, -4, 2);
     tempFunction(EXTENDED, STOP2, curAngle, 5, -10, 10, -5, 0);
 
 }
@@ -320,15 +320,13 @@ void LBRetract() {
     }
     while (fabs(ladybrown2.get_actual_velocity()) > 1 && pros::millis() - startTime < 2000) {
         std::cout << "Hi" << "\n";
-        ladybrown1.move(-20);
-        ladybrown2.move(-20);
+        ladybrown1.move(-20 - 20);
+        ladybrown2.move(-20 - 20);
         pros::delay(10);
     }
-    ladybrown1.move(-18);
-    ladybrown2.move(-18);
-    pros::delay(300);
     ladybrown1.move(0);
     ladybrown2.move(0);
+    pros::delay(100);
     LBState = REST;
     LBAutonGoal = REST;
     prevLBAutonGoal = REST;
@@ -427,7 +425,7 @@ void LBLoop() {
         prevLBAutonGoal = LBAutonGoal;
 
         // Ambiend Adjust here
-        //doLBAmbientAdjust(curAngle);
+        doLBAmbientAdjust(curAngle);
         if (intakeUnstuckActivated) {
             doIntakeUnstuck();
         }

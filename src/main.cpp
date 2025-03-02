@@ -20,10 +20,11 @@ void initialize() {
   pros::delay(500);  // Stop the user from doing anything while legacy ports configure
 
   pros::lcd::initialize();
+  intake.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
 	LBRotation.reset_position();
-  ladybrown1.tare_position();
+  ladybrown2.tare_position();
 	optical.set_led_pwm(100);
-	allianceColorBlue = false; // VERY IMPORTANT
+	allianceColorBlue = true; // VERY IMPORTANT
 	initColorSort();
 	std::cout << "initialize done" << "\n";
 	initializeSelector();
@@ -160,10 +161,11 @@ void autonomous() {
   //safeRingSide(allianceColorBlue);
   //safeFourRing(allianceColorBlue);
   //selector->runSelectedAutonomous();
-  stateSoloAwp(allianceColorBlue);
+  //stateSoloAwp(allianceColorBlue);
 
   //skills();
-  //RingRush6(allianceColorBlue);
+
+  RingRush6(allianceColorBlue);
   //setDrive(80, 80);
   // LBExtend(PROPPED);
   // pros::delay(1000);
@@ -306,7 +308,7 @@ void opcontrol() {
 	intakeUnstuckActivated = true;
 	
   
-  ChangeLBState(REST);
+  callLBReset();
   LBState = REST;
   //skillsMacro();
   chassis.opcontrol_curve_buttons_toggle(false);

@@ -40,6 +40,8 @@ void setIntakeMotors() {
         intakePower = INTAKE_POWER;     // Full speed intake
         if (manualLadybrownActivated) {
             intakePower = 70;
+        } else if (LBState == PROPPED || LBState == SEMIEXTENDED) {
+            intakePower = 110;
         }
 
     } else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) {
