@@ -44,7 +44,7 @@ void skills() {
     chassis.pid_wait();
     chassis.pid_turn_set(116.5 - 1, 90); // turn to corner ring stack
     chassis.pid_wait();
-    chassis.pid_drive_set(79 - 25 + 2, 115); // move to next two rings in corner 2 stack
+    chassis.pid_drive_set(79 - 25 + 2, 127); // move to next two rings in corner 2 stack
     chassis.pid_wait_until(45 - 15);
     intake.move(100);
     ChangeLBState(PROPPED); // prop up ladybrown
@@ -53,16 +53,16 @@ void skills() {
     chassis.pid_turn_set(109 - 6, 90); // turn to go back
     chassis.pid_wait();
     intake.move_voltage(12000);
-    chassis.pid_drive_set(-43 + 16.25, 100); // move back a bit
+    chassis.pid_drive_set(-43 + 16.25 + 1, 110); // move back a bit
     chassis.pid_wait();
     chassis.pid_turn_set(180, 90); // turn to wall stake
     chassis.pid_wait();
     setIntake(0);
     ChangeLBState(SEMIEXTENDED);
 
-    chassis.pid_drive_set(14 + 20, 55, false, false);
+    chassis.pid_drive_set(14 + 20, 70, false, false);
     chassis.pid_wait_until(5);
-    //chassis.pid_speed_max_set(55);
+    chassis.pid_speed_max_set(55);
     intake.move(127);
     chassis.pid_wait_until(12.5 + 0.5);
     // chassis.pid_wait();
@@ -70,7 +70,7 @@ void skills() {
     ChangeLBState(EXTENDED); // extend ladybrown
     pros::delay(400 - 50);
     
-    set_drive(-14 - 1); // go back a bit
+    set_drive(-14); // go back a bit
     chassis.pid_wait();
     ChangeLBState(REST); // retract ladybrown
 
@@ -97,7 +97,7 @@ void skills() {
     chassis.pid_wait();
     setIntake(127);
 
-    set_drive(-16 - 1, 750, 0, 60); // move to corner
+    set_drive(-17 - 1.5, 750, 0, 70); // move to corner
     chassis.pid_wait();
     //pros::delay(500);
     setIntake(0);
@@ -160,8 +160,9 @@ void skills() {
     ColorLoopActive = true;
     colorFiltrationActive = false;
     startColorUntil(1);
-    chassis.pid_drive_set(17 + 10, 55, false, false);
+    chassis.pid_drive_set(17 + 10, 70, false, false);
     chassis.pid_wait_until(5);
+    chassis.pid_speed_max_set(55);
     intake.move(70); // intake slower to stop inside intake
 
     chassis.pid_wait_until(17);
@@ -174,16 +175,19 @@ void skills() {
     ChangeLBState(PROPPED); // retract ladybrown for 2nd extension
     chassis.pid_wait();
     pros::delay(200 - 100);
-    chassis.pid_drive_set(17, 55, false, false); // move to wall stake
+    chassis.pid_drive_set(17, 70, false, false); // move to wall stake
     stopColorUntilFunction();
     chassis.pid_wait_until(4);
-    chassis.pid_speed_max_set(60);
+    chassis.pid_speed_max_set(55);
     setIntake(127); // intake into ladybrown
     chassis.pid_wait();
     setDrive(80, 80);
     setIntake(0);
     ChangeLBState(EXTENDED);
     pros::delay(400);
+
+    chassis.pid_turn_set(0, 90); // turn to align
+    chassis.pid_wait();
 
     set_drive(-15.5 + 2, 3000); // move back
     chassis.pid_wait();
@@ -215,7 +219,7 @@ void skills() {
     chassis.pid_wait();
     pros::delay(200 - 100);
     std::cout << "POSITION: " << chassis.odom_x_get() << " " << chassis.odom_y_get() << " " << chassis.odom_theta_get() << std::endl;
-    chassis.pid_turn_set(40, 50); // turn to last ring before corner
+    chassis.pid_turn_set(40, 70); // turn to last ring before corner
     chassis.pid_wait_quick_chain();
     set_drive(13.5 - 2, 1500, 75, 120); // move to ring before corner
     chassis.pid_wait_quick_chain();
@@ -268,7 +272,7 @@ void skills() {
 
     chassis.pid_turn_set(-45 + 7 - 2, 90); // turn to mogo
     chassis.pid_wait();
-    chassis.pid_drive_set(-34 + 1, 2000); // move to mogo
+    chassis.pid_drive_set(-34 + .5, 2000); // move to mogo
     //chassis.pid_odom_set({{44.13 - 4, 9 + 3}, rev, 110});
     chassis.pid_wait_until(-14);
     chassis.pid_speed_max_set(70);
@@ -285,7 +289,9 @@ void skills() {
     chassis.pid_turn_set(90, 90); // turn to AWS
     chassis.pid_wait();
     intake.move(127);
-    chassis.pid_drive_set(15, 90, false, false); // move to AWS
+    chassis.pid_drive_set(15, 70, false, false); // move to AWS
+    chassis.pid_wait_until(5);
+    chassis.pid_speed_max_set(50);
     chassis.pid_wait();
 
     //reset at wall stake
@@ -297,13 +303,14 @@ void skills() {
     chassis.pid_turn_set(90, 90); // turn to wall stake
     chassis.pid_wait();
     ChangeLBState(FULLEXTENDED); // extend ladybrown
-    pros::delay(115);
+    pros::delay(20);
     chassis.pid_drive_set(-16, 1500, false, false); // move back
     chassis.pid_wait();
     ChangeLBState(REST); // retract ladybrown
     chassis.pid_turn_set(-135, 90); // turn to get ring outside of ladder
     chassis.pid_wait();
     set_drive(28 + 2 + 3); // move to ring outside ladder
+    //chassis.pid_odom_set({{23.2, -24.13}, fwd, 110});
     chassis.pid_wait();
     std::cout << "AFTER AWS POSITION: " << chassis.odom_x_get() << " " << chassis.odom_y_get() << " " << chassis.odom_theta_get() << std::endl;
     
@@ -315,10 +322,10 @@ void skills() {
     chassis.pid_wait();
     chassis.pid_turn_set(100, 90 - 15); // turn to intake second two stack
     chassis.pid_wait_quick_chain();
-    chassis.pid_drive_set(15 - 2, 110); // go to intake second two stack
-    chassis.pid_wait();
+    chassis.pid_drive_set(13 - 2, 110); // go to intake second two stack
+    chassis.pid_wait_quick_chain();
     chassis.pid_turn_set(80, 90); // turn to go back
-    chassis.pid_wait();
+    chassis.pid_wait_quick_chain();
     //startColorUntil(1);
     //chassis.pid_turn_set(225, 90 - 10); // turn to intake third two stack
     //chassis.pid_wait();
@@ -326,9 +333,10 @@ void skills() {
     intake.move(127);
     chassis.pid_drive_set(-35, 110); // go back
     chassis.pid_wait();
-    chassis.pid_turn_set(105, 90); // turn to intake third two stack
-    chassis.pid_wait();
+    chassis.pid_turn_set(107, 110); // turn to intake third two stack
+    chassis.pid_wait_quick_chain();
     rightDoinker.toggle();
+    //startColorUntil(1);
     set_drive(20 + 10); // go to intake third two stack
     chassis.pid_wait_quick_chain();
     //chassis.pid_turn_set(105, 90); // turn to corner
@@ -336,7 +344,7 @@ void skills() {
     //rightDoinker.toggle();
     //set_drive(12);
     //chassis.pid_wait();
-    chassis.pid_turn_set(-45, 90); // turn to corner
+    chassis.pid_turn_set(-45, 60); // turn to corner
     chassis.pid_wait();
     intake.move(0);
     mogoClamp.toggle(); // unclamp mogo

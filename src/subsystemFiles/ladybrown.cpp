@@ -319,7 +319,6 @@ void LBRetract() {
         }
     }
     while (fabs(ladybrown2.get_actual_velocity()) > 1 && pros::millis() - startTime < 2000) {
-        std::cout << "Hi" << "\n";
         ladybrown1.move(-20 - 20);
         ladybrown2.move(-20 - 20);
         pros::delay(10);
