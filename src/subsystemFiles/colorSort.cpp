@@ -64,7 +64,7 @@ void doColorSort() {
         }
 
         const int PROXIMITYDIFFREQUIRED = 60; // used to activate color sort as a prerequisite
-        const int PROXIMITYCUSHION = 35 + 23; // acts as an earlier activation for color sort
+        const int PROXIMITYCUSHION = 35 + 23 + 30; // acts as an earlier activation for color sort
        
         if (ColorLoopActive) {
             if (curProximity - ambientProximity > PROXIMITYDIFFREQUIRED && !rightRingBeingSeen) { // ring detected
