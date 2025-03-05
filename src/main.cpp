@@ -143,8 +143,8 @@ void autonomous() {
 
   brakeModeHold();
 
-	//ColorLoopActive = true;
-  //colorFiltrationActive = true;
+	ColorLoopActive = true;
+  colorFiltrationActive = true;
 	intakeUnstuckActivated = true;
 
 	if (!LBLoopActive) {
@@ -157,7 +157,8 @@ void autonomous() {
   
   //pros::Task logger_task(logger);
   
-  ringWalk(allianceColorBlue);
+  //ringWalk(allianceColorBlue);
+  stateSoloAwp(allianceColorBlue);
   
   // ez::as::auton_selector.selected_auton_call();  // Calls selected auton from autonomous selector
 }

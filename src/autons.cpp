@@ -1622,7 +1622,7 @@ intake.move(127);
 
 intake.move_voltage(12000);
 chassis.pid_turn_set(-52 * sgn, 90); // Turn to center line 2 stacks, first 2 stack there
-chassis.pid_wait_quick_chain();
+chassis.pid_wait();
 intake.move_voltage(12000);
 set_drive(20 + 2, 1500, 110); // intake ring
 chassis.pid_wait_quick();
