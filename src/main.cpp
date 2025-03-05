@@ -143,8 +143,8 @@ void autonomous() {
 
   brakeModeHold();
 
-	ColorLoopActive = true;
-  colorFiltrationActive = true;
+	//ColorLoopActive = true;
+  //colorFiltrationActive = true;
 	intakeUnstuckActivated = true;
 
 	if (!LBLoopActive) {
@@ -154,32 +154,10 @@ void autonomous() {
 	ladybrown1.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
   ladybrown2.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
   ladybrown2.tare_position();
-  //disruptRingRush(false);
-
+  
   //pros::Task logger_task(logger);
   
-  //safeRingSide(allianceColorBlue);
-  //safeFourRing(allianceColorBlue);
-  //selector->runSelectedAutonomous();
-  //stateSoloAwp(allianceColorBlue);
-
-  //skills();
-
-  //RingRush6(allianceColorBlue);
-  //setDrive(80, 80);
-  // LBExtend(PROPPED);
-  // pros::delay(1000);
-  // LBExtend(EXTENDED);
-  // pros::delay(300);
-  // LBExtend(PROPPED);
-  //mogoClamp.toggle();
-  //turn_example();
-  //drive_example();
-  //stateSoloAwp(allianceColorBlue);
-  //stateSoloAwpCenterGet(allianceColorBlue);
-  //RingRush6(allianceColorBlue);
-  newMogoRush(allianceColorBlue);
-  //positiveSideQuals(allianceColorBlue);
+  ringWalk(allianceColorBlue);
   
   // ez::as::auton_selector.selected_auton_call();  // Calls selected auton from autonomous selector
 }
