@@ -61,3 +61,5 @@ void ringWalk(bool isBlue);
 // ASSET(ringRushRedOld_txt);
 
 void positiveSideQuals(bool isRed);
+
+void barcbotsMogoRush(bool isBlue);

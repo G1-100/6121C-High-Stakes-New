@@ -1653,23 +1653,113 @@ chassis.pid_wait_quick_chain();
 
 // Get corner here
 intake.move(127);
-chassis.pid_turn_set((45 + 20)*sgn, 90); // Turn to corner
+chassis.pid_turn_set((45 + 15)*sgn, 90); // Turn to corner
 chassis.pid_wait_quick_chain();
 set_drive(24 + 3, 127); // Drive into corner
-chassis.pid_wait_quick_chain();
-pros::delay(200);
+long start = pros::millis();
+while (pros::millis() - start < 1000) {
+  chassis.drive_set(127, 127);
+  pros::delay(20);
+}
+//chassis.pid_wait_quick_chain();
+//pros::delay(200);
 set_drive(-24, 110); // Drive out of corner
 chassis.pid_wait();
 
-chassis.pid_turn_set(180 + 4, 110);
+chassis.pid_turn_set(-176 * sgn, 110);
 chassis.pid_wait_quick();
 
 startColorUntil(2);
 set_drive(66 +1, 3000, 0, 85); // intake both rings of middle 2 stack
 chassis.pid_wait();
-chassis.pid_turn_set(-45,127);
+chassis.pid_turn_set(-45 * sgn,127);
 chassis.pid_wait();
 chassis.pid_drive_set(-30,127);
 chassis.pid_wait();
 mogoClamp.toggle();
+}
+
+void barcbotsMogoRush(bool isBlue) {
+
+  // PRELOAD near corner, set up to intake two stack during first movement
+
+  int sgn=isBlue?1:-1;
+  //chassis.odom_xyt_set(0, 0, (-63+180) * sgn); // Set position
+  LBState = PROPPED;
+  ladybrown2.set_zero_position(-25); // ladybrown currently 46 degrees above
+  ChangeLBState(SEMIEXTENDED);
+  chassis.odom_xyt_set(0, 0, (-113) * sgn); // Set position
+  set_drive(33.5 - .5, 2500, 126, 127); // Move to first mogo
+  pros::delay(50);
+  intake.move(-127);
+  startColorUntil(1);
+  //leftDoinker.toggle();
+  pros::delay(200);
+  intake.move(127);
+  chassis.pid_wait_until(12);
+  leftDoinker.toggle();
+  chassis.pid_wait_until(28.5 + 1.5);
+  leftDoinker.toggle();
+  chassis.pid_wait_until(33 - 1.5);
+  // pros::delay(500);
+  // chassis.pid_turn_set(-150 * sgn); // Turn mogo to disrupt
+  // chassis.pid_wait();
+  set_drive(-13 - 3, 1500, 120); // Move back
+  chassis.pid_wait();
+  leftDoinker.toggle();
+  pros::delay(300);
+  set_drive(-7);
+  chassis.pid_wait();
+  leftDoinker.toggle();
+  std::cout <<"CUR THETA: " << chassis.odom_theta_get() << std::endl;
+  
+  chassis.pid_turn_set((135) * sgn, 90); // Turn to first mogo
+  chassis.pid_wait();
+  set_drive(-22, 2000); // Move to first mogo
+  chassis.pid_wait_until(-22 + 2);
+  mogoClamp.toggle(); // Clamp first mogo
+  chassis.pid_wait();
+  stopColorUntilFunction();
+  intake.move(127);
+  chassis.pid_turn_set(-135 * sgn, 90);
+  chassis.pid_wait();
+  mogoClamp.toggle();
+  chassis.pid_drive_set(7, 110);
+  chassis.pid_wait();
+  chassis.pid_turn_set((0) * sgn, 90); // Turn to first mogo
+  chassis.pid_wait();
+  set_drive(-40, 2000, 65, 127); // Move to second mogo
+  chassis.pid_wait_until(-20);
+  //mogoClamp.toggle();
+  chassis.pid_wait();
+  
+  
+  chassis.pid_turn_set((120) * sgn, 90); // turn to corner
+  chassis.pid_wait();
+  // set_drive(-11 - 3);
+  // chassis.pid_wait_until(-9 - 3);
+  // mogoClamp.toggle();
+  // chassis.pid_wait();
+  set_drive(30);
+  chassis.pid_wait_quick_chain();
+  //chassis.pid_targets_reset();
+  setDrive(127, 127);
+  long startMillis = pros::millis();
+  while (pros::millis() - startMillis < 800) {
+    chassis.drive_set(127, 127);
+    pros::delay(10);
+  }
+  //setDrive(0, 0);
+  //pros::delay(200);
+  chassis.pid_drive_set(-10, 127);
+  chassis.pid_wait();
+  chassis.pid_turn_set(256 * sgn, 127);
+  chassis.pid_wait();
+  set_drive(42);
+  chassis.pid_wait();
+  chassis.pid_turn_set(-135 * sgn, 90);
+  chassis.pid_wait();
+  ChangeLBState(EXTENDED);
+  set_drive(2);
+  chassis.pid_wait();
 }
