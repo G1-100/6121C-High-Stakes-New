@@ -156,8 +156,8 @@ void autonomous() {
   ladybrown2.tare_position();
   
   //pros::Task logger_task(logger);
-  
-  ringWalk(allianceColorBlue);
+  skills();
+  //ringWalk(allianceColorBlue);
   //RingRush6(allianceColorBlue);
   //stateSoloAwp(allianceColorBlue);
   //newMogoRush(allianceColorBlue);
