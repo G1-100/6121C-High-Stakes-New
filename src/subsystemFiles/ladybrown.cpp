@@ -9,7 +9,7 @@
 double RESTANGLE = 0; // actual -30
 double STOP1 = 22 - 0.5; // 42.57
 double STOP1_5 = STOP1 + 30;
-double STOP1_75 = STOP1 + 105;
+double STOP1_75 = STOP1 + 110;
 double STOP2 = 190 - 30; // angle of stop 2 - 130
 double STOP3 = 250 - 60 + 1 + 3;
 // double STOP1_75 = STOP1 + 110 - 2;

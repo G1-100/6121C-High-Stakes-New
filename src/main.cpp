@@ -156,11 +156,11 @@ void autonomous() {
   ladybrown2.tare_position();
   
   //pros::Task logger_task(logger);
-  skills();
+  //skills();
   //ringWalk(allianceColorBlue);
   //RingRush6(allianceColorBlue);
   //stateSoloAwp(allianceColorBlue);
-  //newMogoRush(allianceColorBlue);
+  newMogoRush(allianceColorBlue);
   
   // ez::as::auton_selector.selected_auton_call();  // Calls selected auton from autonomous selector
 }
