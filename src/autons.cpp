@@ -497,22 +497,22 @@ void newMogoRush(bool isBlue) {
   ladybrown2.set_zero_position(-25); // ladybrown currently 46 degrees above
   ChangeLBState(SEMIEXTENDED);
   chassis.odom_xyt_set(0, 0, (-113) * sgn); // Set position
-  set_drive(33.5 - .5, 2500, 126, 127); // Move to first mogo
+  set_drive(35, 2500, 126, 127); // Move to first mogo
   pros::delay(50);
   intake.move(-127);
   startColorUntil(1);
   //leftDoinker.toggle();
   pros::delay(200);
   intake.move(127);
-  chassis.pid_wait_until(12);
+  chassis.pid_wait_until(15);
   leftDoinker.toggle();
-  chassis.pid_wait_until(28.5 + 1.5);
+  chassis.pid_wait_until(29.5 - 1 +1);
   leftDoinker.toggle();
-  chassis.pid_wait_until(33 - 1.5);
+  chassis.pid_wait_until(34 - 1 +1);
   // pros::delay(500);
   // chassis.pid_turn_set(-150 * sgn); // Turn mogo to disrupt
   // chassis.pid_wait();
-  set_drive(-13 - 3, 1500, 120); // Move back
+  set_drive(-13 + 3, 1500, 120); // Move back
   chassis.pid_wait();
   leftDoinker.toggle();
   pros::delay(300);
@@ -523,7 +523,7 @@ void newMogoRush(bool isBlue) {
   
   chassis.pid_turn_set((74) * sgn, 90); // Turn to first mogo
   chassis.pid_wait();
-  set_drive(-22, 2000); // Move to first mogo
+  set_drive(-24 + 2, 2000); // Move to first mogo
   chassis.pid_wait_until(-22 + 2);
   mogoClamp.toggle(); // Clamp first mogo
   chassis.pid_wait();
@@ -531,33 +531,30 @@ void newMogoRush(bool isBlue) {
   intake.move(127);
   chassis.pid_turn_set((66) * sgn, 90); // Turn to first mogo
   chassis.pid_wait();
-  set_drive(44 - 15, 2000, 65, 127); // Move to second mogo
+  set_drive(29 + 15, 2000, 65, 105); // Move to second mogo
   //chassis.pid_wait_until(15);
   //mogoClamp.toggle();
   chassis.pid_wait();
   
-  chassis.pid_turn_set((165) * sgn, 90); // Turn to drop mogo
+  chassis.pid_turn_set((-100) * sgn, 90); // Turn to drop mogo
   chassis.pid_wait();
   mogoClamp.toggle(); // Drop mogo
-  intake.move(127);
-  chassis.pid_drive_set(9.5, 127); // move out from first mogo
+  chassis.pid_drive_set(5, 127);
   chassis.pid_wait();
-  chassis.pid_turn_set((127) * sgn, 90); // Turn to second mogo
+  chassis.pid_turn_set((105) * sgn, 90); // Turn to second mogo
   chassis.pid_wait();
-  set_drive(-19 - 6, 2000); // Move to second mogo
-  chassis.pid_wait_until(-10);
-  chassis.pid_speed_max_set(65);
-  chassis.pid_wait_until(-17 - 6);
+  set_drive(-19, 2000); // Move to second mogo
+  chassis.pid_wait_until(-17);
   mogoClamp.toggle(); // Clamp second mogo
   chassis.pid_wait();
-  chassis.pid_turn_set((130 + 7) * sgn, 127); // turn to go back a bit
+  chassis.pid_turn_set(130 * sgn, 127); // turn to go back a bit
   chassis.pid_wait();
   // set_drive(-11 - 3);
   // chassis.pid_wait_until(-9 - 3);
   // mogoClamp.toggle();
   // chassis.pid_wait();
-  set_drive(40 - 5);
-  chassis.pid_wait_quick_chain();
+  set_drive(40);
+  chassis.pid_wait();
   //chassis.pid_targets_reset();
   setDrive(127, 127);
   long startMillis = pros::millis();
@@ -565,18 +562,18 @@ void newMogoRush(bool isBlue) {
     chassis.drive_set(127, 127);
     pros::delay(10);
   }
-  //setDrive(0, 0);
-  //pros::delay(200);
+  setDrive(0, 0);
+  pros::delay(200);
   chassis.pid_drive_set(-10, 127);
   chassis.pid_wait();
-  chassis.pid_turn_set(256 * sgn, 127);
+  chassis.pid_turn_set(253 * sgn, 127);
   chassis.pid_wait();
   set_drive(42);
   chassis.pid_wait();
   chassis.pid_turn_set(-135 * sgn, 90);
   chassis.pid_wait();
   ChangeLBState(EXTENDED);
-  set_drive(2);
+  set_drive(1);
   chassis.pid_wait();
 }
 
