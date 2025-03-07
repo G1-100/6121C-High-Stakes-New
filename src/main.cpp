@@ -161,7 +161,8 @@ void autonomous() {
   //RingRush6(allianceColorBlue);
   //stateSoloAwp(allianceColorBlue);
   newMogoRush(allianceColorBlue);
-  
+  //barcbotsMogoRush(allianceColorBlue);
+
   // ez::as::auton_selector.selected_auton_call();  // Calls selected auton from autonomous selector
 }
 

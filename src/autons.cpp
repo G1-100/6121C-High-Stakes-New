@@ -1726,11 +1726,11 @@ void barcbotsMogoRush(bool isBlue) {
   mogoClamp.toggle();
   chassis.pid_drive_set(7, 110);
   chassis.pid_wait();
-  chassis.pid_turn_set((0) * sgn, 90); // Turn to first mogo
+  chassis.pid_turn_set((0 -20) * sgn, 90); // Turn to second mogo
   chassis.pid_wait();
-  set_drive(-40, 2000, 65, 127); // Move to second mogo
+  set_drive(-30, 2000, 65, 127); // Move to second mogo
   chassis.pid_wait_until(-20);
-  //mogoClamp.toggle();
+  mogoClamp.toggle();
   chassis.pid_wait();
   
   
@@ -1757,7 +1757,7 @@ void barcbotsMogoRush(bool isBlue) {
   chassis.pid_wait();
   set_drive(42);
   chassis.pid_wait();
-  chassis.pid_turn_set(-135 * sgn, 90);
+  chassis.pid_turn_set((-135+10) * sgn, 90);
   chassis.pid_wait();
   ChangeLBState(EXTENDED);
   set_drive(2);
