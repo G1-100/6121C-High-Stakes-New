@@ -4,8 +4,8 @@ using namespace std;
 
 bool ColorLoopActive = false;
 bool colorUntilActivated = false;
-double ambientColorDiff = -7.15; // TODO: NEEDS TO BE TUNED AT COMPETITION
-double ambientProximity = 20; // TODO: NEEDS TO BE TUNED AT COMPETITION
+double ambientColorDiff = -22.15; // TODO: NEEDS TO BE TUNED AT COMPETITION
+double ambientProximity = 25; // TODO: NEEDS TO BE TUNED AT COMPETITION
 bool colorLoopStarted = false;
 int ringsSeen = 0;
 int colorUntilRings = 0;
@@ -63,13 +63,13 @@ void doColorSort() {
             ambientColorDiff = currentColorDiff;
         }
 
-        const int PROXIMITYDIFFREQUIRED = 60 - 10; // used to activate color sort as a prerequisite
-        const int PROXIMITYCUSHION = 28 + 5; // acts as an earlier activation for color sort
+        const int PROXIMITYDIFFREQUIRED = 50; // used to activate color sort as a prerequisite
+        const int PROXIMITYCUSHION = 20.75 + 3; // acts as an earlier activation for color sort
         const int COLORCUSHION = 5; // acts as a cushion for color detection
        
         if (ColorLoopActive) {
             if (curProximity - ambientProximity > PROXIMITYDIFFREQUIRED && !rightRingBeingSeen) { // ring detected
-                if (currentColorDiff - ambientColorDiff > 10) { // blue ring
+                if (currentColorDiff - ambientColorDiff > 5) { // blue ring
                     if (!allianceColorBlue && colorFiltrationActive) { // wrong color
                         cout << "BLUE DETECTED, DIFFERENCE: " + std::to_string(currentColorDiff) << "\n";
                         master.rumble(". .");
@@ -77,12 +77,12 @@ void doColorSort() {
                         setIntake(127);
                         long start = pros::millis();
                         while ((optical.get_proximity() > ambientProximity + PROXIMITYCUSHION) && pros::millis() - start < 500) { // fling ring after 500 ms or until undetected
-                            intake.move(110);
+                            intake.move(127);
                             double red_component = optical.get_rgb().red;
                             double blue_component = optical.get_rgb().blue;
                             double currentColorDiff = blue_component - red_component;
-                            pros::delay(10);
                         }
+                        //pros::delay(180);
                         setIntake(-127);
                         pros::delay(200);
                         setIntake(127);
@@ -105,7 +105,7 @@ void doColorSort() {
                             }
                         }
                     }
-                } else if (currentColorDiff - ambientColorDiff < -10) { // red ring
+                } else if (currentColorDiff - ambientColorDiff < -5) { // red ring
                     if (allianceColorBlue && colorFiltrationActive)  { // wrong color
                         wrongColorDetected = true; // stop driver intake
                         master.rumble(". .");
@@ -119,6 +119,7 @@ void doColorSort() {
                             currentColorDiff = blue_component - red_component;
                             pros::delay(10);
                         }
+                        //pros::delay(180);
                         setIntake(-127);
                         pros::delay(200);
                         setIntake(127);

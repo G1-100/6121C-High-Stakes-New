@@ -50,10 +50,10 @@ void skills() {
     ChangeLBState(PROPPED); // prop up ladybrown
     chassis.pid_wait();
     intake.move_voltage(12000);
-    chassis.pid_turn_set(109 - 6, 90); // turn to go back
+    chassis.pid_turn_set(103 + 2, 90); // turn to go back
     chassis.pid_wait();
     intake.move_voltage(12000);
-    chassis.pid_drive_set(-43 + 17.25 + 1.25, 110); // move back a bit
+    chassis.pid_drive_set(-43 + 17.25 - 1, 110); // move back a bit
     chassis.pid_wait();
     chassis.pid_turn_set(180, 90); // turn to wall stake
     chassis.pid_wait();
@@ -64,7 +64,7 @@ void skills() {
     chassis.pid_wait_until(5);
     chassis.pid_speed_max_set(55);
     intake.move(127);
-    chassis.pid_wait_until(13 + 0.5);
+    chassis.pid_wait_until(13.5 - 1.5);
 
     // chassis.pid_wait();
 
@@ -72,7 +72,7 @@ void skills() {
     chassis.drive_set(127, 127);
     pros::delay(400 - 50);
     
-    set_drive(-14.5 - 0.5); // go back a bit
+    set_drive(-15 - 0.35); // go back a bit
     chassis.pid_wait();
     ChangeLBState(REST); // retract ladybrown
 
@@ -85,7 +85,7 @@ void skills() {
 
     callLBReset();
 
-    set_drive(58.5, 3000, 0, 70);  // cap the max speed at 70
+    set_drive(58.5 + 1.5, 3000, 0, 70);  // cap the max speed at 70
     chassis.pid_wait_until(29);
     chassis.pid_speed_max_set(55); // intake rings slower
     chassis.pid_wait();
@@ -255,7 +255,7 @@ void skills() {
     startColorUntil(1); // stop first red ring at top
     intake.move(0);
     set_drive(83 - 1, 3000, 80, 127); // go to intake ring
-    chassis.pid_wait_until(20);
+    chassis.pid_wait_until(40);
     chassis.pid_speed_max_set(80);
     intake.move(0);
     chassis.pid_wait_until(62 + 5);
@@ -289,7 +289,7 @@ void skills() {
 
     chassis.pid_turn_set(-45 + 7 - 2, 90); // turn to mogo
     chassis.pid_wait();
-    chassis.pid_drive_set(-34, 2000); // move to mogo
+    chassis.pid_drive_set(-34.5 - 0.5, 2000); // move to mogo
     //chassis.pid_odom_set({{44.13 - 4, 9 + 3}, rev, 110});
     chassis.pid_wait_until(-14);
     chassis.pid_speed_max_set(70);
@@ -320,14 +320,14 @@ void skills() {
     chassis.pid_turn_set(90, 90); // turn to wall stake
     chassis.pid_wait();
     ChangeLBState(FULLEXTENDED); // extend ladybrown
-    pros::delay(55 - 10);
+    pros::delay(45 + 10);
     chassis.pid_drive_set(-16, 1500, false, false); // move back
     chassis.pid_wait();
     ChangeLBState(REST); // retract ladybrown
     chassis.pid_turn_set(-135, 90); // turn to get ring outside of ladder
     chassis.pid_wait();
     //set_drive(28 + 2 + 3); // move to ring outside ladder
-    chassis.pid_odom_set({{23.2 + 1 + 1, -24.13 - 2 - 1}, fwd, 110});
+    chassis.pid_odom_set({{23.2 + 1, -24.13 + 1}, fwd, 110});
     chassis.pid_wait();
     std::cout << "AFTER AWS POSITION: " << chassis.odom_x_get() << " " << chassis.odom_y_get() << " " << chassis.odom_theta_get() << std::endl;
     
@@ -337,7 +337,7 @@ void skills() {
     colorFiltrationActive = true;
     set_drive(29 - 2); // go to intake first two stack
     chassis.pid_wait();
-    chassis.pid_turn_set(100, 90 - 15); // turn to intake second two stack
+    chassis.pid_turn_set(100 - 5, 90 - 15); // turn to intake second two stack
     chassis.pid_wait_quick_chain();
     chassis.pid_drive_set(13 - 2, 110); // go to intake second two stack
     chassis.pid_wait_quick_chain();
@@ -371,7 +371,7 @@ void skills() {
         //     chassis.drive_set(-120, -120);
         //     pros::delay(20);
         // }
-    set_drive(-16 + 4); // back into to corner
+    set_drive(-12 + 3); // back into to corner
     chassis.pid_wait_until(-1);
     mogoClamp.toggle(); // unclamp mogo
     chassis.pid_wait();
@@ -416,8 +416,9 @@ void skills() {
     chassis.pid_drive_set(-50 - 4, 127, false);
     intake.move(0);
     chassis.pid_wait_until(-24 - 4);
-    chassis.pid_speed_max_set(75);
+    chassis.pid_speed_max_set(80);
     intake.move(0);
+    chassis.pid_wait_quick_chain();
 
 
 /*
@@ -493,6 +494,7 @@ void skills() {
 }
 
 void skillsMacro() {
+    colorFiltrationActive = false;
     chassis.odom_xyt_set(-60.5, -13, (-49 + 3)); // starts at middle of red alliance line
     //pros::Task lb_task(LBLoop);
     LBState = EXTENDED;
