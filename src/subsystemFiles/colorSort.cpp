@@ -4,8 +4,8 @@ using namespace std;
 
 bool ColorLoopActive = false;
 bool colorUntilActivated = false;
-double ambientColorDiff = -22.15; // TODO: NEEDS TO BE TUNED AT COMPETITION
-double ambientProximity = 25; // TODO: NEEDS TO BE TUNED AT COMPETITION
+double ambientColorDiff = -3.15; // TODO: NEEDS TO BE TUNED AT COMPETITION
+double ambientProximity = 29; // TODO: NEEDS TO BE TUNED AT COMPETITION
 bool colorLoopStarted = false;
 int ringsSeen = 0;
 int colorUntilRings = 0;
@@ -63,13 +63,13 @@ void doColorSort() {
             ambientColorDiff = currentColorDiff;
         }
 
-        const int PROXIMITYDIFFREQUIRED = 50; // used to activate color sort as a prerequisite
-        const int PROXIMITYCUSHION = 20.75 + 3; // acts as an earlier activation for color sort
+        const int PROXIMITYDIFFREQUIRED = 50 + 50; // used to activate color sort as a prerequisite
+        const int PROXIMITYCUSHION = 23 + 3; // acts as an earlier activation for color sort
         const int COLORCUSHION = 5; // acts as a cushion for color detection
        
         if (ColorLoopActive) {
             if (curProximity - ambientProximity > PROXIMITYDIFFREQUIRED && !rightRingBeingSeen) { // ring detected
-                if (currentColorDiff - ambientColorDiff > 5) { // blue ring
+                if (currentColorDiff - ambientColorDiff > 5 + 5) { // blue ring
                     if (!allianceColorBlue && colorFiltrationActive) { // wrong color
                         cout << "BLUE DETECTED, DIFFERENCE: " + std::to_string(currentColorDiff) << "\n";
                         master.rumble(". .");
@@ -105,7 +105,7 @@ void doColorSort() {
                             }
                         }
                     }
-                } else if (currentColorDiff - ambientColorDiff < -5) { // red ring
+                } else if (currentColorDiff - ambientColorDiff < -5 - 5) { // red ring
                     if (allianceColorBlue && colorFiltrationActive)  { // wrong color
                         wrongColorDetected = true; // stop driver intake
                         master.rumble(". .");
