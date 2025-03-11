@@ -20,6 +20,8 @@ extern bool colorFiltrationActive;
 extern bool safeScoring;
 extern double prevHeading;
 
+extern double ambientColorDiff;
+
 void initColorSort();
 
 void doColorSort();

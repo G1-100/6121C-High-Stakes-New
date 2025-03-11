@@ -5,7 +5,7 @@ using namespace std;
 bool ColorLoopActive = false;
 bool colorUntilActivated = false;
 double ambientColorDiff = -3.15; // TODO: NEEDS TO BE TUNED AT COMPETITION
-double ambientProximity = 29; // TODO: NEEDS TO BE TUNED AT COMPETITION
+double ambientProximity = 80; // TODO: NEEDS TO BE TUNED AT COMPETITION
 bool colorLoopStarted = false;
 int ringsSeen = 0;
 int colorUntilRings = 0;
@@ -59,17 +59,17 @@ void doColorSort() {
         if (curProximity < ambientProximity) {
             ambientProximity = curProximity; // calibrate proximity
         }
-        if (fabs(curProximity - ambientProximity) < 5) {
+        if (fabs(curProximity - ambientProximity) <= 10) {
             ambientColorDiff = currentColorDiff;
         }
 
-        const int PROXIMITYDIFFREQUIRED = 50 + 50; // used to activate color sort as a prerequisite
-        const int PROXIMITYCUSHION = 23 + 3; // acts as an earlier activation for color sort
+        const int PROXIMITYDIFFREQUIRED = 20 + 20; // used to activate color sort as a prerequisite
+        const int PROXIMITYCUSHION = 26 + 5; // acts as an earlier activation for color sort
         const int COLORCUSHION = 5; // acts as a cushion for color detection
        
         if (ColorLoopActive) {
             if (curProximity - ambientProximity > PROXIMITYDIFFREQUIRED && !rightRingBeingSeen) { // ring detected
-                if (currentColorDiff - ambientColorDiff > 5 + 5) { // blue ring
+                if (currentColorDiff - ambientColorDiff > 4.5) { // blue ring
                     if (!allianceColorBlue && colorFiltrationActive) { // wrong color
                         cout << "BLUE DETECTED, DIFFERENCE: " + std::to_string(currentColorDiff) << "\n";
                         master.rumble(". .");
@@ -105,7 +105,7 @@ void doColorSort() {
                             }
                         }
                     }
-                } else if (currentColorDiff - ambientColorDiff < -5 - 5) { // red ring
+                } else if (currentColorDiff - ambientColorDiff < -4.5) { // red ring
                     if (allianceColorBlue && colorFiltrationActive)  { // wrong color
                         wrongColorDetected = true; // stop driver intake
                         master.rumble(". .");

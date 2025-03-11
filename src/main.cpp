@@ -24,7 +24,7 @@ void initialize() {
 	LBRotation.reset_position();
   ladybrown2.tare_position();
 	optical.set_led_pwm(100);
-	allianceColorBlue = true; // VERY IMPORTANT
+	allianceColorBlue = false; // VERY IMPORTANT
 	initColorSort();
 	std::cout << "initialize done" << "\n";
 	initializeSelector();
@@ -98,7 +98,7 @@ void logger() {
 		//std::cout << "intake voltage: " << intake.get_voltage() << "\n";
 		//std::cout << "VELOCITY: " + std::to_string(intake.get_actual_velocity()) << " VOLTAGE: " + std::to_string(intake.get_voltage()) << "\n";
     //std::cout << "DISTANCE: " + std::to_string(rightAlignmentSensor.get_confidence()) << "\n";
-		std::cout << "PROXIMITY: " << optical.get_proximity() << " DIFFERENCE: " << std::to_string(optical.get_rgb().blue - optical.get_rgb().red) << "\n";
+		std::cout << "PROXIMITY: " << optical.get_proximity() << " DIFFERENCE: " << std::to_string(optical.get_rgb().blue - optical.get_rgb().red) << " AMBIENT PROXIMITY: " << ambientProximity << " AMBIENT DIFFERENCE: " << ambientColorDiff << "\n";
 		//std::cout << "LED PWM" << optical.get_led_pwm() << "\n";
 		//std::cout << stopDriverIntake << "\n";
     //std::cout << "distance: " << wallDist << "\n";
@@ -160,7 +160,8 @@ void autonomous() {
   //ringWalk(allianceColorBlue);
   //RingRush6(allianceColorBlue);
   //stateSoloAwp(allianceColorBlue);
-  newMogoRush(allianceColorBlue);
+  safeFourRing(allianceColorBlue);
+  //newMogoRush(allianceColorBlue);
   //barcbotsMogoRush(allianceColorBlue);
 
   // ez::as::auton_selector.selected_auton_call();  // Calls selected auton from autonomous selector
