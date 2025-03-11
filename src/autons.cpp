@@ -1143,7 +1143,7 @@ LBState = PROPPED; // Prop LB for preload
 //LBRotation.set_position(4400);
 ladybrown2.set_zero_position(-46 + 5);
 ChangeLBState(EXTENDED); // Extend LB for AWS
-pros::delay(200);
+pros::delay(200 - 25);
 intake.move(-127);
 pros::delay(200);
 
@@ -1155,7 +1155,7 @@ chassis.pid_wait();
 callLBReset();
 set_drive(-17 - 10.5 - 1.5, 2000, 110);
 chassis.pid_wait_until(-17 + 3);
-chassis.pid_speed_max_set(60);
+chassis.pid_speed_max_set(60 + 20);
 // set_drive(-10.5, 1500, 0, 45); // move slower
 chassis.pid_wait_until(-9 - 17);
 mogoClamp.toggle(); //clamp mogo
@@ -1174,7 +1174,7 @@ chassis.pid_wait();
 intake.move_voltage(12000);
 // 	set_drive(7.5 + 1, 2000, 90); 
 // chassis.pid_wait();
-chassis.pid_turn_set((120 + 10) * sgn, 90); // turn to corner
+chassis.pid_turn_set((120 + 10) * sgn, 90 + 5); // turn to corner
 chassis.pid_wait();
 long startMillis = pros::millis();
 while (pros::millis() - startMillis < 500) {
@@ -1215,11 +1215,11 @@ intakeLift.toggle();
 
 
 
-pros::delay(300);
+pros::delay(300 - 50);
 //set_drive(8 + 7, 1500, 0, 50); // move 
 intakeUnstuckActivated = true;
 //chassis.pid_wait();
-set_drive(-20 - 5, 1500, 50); // move back
+set_drive(-20 - 5, 1500, 127); // move back
 chassis.pid_wait_quick_chain();
 chassis.pid_turn_set(-40 * sgn, 90); // turn to ladder
 chassis.pid_wait_quick_chain();
