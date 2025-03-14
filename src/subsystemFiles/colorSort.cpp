@@ -64,7 +64,7 @@ void doColorSort() {
         }
 
         const int PROXIMITYDIFFREQUIRED = 20 + 20; // used to activate color sort as a prerequisite
-        const int PROXIMITYCUSHION = 26 + 5; // acts as an earlier activation for color sort
+        const int PROXIMITYCUSHION = 31 - 9; // acts as an earlier activation for color sort
         const int COLORCUSHION = 5; // acts as a cushion for color detection
        
         if (ColorLoopActive) {
@@ -84,7 +84,7 @@ void doColorSort() {
                         }
                         //pros::delay(180);
                         setIntake(-127);
-                        pros::delay(200);
+                        pros::delay(200 - 50);
                         setIntake(127);
                         wrongColorDetected = false;
                     } else if (allianceColorBlue) { // right color
@@ -121,7 +121,7 @@ void doColorSort() {
                         }
                         //pros::delay(180);
                         setIntake(-127);
-                        pros::delay(200);
+                        pros::delay(200 - 50);
                         setIntake(127);
                         wrongColorDetected = false;
                     } else if (!allianceColorBlue) { // right color

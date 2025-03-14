@@ -1022,7 +1022,7 @@ void stateSoloAwp(bool isBlue) {
   // GETS CORNER
 
 int sgn=isBlue?1:-1;
-chassis.odom_xyt_set(0, 0, (180 - 34.18) * sgn);
+chassis.odom_xyt_set(0, 0, (180 - 34.18 + 1) * sgn);
 
 // AWS
 
@@ -1032,7 +1032,7 @@ ladybrown2.set_zero_position(-46 + 20);
 ChangeLBState(EXTENDED); // Extend LB for AWS
 pros::delay(200);
 intake.move(-127);
-pros::delay(300 - 50);
+pros::delay(250 - 25);
 
 set_drive(-13.5 + 1.25, 2000, 120); // move back from AWS
 chassis.pid_wait_until(-13 + 1.25);
@@ -1043,19 +1043,18 @@ callLBReset();
 set_drive(-30.5 + 2, 2000, 120);
 chassis.pid_wait_until(-10);
 chassis.pid_speed_max_set(60);
-chassis.pid_wait_until(-24 + 2);
+chassis.pid_wait_until(-25);
 mogoClamp.toggle(); // get mogo
-chassis.pid_wait_until(-29.5 + 2);
+chassis.pid_wait_until(-27.5);
 intake.move(127);
 
 
 intake.move_voltage(12000);
-chassis.pid_turn_set((-49 + 4) * sgn, 90); // Turn to center line 2 stacks, first 2 stack there
+chassis.pid_turn_set((-43 + 1.5) * sgn, 90); // Turn to center line 2 stacks, first 2 stack there
 chassis.pid_wait();
 intake.move_voltage(12000);
-set_drive(20 + 0.5, 1500, 110); // intake ring
+set_drive(20.5 + 1, 1500, 110); // intake ring
 chassis.pid_wait();
-pros::delay(100);
 chassis.pid_drive_set(-18.5 - 2, 127); // move back
 chassis.pid_wait();
 
@@ -1074,38 +1073,39 @@ chassis.pid_wait();
 // set_drive(-12, 2000, 50, 90); 
 // chassis.pid_wait();
 intake.move(127);
-chassis.pid_turn_set(0 * sgn, 90); // turn to final 2 stack in this quarter
+chassis.pid_turn_set((7) * sgn, 90); // turn to final 2 stack in this quarter
 chassis.pid_wait();
-set_drive(12 + 7, 3000);
+set_drive(19, 3000);
 chassis.pid_wait();
 
-chassis.pid_turn_set(-270 * sgn, 127); 
+chassis.pid_turn_set(-270 * sgn, 110); 
 chassis.pid_wait();
-set_drive(24, 2000, 50, 120); 
+set_drive(24 - 1.5, 2000, 50, 120); // move to wall
 chassis.pid_wait();
 
 intake.move(127);
-chassis.pid_turn_set(180, 110);
+chassis.pid_turn_set((180 + 0.5) * sgn, 110);
 chassis.pid_wait();
 mogoClamp.toggle(); // release mogo 
 startColorUntil(1);
 colorFiltrationActive = false;
 intakeUnstuckActivated = false;
 //intakeLift.toggle();
-set_drive(67, 3000, 0, 100); // intake both rings of middle 2 stack
-// chassis.pid_wait_until(35);
+set_drive(67 - 4, 3000, 0, 100 + 10); // intake both rings of middle 2 stack
+chassis.pid_wait_until(10);
+intakeLift.toggle();
 // chassis.pid_speed_max_set(70);
-chassis.pid_wait_until(50);
-//intakeLift.toggle();
+chassis.pid_wait_until(58);
+intakeLift.toggle();
 //chassis.pid_speed_max_set(110);
 chassis.pid_wait();
 chassis.pid_turn_set(-270 * sgn, 115); // turn to other mogo
 chassis.pid_wait();
-set_drive(-24 + 1, 200, 0, 90); // drive to other mogo
+set_drive(-24 - 0.5, 200, 0, 90); // drive to other mogo
 intakeUnstuckActivated = true;
 chassis.pid_wait_until(-10);
 chassis.pid_speed_max_set(65);
-chassis.pid_wait();
+chassis.pid_wait_until(-22.5);
 mogoClamp.toggle(); // clamp other mogo
 stopColorUntilFunction();
 colorFiltrationActive = true;
@@ -1141,11 +1141,11 @@ chassis.odom_xyt_set(0, 0, (33 + 1) * sgn);
 
 LBState = PROPPED; // Prop LB for preload
 //LBRotation.set_position(4400);
-ladybrown2.set_zero_position(-46 + 5);
+ladybrown2.set_zero_position(-46 + 15 + 5);
 ChangeLBState(EXTENDED); // Extend LB for AWS
 pros::delay(200 - 25);
 intake.move(-127);
-pros::delay(200);
+pros::delay(200 + 150);
 
 set_drive(-11 -1-1.5, 2000, 80); // move back from AWS
 chassis.pid_wait();
@@ -1154,8 +1154,8 @@ chassis.pid_turn_set(90 * sgn, 127);
 chassis.pid_wait();
 callLBReset();
 set_drive(-17 - 10.5 - 1.5, 2000, 110);
-chassis.pid_wait_until(-17 + 3);
-chassis.pid_speed_max_set(60 + 20);
+chassis.pid_wait_until(-14);
+chassis.pid_speed_max_set(60);
 // set_drive(-10.5, 1500, 0, 45); // move slower
 chassis.pid_wait_until(-9 - 17);
 mogoClamp.toggle(); //clamp mogo
@@ -1181,30 +1181,31 @@ while (pros::millis() - startMillis < 500) {
   chassis.drive_set(120, 120);
   pros::delay(10);
 }
-while (pros::millis() - startMillis < 1500 + 100) {
+while (pros::millis() - startMillis < 1600) {
   chassis.drive_set(80, 80);
   pros::delay(10);
 }
+chassis.drive_set(0, 0);
+pros::delay(500);
 //chassis.pid_drive_set(40 + 4, 127, false, false); // move to corner
 //chassis.pid_wait_quick_chain();
 //pros::delay(1000);
-set_drive(-5);
-chassis.pid_wait_until(-4);
-intakeLift.toggle();
-chassis.pid_wait();
-pros::delay(200);
-set_drive(10);
-chassis.pid_wait();
-intakeUnstuckActivated = false;
-intakeLift.toggle();
-set_drive(-16.5 - 28.75 - 1); // move back
+//set_drive(-5);
+//chassis.pid_wait();
+//set_drive(10);
+//chassis.pid_wait();
+//set_drive(-5);
+//chassis.pid_wait();
+//set_drive(10);
+//chassis.pid_wait();
+set_drive(-16.5 - 28.75); // move back
 chassis.pid_wait();
 intakeUnstuckActivated = true;
 
 chassis.pid_turn_set(35 * sgn, 90); // turn to middle stack
 chassis.pid_wait();
 
-set_drive(51 - 8); // move to middle stack
+set_drive(43); // move to middle stack
 chassis.pid_wait_until(15);
 intakeUnstuckActivated = false;
 
@@ -1229,55 +1230,7 @@ ChangeLBState(EXTENDED); // touch ladder
 intake.move(0);
 chassis.pid_wait();
 
-// chassis.pid_turn_set(-90 * sgn, 90); // turn to middle mogo
-// chassis.pid_wait();
-// mogoClamp.toggle(); // release mogo
-// chassis.pid_turn_set(90 * sgn, 90); // turn to middle mogo
-// chassis.pid_wait();
-// set_drive(-20 - 5, 2000, 110); // move to middle mogo
-// chassis.pid_wait();
-// chassis.pid_turn_set(60 * sgn, 90); // turn to middle mogo
-// chassis.pid_wait();
 
-
-// chassis.pid_turn_set((-45 * sgn), 127);
-// chassis.pid_wait();
-
-// set_drive(25, 2000, 120); // move to ladder
-// chassis.pid_wait_until(12);
-// ChangeLBState(EXTENDED);
-
-// 	set_drive(-27, 1500); // move back
-
-//   chassis.pid_turn_set(100 * sgn, 100); // turn to corner
-//   chassis.pid_wait();
-//   set_drive(40); // move to corner
-//   chassis.pid_wait();
-//   pros::delay(500);
-//   set_drive(-10); // move back
-//   chassis.pid_wait();
-//   set_drive(10); // intake 2nd ring
-//   chassis.pid_wait();
-//   set_drive(-10); // move back for real
-//   chassis.pid_wait();
-
-//   chassis.pid_turn_set(0 * sgn, 127); // turn to middle two stack
-//   chassis.pid_wait();
-
-//   set_drive(51, 2000, 50); // move to middle two stack
-//   intakeLift.toggle();
-//   chassis.pid_wait();
-//   intakeLift.toggle();
-// pros::delay(500);
-
-// 	set_drive(-27, 1500); // move back
-// 	chassis.pid_wait();
-//   chassis.pid_turn_set((-30) * sgn, 127);
-//   chassis.pid_wait();
-
-// set_drive(20, 2000, 120); // move to ladder
-// chassis.pid_wait();
-// ChangeLBState(EXTENDED);
 
 }
 
@@ -1546,7 +1499,7 @@ ladybrown2.set_zero_position(-46 + 20);
 ChangeLBState(EXTENDED); // Extend LB for AWS
 pros::delay(200);
 intake.move(-127);
-pros::delay(275);
+pros::delay(275 - 50);
 
 set_drive(-11 -1-1.5, 2000, 120); // move back from AWS
 chassis.pid_wait();
@@ -1562,7 +1515,7 @@ mogoClamp.toggle(); // get mogo
 chassis.pid_wait_until(-29.5 + 2);
 
 
-chassis.pid_turn_set((-49 + 3) * sgn, 90); // Turn to center line 2 stacks, first 2 stack there
+chassis.pid_turn_set((-46 + 1) * sgn, 90); // Turn to center line 2 stacks, first 2 stack there
 chassis.pid_wait();
 intake.move_voltage(12000);
 intake.move_voltage(12000);
@@ -1596,30 +1549,33 @@ chassis.pid_wait_until(2);
 intake.move(127);
 chassis.pid_wait();
 pros::delay(300 - 150);
-set_drive(16 + 4, 2000, 50, 120); 
+set_drive(20 + 3.5, 2000, 50, 120); // move to color sort ring
 chassis.pid_wait();
-pros::delay(500);
+pros::delay(500 - 300);
 
 // Get corner here
 intake.move(127);
 chassis.pid_turn_set((60 + 10)*sgn, 90); // Turn to corner
 chassis.pid_wait_quick_chain();
-set_drive(27 - 10, 127); // Drive into corner
+//set_drive(27 - 10, 127); // Drive into corner
 long start = pros::millis();
 while (pros::millis() - start < 1500) {
-  chassis.drive_set(127, 127);
+  chassis.drive_set(80, 80);
   pros::delay(20);
 }
 //chassis.pid_wait_quick_chain();
 //pros::delay(200);
 chassis.pid_turn_set(45 * sgn, 127); // Turn to go to ladder
 chassis.pid_wait();
-set_drive(-48 - 5, 110); // Drive out of corner
+chassis.pid_drive_set(-10, 127); // Move back from corner
 chassis.pid_wait();
+pros::delay(300);
+set_drive(-53 + 1.5 + 10, 127); // Drive out of corner
+chassis.pid_wait_until(-52 + 1.5 + 10);
 
 
 chassis.pid_turn_set(-135 * sgn, 110);
-pros::delay(500);
+pros::delay(400);
 ChangeLBState(EXTENDED);
 chassis.pid_wait_quick();
 

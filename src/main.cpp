@@ -159,8 +159,8 @@ void autonomous() {
   //skills();
   //ringWalk(allianceColorBlue);
   //RingRush6(allianceColorBlue);
-  //stateSoloAwp(allianceColorBlue);
-  safeFourRing(allianceColorBlue);
+  stateSoloAwp(allianceColorBlue);
+  //safeFourRing(allianceColorBlue);
   //newMogoRush(allianceColorBlue);
   //barcbotsMogoRush(allianceColorBlue);
 
