@@ -63,13 +63,13 @@ void doColorSort() {
             ambientColorDiff = currentColorDiff;
         }
 
-        const int PROXIMITYDIFFREQUIRED = 50; // used to activate color sort as a prerequisite
-        const int PROXIMITYCUSHION = 23 + 3+4; // acts as an earlier activation for color sort
+        const int PROXIMITYDIFFREQUIRED = 50 - 10; // used to activate color sort as a prerequisite
+        const int PROXIMITYCUSHION = 30 + 7; // acts as an earlier activation for color sort
         const int COLORCUSHION = 5; // acts as a cushion for color detection
        
         if (ColorLoopActive) {
             if (curProximity - ambientProximity > PROXIMITYDIFFREQUIRED && !rightRingBeingSeen) { // ring detected
-                if (currentColorDiff - ambientColorDiff > 5 + 5) { // blue ring
+                if (currentColorDiff - ambientColorDiff > 5 + 2) { // blue ring
                     if (!allianceColorBlue && colorFiltrationActive) { // wrong color
                         cout << "BLUE DETECTED, DIFFERENCE: " + std::to_string(currentColorDiff) << "\n";
                         master.rumble(". .");
