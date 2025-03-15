@@ -5,7 +5,7 @@ using namespace std;
 bool ColorLoopActive = false;
 bool colorUntilActivated = false;
 double ambientColorDiff = -3.15; // TODO: NEEDS TO BE TUNED AT COMPETITION
-double ambientProximity = 80; // TODO: NEEDS TO BE TUNED AT COMPETITION
+double ambientProximity = 29; // TODO: NEEDS TO BE TUNED AT COMPETITION
 bool colorLoopStarted = false;
 int ringsSeen = 0;
 int colorUntilRings = 0;
@@ -22,7 +22,7 @@ long prevTime = 0;
 void initColorSort() {
     optical.set_led_pwm(100); // turn brightness from optical sensor to max
     pros::Task color_task(colorSortLoop); // start color sort task
-    optical.set_integration_time(10 - 5); // make optical sensor get measurements every 10 ms
+    optical.set_integration_time(10); // make optical sensor get measurements every 10 ms
 }
 
 
@@ -56,20 +56,20 @@ void doColorSort() {
         double blue_component = optical.get_rgb().blue;
         double currentColorDiff = blue_component - red_component;
         double curProximity = optical.get_proximity();
-        if (curProximity < ambientProximity && curProximity != 0) {
+        if (curProximity < ambientProximity) {
             ambientProximity = curProximity; // calibrate proximity
         }
-        if (fabs(curProximity - ambientProximity) <= 7) {
+        if (fabs(curProximity - ambientProximity) < 5) {
             ambientColorDiff = currentColorDiff;
         }
 
-        const int PROXIMITYDIFFREQUIRED = 40 + 15; // used to activate color sort as a prerequisite
-        const int PROXIMITYCUSHION = 21.5; // acts as an earlier activation for color sort
+        const int PROXIMITYDIFFREQUIRED = 50; // used to activate color sort as a prerequisite
+        const int PROXIMITYCUSHION = 23 + 3+4; // acts as an earlier activation for color sort
         const int COLORCUSHION = 5; // acts as a cushion for color detection
        
         if (ColorLoopActive) {
             if (curProximity - ambientProximity > PROXIMITYDIFFREQUIRED && !rightRingBeingSeen) { // ring detected
-                if (currentColorDiff - ambientColorDiff > 4.5 - 1) { // blue ring
+                if (currentColorDiff - ambientColorDiff > 5 + 5) { // blue ring
                     if (!allianceColorBlue && colorFiltrationActive) { // wrong color
                         cout << "BLUE DETECTED, DIFFERENCE: " + std::to_string(currentColorDiff) << "\n";
                         master.rumble(". .");
@@ -84,7 +84,7 @@ void doColorSort() {
                         }
                         //pros::delay(180);
                         setIntake(-127);
-                        pros::delay(200 - 50);
+                        pros::delay(200);
                         setIntake(127);
                         wrongColorDetected = false;
                     } else if (allianceColorBlue) { // right color
@@ -105,7 +105,7 @@ void doColorSort() {
                             }
                         }
                     }
-                } else if (currentColorDiff - ambientColorDiff < -4.5 + 1) { // red ring
+                } else if (currentColorDiff - ambientColorDiff < -5 - 5) { // red ring
                     if (allianceColorBlue && colorFiltrationActive)  { // wrong color
                         wrongColorDetected = true; // stop driver intake
                         master.rumble(". .");
@@ -117,10 +117,11 @@ void doColorSort() {
                             red_component = optical.get_rgb().red;
                             blue_component = optical.get_rgb().blue;
                             currentColorDiff = blue_component - red_component;
+                            pros::delay(10);
                         }
                         //pros::delay(180);
                         setIntake(-127);
-                        pros::delay(200 - 50);
+                        pros::delay(200);
                         setIntake(127);
                         wrongColorDetected = false;
                     } else if (!allianceColorBlue) { // right color
