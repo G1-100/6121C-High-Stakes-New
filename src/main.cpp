@@ -159,9 +159,10 @@ void autonomous() {
   //skills();
   //ringWalk(allianceColorBlue);
   //RingRush6(allianceColorBlue);
-  stateSoloAwp(allianceColorBlue);
+  //stateSoloAwp(allianceColorBlue);
+  //skillsMacro();
   //safeFourRing(allianceColorBlue);
-  //newMogoRush(allianceColorBlue);
+  newMogoRush(allianceColorBlue);
   //barcbotsMogoRush(allianceColorBlue);
 
   // ez::as::auton_selector.selected_auton_call();  // Calls selected auton from autonomous selector

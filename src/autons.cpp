@@ -522,14 +522,14 @@ int sgn=isBlue?1:-1;
  // pros::delay(500);
  // chassis.pid_turn_set(-150 * sgn); // Turn mogo to disrupt
  // chassis.pid_wait();
- set_drive(-13 - 3, 1500, 120); // Move back
- chassis.pid_wait();
+ set_drive(-16, 1500, 120); // Move back
+ chassis.pid_wait_until(-14);
  if (isBlue) {
   rightDoinker.toggle();
  } else {
   leftDoinker.toggle();
  }
- pros::delay(300);
+ pros::delay(300 - 150);
  set_drive(-7);
  chassis.pid_wait();
  if (isBlue) {
@@ -541,29 +541,29 @@ int sgn=isBlue?1:-1;
  
  chassis.pid_turn_set((74 + 5) * sgn, 90); // Turn to first mogo
  chassis.pid_wait();
- set_drive(-22, 2000, 0, 90); // Move to first mogo
+ set_drive(-22 - 1, 2000, 0, 90); // Move to first mogo
  chassis.pid_wait_until(-10);
  chassis.pid_speed_max_set(65);
- chassis.pid_wait_until(-20 + 2);
+ chassis.pid_wait_until(-20);
  mogoClamp.toggle(); // Clamp first mogo
- chassis.pid_wait();
+ chassis.pid_wait_until(-22);
  stopColorUntilFunction();
  intake.move(127);
- chassis.pid_turn_set((66 + 7) * sgn, 120); // Turn to second mogo
+ chassis.pid_turn_set((73) * sgn, 120); // Turn to second mogo
  chassis.pid_wait();
  set_drive(32 + 3.5, 2000, 65, 127); // Move to second mogo
  //chassis.pid_wait_until(15);
  //mogoClamp.toggle();
  chassis.pid_wait();
  
- chassis.pid_turn_set((-135) * sgn, 90); // Turn to drop mogo
+ chassis.pid_turn_set((-100) * sgn, 90); // Turn to drop mogo
  chassis.pid_wait();
  mogoClamp.toggle(); // Drop mogo
  intake.move(127);
- chassis.pid_drive_set(9.5, 127); // move out from first mogo
+ chassis.pid_drive_set(9.5 - 3, 127); // move out from first mogo
  chassis.pid_wait();
  colorFiltrationActive = true;
- chassis.pid_turn_set((132) * sgn, 90); // Turn to second mogo
+ chassis.pid_turn_set((132 - 15) * sgn, 90); // Turn to second mogo
  chassis.pid_wait();
  set_drive(-25 + 6, 2000); // Move to second mogo
  chassis.pid_wait_until(-10);
@@ -579,33 +579,29 @@ int sgn=isBlue?1:-1;
  // chassis.pid_wait();
  //allianceColorBlue = !allianceColorBlue;
  //startColorUntil(1);
- intake.move(0);
- set_drive(35);
+ set_drive(38 + 5);
   chassis.pid_wait_until(10);
   //chassis.pid_speed_max_set(60);
  chassis.pid_wait();
- chassis.pid_turn_set((35) * sgn, 90); // Turn to drop mogo
-  chassis.pid_wait_quick_chain();
-  intake.move(-127);
-  chassis.pid_turn_set(135, 127); // move out from first mogo
-  chassis.pid_wait_quick_chain();
+ 
   intake.move(127);
+  pros::delay(100);
 
  //chassis.pid_targets_reset();
  //setDrive(75, 175);
  long startMillis = pros::millis();
- while (pros::millis() - startMillis < 1300) {
+ while (pros::millis() - startMillis < 1000 - 100) {
    chassis.drive_set(75, 75);
    pros::delay(10);
  }
  //setDrive(0, 0);
  //pros::delay(200);
- chassis.pid_drive_set(-10, 127);
- chassis.pid_wait();
+ chassis.pid_drive_set(-11, 127);
+ chassis.pid_wait_until(-10);
  //intake.move(-127);
  chassis.pid_turn_set(256 * sgn, 127);
  chassis.pid_wait();
- set_drive(40 + 0.5);
+ set_drive(40);
  //allianceColorBlue = !allianceColorBlue;
  chassis.pid_wait();
  chassis.pid_turn_set((-135 + 3) * sgn, 90);
