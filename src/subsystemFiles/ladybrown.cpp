@@ -7,7 +7,7 @@
 #include "main.h"
 #include <string>
 double RESTANGLE = 0; // actual -30
-double STOP1 = 21.5 + 1; // 42.57
+double STOP1 = 22.5; // 42.57
 double STOP1_5 = STOP1 + 30;
 double STOP1_75 = STOP1 + 110;
 double STOP2 = 190 - 30; // angle of stop 2 - 130
@@ -124,6 +124,7 @@ void tempFunction(double state, double stop,
 
 
 void doLBAmbientAdjust(double curAngle) {
+    tempFunction(REST, 0, curAngle, 0.5, -0.5, -5, -5, -5);
     tempFunction(PROPPED, STOP1, curAngle, 0.5, -0.5, 8, -2.5, 1);
     tempFunction(SEMIEXTENDED, STOP1_5, curAngle, 10, -10, 13, -4, 2);
     tempFunction(EXTENDED, STOP2, curAngle, 5, -10, 10, -5, 0);

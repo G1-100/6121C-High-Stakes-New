@@ -40,9 +40,9 @@ void skills() {
     chassis.pid_turn_set(90, 90); // turn to two rings
     chassis.pid_wait();
 
-    chassis.pid_drive_set(16 + 0.5, 110); // move to first ring
+    chassis.pid_drive_set(16.5 + 1, 110); // move to first ring
     chassis.pid_wait();
-    chassis.pid_turn_set(116.5 - 1, 90); // turn to corner ring stack
+    chassis.pid_turn_set(115.5 - 0.5, 90); // turn to corner ring stack
     chassis.pid_wait();
     chassis.pid_drive_set(79 - 25 + 2, 127); // move to next two rings in corner 2 stack
     chassis.pid_wait_until(45 - 15);
@@ -202,7 +202,7 @@ void skills() {
     chassis.pid_wait();
     ChangeLBState(REST); // retract ladybrown
     setIntake(127);
-    chassis.pid_turn_set(-90 + 1, 127); // turn to three rings
+    chassis.pid_turn_set(-89 - 0.5, 127); // turn to three rings
     chassis.pid_wait();
     std::cout << "POSITION: " << chassis.odom_x_get() << " " << chassis.odom_y_get() << " " << chassis.odom_theta_get() << std::endl;
 
@@ -289,7 +289,7 @@ void skills() {
 
     chassis.pid_turn_set(-40, 90); // turn to mogo
     chassis.pid_wait();
-    chassis.pid_drive_set(-35 - 2, 2000); // move to mogo
+    chassis.pid_drive_set(-35 - 0.25, 2000); // move to mogo
     //chassis.pid_odom_set({{44.13 - 4, 9 + 3}, rev, 110});
     chassis.pid_wait_until(-14);
     chassis.pid_speed_max_set(70);

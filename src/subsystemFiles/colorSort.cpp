@@ -56,15 +56,15 @@ void doColorSort() {
         double blue_component = optical.get_rgb().blue;
         double currentColorDiff = blue_component - red_component;
         double curProximity = optical.get_proximity();
-        if (curProximity < ambientProximity) {
+        if (curProximity < ambientProximity && curProximity != 0) {
             ambientProximity = curProximity; // calibrate proximity
         }
         if (fabs(curProximity - ambientProximity) < 5 + 4) { // calibrate color difference
             ambientColorDiff = currentColorDiff;
         }
 
-        const int PROXIMITYDIFFREQUIRED = 40 + 50; // used to activate color sort as a prerequisite
-        const int PROXIMITYCUSHION = 32 - 8; // acts as an earlier activation for color sort
+        const int PROXIMITYDIFFREQUIRED = 75 - 20; // used to activate color sort as a prerequisite
+        const int PROXIMITYCUSHION = 26.75; // acts as an earlier activation for color sort
         const int COLORCUSHION = 5; // acts as a cushion for color detection
        
         if (ColorLoopActive) {
