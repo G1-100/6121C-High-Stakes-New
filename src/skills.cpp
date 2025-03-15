@@ -282,18 +282,18 @@ void skills() {
     pros::delay(150 - 50);
     startColorUntil(1);
     intake.move(110);
-    chassis.pid_drive_set(6 + 3, 110); // move in a little more
+    chassis.pid_drive_set(9 - 2, 110); // move in a little more
     chassis.pid_wait();
     // chassis.pid_drive_set(-5, 110); // move back
     // chassis.pid_wait();
 
-    chassis.pid_turn_set(-45 + 7 - 2, 90); // turn to mogo
+    chassis.pid_turn_set(-40, 90); // turn to mogo
     chassis.pid_wait();
-    chassis.pid_drive_set(-34.5 - 0.5, 2000); // move to mogo
+    chassis.pid_drive_set(-35 - 2, 2000); // move to mogo
     //chassis.pid_odom_set({{44.13 - 4, 9 + 3}, rev, 110});
     chassis.pid_wait_until(-14);
     chassis.pid_speed_max_set(70);
-    chassis.pid_wait_until(-30);
+    chassis.pid_wait_until(-33 - 2);
     mogoClamp.toggle();
     std::cout << "POSITION: " << chassis.odom_x_get() << " " << chassis.odom_y_get() << " " << chassis.odom_theta_get() << std::endl;
 

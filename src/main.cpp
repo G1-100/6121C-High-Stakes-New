@@ -154,15 +154,15 @@ void autonomous() {
 	ladybrown1.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
   ladybrown2.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
   ladybrown2.tare_position();
-  
+
   //pros::Task logger_task(logger);
-  //skills();
+  skills();
   //ringWalk(allianceColorBlue);
   //RingRush6(allianceColorBlue);
   //stateSoloAwp(allianceColorBlue);
   //skillsMacro();
   //safeFourRing(allianceColorBlue);
-  newMogoRush(allianceColorBlue);
+  //newMogoRush(allianceColorBlue);
   //barcbotsMogoRush(allianceColorBlue);
 
   // ez::as::auton_selector.selected_auton_call();  // Calls selected auton from autonomous selector
