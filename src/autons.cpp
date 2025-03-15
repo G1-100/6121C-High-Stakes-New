@@ -1143,9 +1143,10 @@ LBState = PROPPED; // Prop LB for preload
 //LBRotation.set_position(4400);
 ladybrown2.set_zero_position(-46 + 5);
 ChangeLBState(EXTENDED); // Extend LB for AWS
-pros::delay(200 - 25);
+pros::delay(200);
 intake.move(-127);
 pros::delay(200);
+ChangeLBState(EXTENDED);
 
 set_drive(-11 -1-1.5, 2000, 80); // move back from AWS
 chassis.pid_wait();
@@ -1188,20 +1189,20 @@ while (pros::millis() - startMillis < 1500 + 100) {
 //chassis.pid_drive_set(40 + 4, 127, false, false); // move to corner
 //chassis.pid_wait_quick_chain();
 //pros::delay(1000);
-set_drive(-5);
+set_drive(-5); // move out of corner
 chassis.pid_wait_until(-4);
-intakeLift.toggle();
-chassis.pid_wait();
-pros::delay(200);
-set_drive(10);
+intakeLift.toggle(); // raise intake
+chassis.pid_wait_quick();
+pros::delay(200 - 100); // wait a bit
+set_drive(10); // go back into corner
 chassis.pid_wait();
 intakeUnstuckActivated = false;
 intakeLift.toggle();
 set_drive(-16.5 - 28.75 - 1); // move back
-chassis.pid_wait();
+chassis.pid_wait_quick();
 intakeUnstuckActivated = true;
 
-chassis.pid_turn_set(35 * sgn, 90); // turn to middle stack
+chassis.pid_turn_set(isBlue?(35 + 8):-35, 90); // turn to middle stack
 chassis.pid_wait();
 
 set_drive(51 - 8); // move to middle stack
@@ -1210,7 +1211,7 @@ intakeUnstuckActivated = false;
 
 chassis.pid_speed_max_set(50);
 intakeLift.toggle();
-chassis.pid_wait();
+chassis.pid_wait_quick();
 intakeLift.toggle();
 
 
