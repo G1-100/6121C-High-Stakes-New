@@ -1648,14 +1648,16 @@ void barcbotsMogoRush(bool isBlue) {
   chassis.odom_xyt_set(0, 0, (-113) * sgn); // Set position
 
 
-  set_drive(33, 2500, 127, 127); // Move to first mogo
-  // chassis.pid_wait_until(0.5);
+  ChangeLBState(SEMIEXTENDED); // Move LB out of way
+  intake.move(127);
+  set_drive(33 + 1.5, 2500, 127, 127); // Move to first mogo
 
-  // intake.move(-127); // outtake
 
   startColorUntil(1); // color sort the rings
   //pros::delay(200);
   intake.move(127); // intake color sorted rings
+  rightDoinker.toggle(); // toggle right doinker to push red ring towards bot
+
 
   chassis.pid_wait_until(12);
   leftDoinker.toggle(); // doinker down to get mogo
@@ -1663,38 +1665,48 @@ void barcbotsMogoRush(bool isBlue) {
   chassis.pid_wait_until(28.5 + 1.5);
   leftDoinker.toggle(); // Lifts doinker up to mogo so it holds the mogo
 
-  chassis.pid_wait_until(33 - 1.5);
+  chassis.pid_wait_until(33 - 1.5 + 1.5);
 
 // Uncomment to turn this into a disrupt
   // pros::delay(500);
   // chassis.pid_turn_set(-150 * sgn); // Turn mogo to disrupt
   // chassis.pid_wait();
 
-  set_drive(-16 - 2, 1500, 120); // Move back
+  set_drive(-18 - 1.5, 1500, 120); // Move back with mogo
+  
   chassis.pid_wait();
   leftDoinker.toggle(); // releases mogo from doinker
   pros::delay(300);
-  set_drive(-7, 1200, 111, 127); // go backwards to pick up mogo later
+  set_drive(-7, 1200, 111, 127); // go backwards to go to other mogo
+  chassis.pid_wait_until(-3);
+  rightDoinker.toggle();
+  chassis.pid_wait_until(-5);
+  intake.move(0);
   chassis.pid_wait();
   leftDoinker.toggle(); // puts doinker back up
   std::cout <<"CUR THETA: " << chassis.odom_theta_get() << std::endl;
   
-  chassis.pid_turn_set((135 - 5) * sgn, 90); // Turn to first mogo
+
+  chassis.pid_turn_set((135 -  5) * sgn, 90); // Turn to first mogo
   chassis.pid_wait();
   set_drive(-22, 2000); // Move to first mogo
   chassis.pid_wait_until(-22 + 2);
   mogoClamp.toggle(); // Clamp first mogo
-  chassis.pid_wait();
-  stopColorUntilFunction();
   intake.move(127);
-  chassis.pid_turn_set(-135 * sgn, 90);
   chassis.pid_wait();
+  pros::delay(200);
   mogoClamp.toggle();
-  chassis.pid_drive_set(7, 110);
-  chassis.pid_wait();
+  stopColorUntilFunction();
+
+  // chassis.pid_turn_set(-135 * sgn, 90);
+  // chassis.pid_wait();
+  // mogoClamp.toggle();
+  // chassis.pid_drive_set(7, 110);
+  // chassis.pid_wait();
+
   chassis.pid_turn_set((-20 - 15) * sgn, 90); // Turn to second mogo
   chassis.pid_wait();
-  set_drive(-30, 2000, 65, 127); // Move to second mogo
+  set_drive(-30 - 3, 2000, 65, 127); // Move to second mogo
   chassis.pid_wait_until(-20);
   mogoClamp.toggle();
   chassis.pid_wait();
@@ -1717,15 +1729,15 @@ void barcbotsMogoRush(bool isBlue) {
   }
   //setDrive(0, 0);
   //pros::delay(200);
-  chassis.pid_drive_set(-10, 127);
+  chassis.pid_drive_set(-10, 127); // Drive out of corner
   chassis.pid_wait();
-  chassis.pid_turn_set(256 * sgn, 127);
+  chassis.pid_turn_set(256 * sgn, 127); // Turn to drive towards wall stake
   chassis.pid_wait();
-  set_drive(42);
+  set_drive(42); // Drive to wall stake
   chassis.pid_wait();
-  chassis.pid_turn_set((-135+10) * sgn, 90);
+  chassis.pid_turn_set((-135 - 5) * sgn, 90); // Turn to wall stake
   chassis.pid_wait();
-  ChangeLBState(EXTENDED); // Touch ladder
+  ChangeLBState(EXTENDED); // Get wall stake
   set_drive(2);
   chassis.pid_wait();
 }

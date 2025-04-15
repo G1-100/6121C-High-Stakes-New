@@ -17,7 +17,7 @@ double STOP1_75 = STOP1 + 110;
 // Extended
 double STOP2 = 190 - 30 + 2; // angle of stop 2 - 130
 // Almostfullextended + 20, Fullextended
-double STOP3 = 250 - 60 + 1 + 3;
+double STOP3 = 190 + 1 + 3;
 
 // double STOP1_75 = STOP1 + 110 - 2;
 // double STOP2 = 190 - 45 + 15; // angle of stop 2 - 130
