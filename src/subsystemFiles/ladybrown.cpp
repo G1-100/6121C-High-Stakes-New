@@ -9,7 +9,7 @@
 double RESTANGLE = 0; // actual -30
 
 // Propped
-double STOP1 = 22 - 0.5; // 42.57
+double STOP1 = 21.5 + 3; // 42.57
 // Semiextended
 double STOP1_5 = STOP1 + 30;
 // DescoreExtended
@@ -312,8 +312,8 @@ void LBRetract() {
         if (power > 127) {
             power = 127;
         }
-        ladybrown1.move(-127);
-        ladybrown2.move(-127);
+        ladybrown1.move(-power);
+        ladybrown2.move(-power);
         //curAngle = -LBRotation.get_position() / 100.0;
         curAngle = ladybrown2.get_position() / 3.0;
         pros::delay(10);
@@ -326,8 +326,8 @@ void LBRetract() {
         }
     }
     while (fabs(ladybrown2.get_actual_velocity()) > 1 && pros::millis() - startTime < 2000) {
-        ladybrown1.move(-20 - 20);
-        ladybrown2.move(-20 - 20);
+        ladybrown1.move(-40 + 30);
+        ladybrown2.move(-40 + 30);
         pros::delay(10);
     }
     ladybrown1.move(0);
