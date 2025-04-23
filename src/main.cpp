@@ -24,7 +24,7 @@ void initialize() {
 	LBRotation.reset_position();
   ladybrown2.tare_position();
 	optical.set_led_pwm(100);
-	allianceColorBlue = false; // VERY IMPORTANT
+	allianceColorBlue = true; // VERY IMPORTANT
 	initColorSort();
 	std::cout << "initialize done" << "\n";
 	initializeSelector();
@@ -160,9 +160,9 @@ void autonomous() {
   //ringWalk(allianceColorBlue);
   //RingRush6(allianceColorBlue);
   //stateSoloAwp(allianceColorBlue);
-  //safeFourRing(allianceColorBlue);
+  safeFourRing(allianceColorBlue);
   //newMogoRush(allianceColorBlue);
-  barcbotsMogoRush(allianceColorBlue);
+  //barcbotsMogoRush(allianceColorBlue);
 
   // ez::as::auton_selector.selected_auton_call();  // Calls selected auton from autonomous selector
 }
