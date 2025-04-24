@@ -63,3 +63,15 @@ void ringWalk(bool isBlue);
 void positiveSideQuals(bool isRed);
 
 void barcbotsMogoRush(bool isBlue);
+
+/**
+ * @brief Run the field mapping routine
+ * This function will drive the robot around the field perimeter and collect mapping data
+ */
+void map_field_routine();
+
+/**
+ * @brief Check for mapping mode button press and run mapping routine
+ * Call this function in your autonomous routine to enable mapping mode
+ */
+void check_mapping_mode();
