@@ -24,7 +24,7 @@ void initialize() {
 	LBRotation.reset_position();
   ladybrown2.tare_position();
 	optical.set_led_pwm(100);
-	allianceColorBlue = true; // VERY IMPORTANT
+	allianceColorBlue = false; // VERY IMPORTANT
 	initColorSort();
 	std::cout << "initialize done" << "\n";
 	initializeSelector();
