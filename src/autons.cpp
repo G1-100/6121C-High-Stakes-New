@@ -1,7 +1,7 @@
 #include "main.h"
 #include "pros/motors.h"
 #include "pros/rtos.hpp"
-#include "lemlib/api.hpp"
+#include "EZ-Template/api.hpp"
 
 /////
 // For installation, upgrading, documentations, and tutorials, check out our website!
@@ -26,7 +26,6 @@ void default_constants() {
   // P, I, D, and Start I
   chassis.pid_drive_constants_set(16.0, 0.0, 100.0);         // ez::fwd/rev constants, used for odom and non odom motions
   chassis.pid_heading_constants_set(9.5, 0.0, 20);        // Holds the robot straight while going forward without odom
-  // WITH MOGO: chassis.pid_turn_constants_set(4.2 + 0.5, -0.05, 30, 15.0);     // Turn in place constants, old are 3.05, 0.05, 25.5, 15, negative kI are 2.5, -0.1, 10, 15
   chassis.pid_turn_constants_set(3.7, 0, 20, 15.0);     // Turn in place constants, old are 3.05, 0.05, 25.5, 15, negative kI are 2.5, -0.1, 10, 15
   chassis.pid_swing_constants_set(6.0, 0.0, 65.0);           // Swing constants
   chassis.pid_odom_angular_constants_set(6.5, 0.0, 52.5);    // Angular control for odom motions
