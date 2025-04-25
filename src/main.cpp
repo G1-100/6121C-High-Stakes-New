@@ -1,4 +1,11 @@
 #include "main.h"
+#include <vector>
+#include <random>
+#include <cmath>
+#include "lemlib/api.hpp"
+#include "pros/misc.hpp"
+#include "pros/rtos.hpp"
+#include "subsystemHeaders/globals.hpp"
 
 /////
 // For installation, upgrading, documentations, and tutorials, check out our website!
@@ -60,6 +67,9 @@ void initialize() {
   std::cout << "offset: " << offset << "\n";
   //ez::as::initialize();
   master.rumble(chassis.drive_imu_calibrated() ? "." : "---");
+
+  // Start the MCL task
+  pros::Task mcl_task(mclTask);
 }
 
 /**
