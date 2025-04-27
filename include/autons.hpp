@@ -63,3 +63,5 @@ void ringWalk(bool isBlue);
 void positiveSideQuals(bool isRed);
 
 void barcbotsMogoRush(bool isBlue);
+
+void worldsMogoRush(bool isBlue);

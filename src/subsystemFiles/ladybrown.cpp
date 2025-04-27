@@ -9,13 +9,13 @@
 double RESTANGLE = 0; // actual -30
 
 // Propped
-double STOP1 = 21.5 + 3; // 42.57
+double STOP1 = 24.5 + 1.5; // 42.57
 // Semiextended
 double STOP1_5 = STOP1 + 30;
 // DescoreExtended
 double STOP1_75 = STOP1 + 110;
 // Extended
-double STOP2 = 190 - 30 + 2; // angle of stop 2 - 130
+double STOP2 = 190 - 28 + 5; // angle of stop 2 - 130
 // Almostfullextended + 20, Fullextended
 double STOP3 = 190 + 1 + 3;
 
@@ -167,7 +167,7 @@ void LBExtend(double point) {
         timeOut = 1500;
     } else if (point == 2) {
         GOALANGLE = STOP2;
-        power = 100;
+        power = 127;
         negPower = -10;
         angleChange = STOP2 - STOP1;
         iterationsRequired = 1;
