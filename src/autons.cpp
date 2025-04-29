@@ -1827,55 +1827,70 @@ void worldsMogoRush(bool isBlue) {
   }
   std::cout <<"CUR THETA: " << chassis.odom_theta_get() << std::endl;
   
-  chassis.pid_turn_set((-55) * sgn, 90); // Turn to first ring
+  chassis.pid_turn_set((-57) * sgn, 90); // Turn to first ring
   chassis.pid_wait();
-  intake.move(95);
-  set_drive(17); // Move to first ring
-  chassis.pid_wait();
+  intake.move(127);
+  set_drive(17 - 1); // Move to first ring
+  chassis.pid_wait_until(16);
   chassis.pid_turn_set(90 * sgn, 90); // Turn to first mogo
+  chassis.pid_wait_until(2);
+  intake.move(80);
   chassis.pid_wait();
   set_drive(-17 + 5, 2000, 0, 80); // Move to first mogo
   chassis.pid_wait_until(-7);
   chassis.pid_speed_max_set(70);
-  chassis.pid_wait_until(-15 + 5);
+  chassis.pid_wait_until(-10 + 2);
   mogoClamp.toggle(); // Clamp first mogo
   intake.move(127);
-  chassis.pid_wait();
-  chassis.pid_drive_set(40, 127); // Move to push ring
-  chassis.pid_wait_until(13);
+  stopColorUntilFunction();
+  chassis.pid_wait_until(-11);
+  chassis.pid_drive_set(40 + 3, 127); // Move to push ring
+  intake.move(127);
+  chassis.pid_wait_until(13 + 2);
   mogoClamp.toggle(); // Release mogo
   intake.move(-127);
   chassis.pid_wait();
-  chassis.pid_drive_set(-5, 127); // Move back a bit
+  //chassis.pid_drive_set(-5, 127); // Move back a bit
+  //chassis.pid_wait();
+  chassis.pid_turn_set((135 - 8) * sgn, 90); // Turn to second mogo
   chassis.pid_wait();
-  chassis.pid_turn_set(135 * sgn, 90); // Turn to second mogo
-  chassis.pid_wait();
-  set_drive(-30 - 5, 2000, 65, 90); // Move to second mogo
+  set_drive(-35 - 3, 2000, 65, 90); // Move to second mogo
   chassis.pid_wait_until(-10);
   chassis.pid_speed_max_set(60);
-  chassis.pid_wait_until(-30);
+  chassis.pid_wait_until(-30 - 3);
   mogoClamp.toggle(); // Clamp second mogo
   chassis.pid_wait();
+  intake.move(127);
+  startColorUntil(1);
+  chassis.pid_turn_set(135.5 * sgn, 90); // Turn to corner
+  chassis.pid_wait_quick_chain();
+  intake.move(127);
   set_drive(30);
   chassis.pid_wait_quick_chain();
+  intake.move(127);
+  intakeUnstuckActivated =false;
   long startMillis = pros::millis();
-  while (pros::millis() - startMillis < 1000) {
+  while (pros::millis() - startMillis < 1000 + 500) {
    chassis.drive_set(80, 80);
    pros::delay(10);
   }
 
   chassis.pid_drive_set(-10, 127);
- chassis.pid_wait();
- //intake.move(-127);
+  intake.move(100);
+ chassis.pid_wait_until(-9);
+ intakeUnstuckActivated = true;
  chassis.pid_turn_set(256 * sgn, 127);
  chassis.pid_wait();
- set_drive(40 + 0.5);
+ set_drive(40.5 - 1.5);
+ chassis.pid_wait_until(5);
+ stopColorUntilFunction();
+  intake.move(127);
  //allianceColorBlue = !allianceColorBlue;
  chassis.pid_wait();
  chassis.pid_turn_set((-135 + 3) * sgn, 90);
  chassis.pid_wait();
  ChangeLBState(EXTENDED);
- set_drive(4);
+ set_drive(4 - 1);
  chassis.pid_wait();
 
 
