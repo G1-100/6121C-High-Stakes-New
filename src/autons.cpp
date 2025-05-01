@@ -1800,7 +1800,7 @@ void worldsMogoRush(bool isBlue) {
   }
   pros::delay(150);
   intake.move(0);
-  chassis.pid_wait_until(27 + 3.5);
+  chassis.pid_wait_until(30.5 - 0.75);
   if (isBlue) {
    rightDoinker.toggle();
   } else {
@@ -1830,13 +1830,15 @@ void worldsMogoRush(bool isBlue) {
   chassis.pid_turn_set((-57) * sgn, 90); // Turn to first ring
   chassis.pid_wait();
   intake.move(127);
-  set_drive(17 - 1); // Move to first ring
+  set_drive(17 - 1+2); // Move to first ring
   chassis.pid_wait_until(16);
+  set_drive(-2,127); // Move back a bit to intake ring
+  chassis.pid_wait_until(-1);
   chassis.pid_turn_set(90 * sgn, 90); // Turn to first mogo
   chassis.pid_wait_until(2);
   intake.move(80);
   chassis.pid_wait();
-  set_drive(-17 + 5, 2000, 0, 80); // Move to first mogo
+  set_drive(-17 + 5-0.5-2, 2000, 0, 80); // Move to first mogo
   chassis.pid_wait_until(-7);
   chassis.pid_speed_max_set(70);
   chassis.pid_wait_until(-10 + 2);
@@ -1846,15 +1848,16 @@ void worldsMogoRush(bool isBlue) {
   chassis.pid_wait_until(-11);
   chassis.pid_drive_set(40 + 3, 127); // Move to push ring
   intake.move(127);
-  chassis.pid_wait_until(13 + 2);
-  mogoClamp.toggle(); // Release mogo
+  chassis.pid_wait_until(15);
   intake.move(-127);
+  chassis.pid_wait_until(25);
+  mogoClamp.toggle(); // Release mogo
   chassis.pid_wait();
   //chassis.pid_drive_set(-5, 127); // Move back a bit
   //chassis.pid_wait();
-  chassis.pid_turn_set((135 - 8) * sgn, 90); // Turn to second mogo
+  chassis.pid_turn_set((135 - 8+0.5) * sgn, 90); // Turn to second mogo
   chassis.pid_wait();
-  set_drive(-35 - 3, 2000, 65, 90); // Move to second mogo
+  set_drive(-35 - 3-2, 2000, 65, 90); // Move to second mogo
   chassis.pid_wait_until(-10);
   chassis.pid_speed_max_set(60);
   chassis.pid_wait_until(-30 - 3);
@@ -1862,10 +1865,10 @@ void worldsMogoRush(bool isBlue) {
   chassis.pid_wait();
   intake.move(127);
   startColorUntil(1);
-  chassis.pid_turn_set(135.5 * sgn, 90); // Turn to corner
+  chassis.pid_turn_set((135.5-5+3) * sgn, 90); // Turn to corner
   chassis.pid_wait_quick_chain();
   intake.move(127);
-  set_drive(30);
+  set_drive(30+1);
   chassis.pid_wait_quick_chain();
   intake.move(127);
   intakeUnstuckActivated =false;
@@ -1875,7 +1878,13 @@ void worldsMogoRush(bool isBlue) {
    pros::delay(10);
   }
 
-  chassis.pid_drive_set(-10, 127);
+  chassis.pid_drive_set(-10-30, 127);
+  chassis.pid_wait_until(-39);
+  chassis.pid_turn_set(225-5,127);
+  chassis.pid_wait();
+  chassis.pid_drive_set(40-4-2+1,127);
+  chassis.pid_wait();
+  ChangeLBState(EXTENDED);/*
   intake.move(100);
  chassis.pid_wait_until(-9);
  intakeUnstuckActivated = true;
@@ -1891,7 +1900,7 @@ void worldsMogoRush(bool isBlue) {
  chassis.pid_wait();
  ChangeLBState(EXTENDED);
  set_drive(4 - 1);
- chassis.pid_wait();
+ chassis.pid_wait();*/
 
 
 }
