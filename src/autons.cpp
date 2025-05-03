@@ -1594,18 +1594,19 @@ mogoClamp.toggle(); // get mogo
 chassis.pid_wait_until(-29.5 + 2);
 
 
+ChangeLBState(REST);
 chassis.pid_turn_set((-49 + 3) * sgn, 90); // Turn to center line 2 stacks, first 2 stack there
 chassis.pid_wait();
 intake.move_voltage(12000);
 intake.move_voltage(12000);
-set_drive(19 + 1, 1500, 110); // intake ring
+set_drive(19 - 1, 1500, 110); // intake ring
 chassis.pid_wait_quick();
 // pros::delay(300);
 
 // Code for getting other ring in center 2 stacks
-chassis.pid_turn_set(-(10 + 2) * sgn, 127);  // turns to other 2 stack in middle 2 stacks
+chassis.pid_turn_set((-10 - 4) * sgn, 127);  // turns to other 2 stack in middle 2 stacks
 chassis.pid_wait();
-set_drive(15.5 - 2.5, 2000, 50, 120); // drive to other 2 stack
+set_drive(15.5, 2000, 50, 120); // drive to other 2 stack
 chassis.pid_wait();
 chassis.pid_turn_set(-15 * sgn, 120); // turn to other 2 stack
 chassis.pid_wait();
@@ -1623,6 +1624,7 @@ intake.move(0);
 
 chassis.pid_turn_set(50 * sgn, 127); 
 chassis.pid_wait_quick();
+startColorUntil(1);
 set_drive(19 - 4, 2000, 50, 120); 
 chassis.pid_wait_until(2);
 intake.move(127);
@@ -1646,7 +1648,7 @@ while (pros::millis() - start < 1500) {
 //pros::delay(200);
 chassis.pid_turn_set(45 * sgn, 127); // Turn to go to ladder
 chassis.pid_wait();
-set_drive(-48 - 5, 110); // Drive out of corner
+set_drive(-52, 110); // Drive out of corner
 chassis.pid_wait();
 
 
