@@ -157,13 +157,13 @@ void autonomous() {
   
   //pros::Task logger_task(logger);
   //skills();
-  //ringWalk(allianceColorBlue);
+  ringWalk(allianceColorBlue);
   //RingRush6(allianceColorBlue);
   //stateSoloAwp(allianceColorBlue);
   //safeFourRing(allianceColorBlue);
   //newMogoRush(allianceColorBlue);
   //barcbotsMogoRush(allianceColorBlue);
-  worldsMogoRush(allianceColorBlue);
+  //worldsMogoRush(allianceColorBlue);
 
   // ez::as::auton_selector.selected_auton_call();  // Calls selected auton from autonomous selector
 }
