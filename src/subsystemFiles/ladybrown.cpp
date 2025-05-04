@@ -9,9 +9,9 @@
 double RESTANGLE = 0; // actual -30
 
 // Propped
-double STOP1 = 24.5 + 1.5; // 42.57
+double STOP1 = 26 + 1; // 42.57
 // Semiextended
-double STOP1_5 = STOP1 + 30;
+double STOP1_5 = STOP1 + 45;
 // DescoreExtended
 double STOP1_75 = STOP1 + 110;
 // Extended

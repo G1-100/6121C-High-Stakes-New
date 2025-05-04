@@ -1850,12 +1850,12 @@ void worldsMogoRush(bool isBlue) {
   intake.move(127);
   chassis.pid_wait_until(15);
   intake.move(-127);
-  chassis.pid_wait_until(25);
+  chassis.pid_wait_until(25 - 5);
   mogoClamp.toggle(); // Release mogo
   chassis.pid_wait();
   //chassis.pid_drive_set(-5, 127); // Move back a bit
   //chassis.pid_wait();
-  chassis.pid_turn_set((135 - 8+0.5) * sgn, 90); // Turn to second mogo
+  chassis.pid_turn_set((135 - 7.5 + 1) * sgn, 90); // Turn to second mogo
   chassis.pid_wait();
   set_drive(-35 - 3-2, 2000, 65, 90); // Move to second mogo
   chassis.pid_wait_until(-10);
@@ -1878,8 +1878,8 @@ void worldsMogoRush(bool isBlue) {
    pros::delay(10);
   }
 
-  chassis.pid_drive_set(-10-30, 127);
-  chassis.pid_wait_until(-39);
+  chassis.pid_drive_set(-40 + 3, 127);
+  chassis.pid_wait_until(-39 + 3);
   chassis.pid_turn_set(225-5,127);
   chassis.pid_wait();
   chassis.pid_drive_set(40-4-2+1,127);

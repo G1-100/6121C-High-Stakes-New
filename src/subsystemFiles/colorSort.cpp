@@ -64,12 +64,12 @@ void doColorSort() {
         }
 
         const int PROXIMITYDIFFREQUIRED = 20 + 20; // used to activate color sort as a prerequisite
-        const int PROXIMITYCUSHION = 31 + 0.5; // acts as an earlier activation for color sort
+        const int PROXIMITYCUSHION = 31.5 + 0.5 - 3 - 1.5; // acts as an earlier activation for color sort
         const int COLORCUSHION = 5; // acts as a cushion for color detection
        
         if (ColorLoopActive) {
             if (curProximity - ambientProximity > PROXIMITYDIFFREQUIRED && !rightRingBeingSeen) { // ring detected
-                if (currentColorDiff - ambientColorDiff > 4.5) { // blue ring
+                if (currentColorDiff - ambientColorDiff > 4.5 + 3) { // blue ring
                     if (!allianceColorBlue && colorFiltrationActive) { // wrong color
                         cout << "BLUE DETECTED, DIFFERENCE: " + std::to_string(currentColorDiff) << "\n";
                         master.rumble(". .");
@@ -105,7 +105,7 @@ void doColorSort() {
                             }
                         }
                     }
-                } else if (currentColorDiff - ambientColorDiff < -4.5) { // red ring
+                } else if (currentColorDiff - ambientColorDiff < -4.5 - 3) { // red ring
                     if (allianceColorBlue && colorFiltrationActive)  { // wrong color
                         wrongColorDetected = true; // stop driver intake
                         master.rumble(". .");
