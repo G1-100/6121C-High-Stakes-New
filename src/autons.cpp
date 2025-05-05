@@ -1599,6 +1599,7 @@ chassis.pid_turn_set((-49 + 3) * sgn, 90); // Turn to center line 2 stacks, firs
 chassis.pid_wait();
 intake.move_voltage(12000);
 intake.move_voltage(12000);
+stopColorUntilFunction();
 set_drive(19 - 1, 1500, 110); // intake ring
 chassis.pid_wait_quick();
 // pros::delay(300);
@@ -1624,31 +1625,45 @@ intake.move(0);
 
 chassis.pid_turn_set(50 * sgn, 127); 
 chassis.pid_wait_quick();
-startColorUntil(1);
-set_drive(19 - 4, 2000, 50, 120); 
+//startColorUntil(1);
+set_drive(15 - 1, 2000, 50, 120); // intake 4th two stakc
 chassis.pid_wait_until(2);
 intake.move(127);
-chassis.pid_wait();
-pros::delay(300 - 150);
-set_drive(20 + 4, 2000, 50, 120); 
-chassis.pid_wait();
-//pros::delay(500);
-
-// Get corner here
-intake.move(127);
-chassis.pid_turn_set((60 + 10)*sgn, 90); // Turn to corner
 chassis.pid_wait_quick_chain();
-set_drive(27 - 10, 127); // Drive into corner
+//pros::delay(300 - 150);
+chassis.pid_drive_set(-5, 127);
+chassis.pid_wait_quick_chain();
+chassis.pid_turn_chain_constant_set(2);
+chassis.pid_drive_chain_constant_set(2);
+chassis.pid_turn_set(90 * sgn, 127); // turn to corner
+chassis.pid_wait_quick_chain();
+chassis.pid_drive_set(18 + 2, 127); // drive to corner
+chassis.pid_wait_quick_chain();
+intake.move(127);
+chassis.pid_turn_set(52 * sgn, 127); // turn to corner
+chassis.pid_wait_quick_chain();
+// set_drive(20 + 4, 2000, 50, 120); 
+// chassis.pid_wait();
+// //pros::delay(500);
+
+// // Get corner here
+// intake.move(127);
+// chassis.pid_turn_set((60 + 10)*sgn, 90); // Turn to corner
+// chassis.pid_wait_quick_chain();
+// set_drive(27 - 10, 127); // Drive into corner
+intake.move(127);
 long start = pros::millis();
 while (pros::millis() - start < 1500) {
   chassis.drive_set(127, 127);
   pros::delay(20);
 }
+intake.move(127);
 //chassis.pid_wait_quick_chain();
 //pros::delay(200);
 chassis.pid_turn_set(45 * sgn, 127); // Turn to go to ladder
 chassis.pid_wait();
-set_drive(-52, 110); // Drive out of corner
+intake.move(127);
+set_drive(-52 - 1.5, 110); // Drive out of corner
 chassis.pid_wait();
 
 
@@ -1790,7 +1805,7 @@ void worldsMogoRush(bool isBlue) {
   set_drive(32 + 4, 2500, 126, 127); // Move to first mogo
   pros::delay(100);
   intake.move(-127);
-  startColorUntil(1);
+  //startColorUntil(1);
   //leftDoinker.toggle();
   //pros::delay(200);
   //intake.move(127);
@@ -1836,9 +1851,12 @@ void worldsMogoRush(bool isBlue) {
   chassis.pid_wait_until(16);
   set_drive(-2,127); // Move back a bit to intake ring
   chassis.pid_wait_until(-1);
-  chassis.pid_turn_set(90 * sgn, 90); // Turn to first mogo
-  chassis.pid_wait_until(2);
-  intake.move(80);
+  chassis.pid_turn_set((90 + 3) * sgn, 90); // Turn to first mogo)
+  //intake.move(100);
+  //pros::delay(100);
+  //intake.move(80);
+  intake.move(0);
+  //chassis.pid_wait_until(2);
   chassis.pid_wait();
   set_drive(-17 + 5-0.5-2, 2000, 0, 80); // Move to first mogo
   chassis.pid_wait_until(-7);
@@ -1846,31 +1864,52 @@ void worldsMogoRush(bool isBlue) {
   chassis.pid_wait_until(-10 + 2);
   mogoClamp.toggle(); // Clamp first mogo
   intake.move(127);
-  stopColorUntilFunction();
+  //stopColorUntilFunction();
   chassis.pid_wait_until(-11);
-  chassis.pid_drive_set(40 + 3, 127); // Move to push ring
-  intake.move(127);
-  chassis.pid_wait_until(15);
+  chassis.pid_turn_set(90 * sgn, 90); // Turn to second mogo
+  chassis.pid_wait();
+  chassis.pid_drive_set(21 + 2, 127); // Move forward
+  chassis.pid_wait_until(19 + 2);
+  chassis.pid_turn_set(0 * sgn, 90); // Turn against wall
   intake.move(-127);
-  chassis.pid_wait_until(25 - 5);
-  mogoClamp.toggle(); // Release mogo
+  chassis.pid_wait_quick_chain();
+  mogoClamp.toggle(); // drop first mogo
+  chassis.pid_turn_set(135 * sgn, 90); // Turn to second mogo
+  intake.move(-127);
   chassis.pid_wait();
-  //chassis.pid_drive_set(-5, 127); // Move back a bit
-  //chassis.pid_wait();
-  chassis.pid_turn_set((135 - 7.5 + 1) * sgn, 90); // Turn to second mogo
-  chassis.pid_wait();
-  set_drive(-35 - 3-2, 2000, 65, 90); // Move to second mogo
+  chassis.pid_drive_set(-27, 100); // Move to second mogo
   chassis.pid_wait_until(-10);
-  chassis.pid_speed_max_set(60);
-  chassis.pid_wait_until(-30 - 3);
+  chassis.pid_speed_max_set(65);
+  chassis.pid_wait_until(-25);
   mogoClamp.toggle(); // Clamp second mogo
   chassis.pid_wait();
-  intake.move(127);
-  startColorUntil(1);
-  chassis.pid_turn_set((135.5-5+3) * sgn, 90); // Turn to corner
+
+  //chassis.pid_drive_set(43 - 20, 127); // Move to push ring
+  //intake.move(127);
+  //chassis.pid_wait_until(15);
+  //chassis.pid_wait_until(25 - 3);
+  //mogoClamp.toggle(); // Release mogo
+  // chassis.pid_wait();
+  // //chassis.pid_drive_set(-5, 127); // Move back a bit
+  // //chassis.pid_wait();
+  // chassis.pid_turn_set((135 - 7.5 + 1) * sgn, 90); // Turn to second mogo
+  // chassis.pid_wait();
+  // set_drive(-35 - 3-2, 2000, 65, 90); // Move to second mogo
+  // chassis.pid_wait_until(-10);
+  // chassis.pid_speed_max_set(60);
+  // chassis.pid_wait_until(-30 - 3);
+  // mogoClamp.toggle(); // Clamp second mogo
+  // chassis.pid_wait();
+  // intake.move(127);
+  // //startColorUntil(1);
+  chassis.pid_drive_set(15, 127); // Move to push ring
   chassis.pid_wait_quick_chain();
-  intake.move(127);
-  set_drive(30+1);
+  // chassis.pid_turn_set((135.5 - 2 + 1) * sgn, 90); // Turn to corner
+  // chassis.pid_wait_quick_chain();
+  // intake.move(127);
+  // set_drive(30+1);
+  // chassis.pid_wait_quick_chain();
+  chassis.pid_turn_set(130 * sgn, 90); // Turn to corner
   chassis.pid_wait_quick_chain();
   intake.move(127);
   intakeUnstuckActivated =false;
@@ -1880,11 +1919,11 @@ void worldsMogoRush(bool isBlue) {
    pros::delay(10);
   }
 
-  chassis.pid_drive_set(-40 + 3, 127);
-  chassis.pid_wait_until(-39 + 3);
-  chassis.pid_turn_set(225-5,127);
+  chassis.pid_drive_set(-39, 127);
+  chassis.pid_wait_until(-37);
+  chassis.pid_turn_set(220,127);
   chassis.pid_wait();
-  chassis.pid_drive_set(40-4-2+1,127);
+  chassis.pid_drive_set(40-5 - 1,127);
   chassis.pid_wait();
   ChangeLBState(EXTENDED);/*
   intake.move(100);
