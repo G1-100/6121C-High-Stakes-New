@@ -164,12 +164,6 @@ void autonomous() {
 	ladybrown1.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
   ladybrown2.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
   ladybrown2.tare_position();
-
-  // Initialize MCL for localization
-  mcl.start();
-  
-  // Check if mapping mode is triggered
-  check_mapping_mode();
   
   // If mapping mode wasn't triggered, run the normal autonomous routine
   //pros::Task logger_task(logger);

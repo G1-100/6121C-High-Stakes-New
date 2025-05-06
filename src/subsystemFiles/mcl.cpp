@@ -21,11 +21,12 @@ void initializeParticles() {
     }
 }
 
-void motionUpdate(double dx, double dy, double dtheta) {
+void motionUpdate(double dx, double dy) {
+    double theta = chassis.odom_theta_get() * M_PI / 180.0; // Get odometry theta in radians
     for (auto &particle : particles) {
-        particle.x += dx + std::normal_distribution<double>(0, 0.5)(generator);
-        particle.y += dy + std::normal_distribution<double>(0, 0.5)(generator);
-        particle.theta += dtheta + std::normal_distribution<double>(0, 1.0)(generator);
+        particle.x += dx * cos(theta) - dy * sin(theta);
+        particle.y += dx * sin(theta) + dy * cos(theta);
+        particle.theta = chassis.odom_theta_get(); // Use odometry theta directly
     }
 }
 
@@ -79,7 +80,7 @@ void mclTask() {
         double dx = 1.0; // Change in x
         double dy = 0.5; // Change in y
         double dtheta = 5.0; // Change in theta
-        motionUpdate(dx, dy, dtheta);
+        motionUpdate(dx, dy);
 
         // Example sensor update (replace with actual sensor data)
         double sensorReading = rightAlignmentSensor.get_distance() * 0.0393701; // Convert to inches
