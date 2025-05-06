@@ -15,7 +15,7 @@ double STOP1_5 = STOP1 + 45;
 // DescoreExtended
 double STOP1_75 = STOP1 + 110 + 20;
 // Extended
-double STOP2 = 190 - 28 + 5; // angle of stop 2 - 130
+double STOP2 = 190 - 23 + 10; // angle of stop 2 - 130
 // Almostfullextended + 20, Fullextended
 double STOP3 = 190 + 1 + 3;
 

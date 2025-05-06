@@ -18,9 +18,9 @@ void skills() {
     ColorLoopActive = false;
     colorFiltrationActive = false;
 
-    pros::delay(200);
-    intake.move(-127);
-    pros::delay(300 - 50);
+    //pros::delay(200);
+    //intake.move(-127);
+    //pros::delay(300 - 50);
     intake.move(0);
 
     set_drive(-19.5 + 0.5, 1500, 0, 70); // move away from alliance stake

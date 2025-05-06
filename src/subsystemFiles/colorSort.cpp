@@ -64,7 +64,7 @@ void doColorSort() {
         }
 
         const int PROXIMITYDIFFREQUIRED = 40 + 40; // used to activate color sort as a prerequisite
-        const int PROXIMITYCUSHION = 31.5 - 2 + 5; // acts as an earlier activation for color sort
+        const int PROXIMITYCUSHION = 31.5 - 3 + 1; // acts as an earlier activation for color sort
         const int COLORCUSHION = 5; // acts as a cushion for color detection
        
         if (ColorLoopActive) {
