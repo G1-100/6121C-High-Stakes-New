@@ -1640,7 +1640,7 @@ chassis.pid_wait_quick_chain();
 chassis.pid_drive_set(14 + 2, 127); // drive to corner
 chassis.pid_wait_quick_chain();
 intake.move(127);
-chassis.pid_turn_set((57 - 8) * sgn, 127); // turn to corner
+chassis.pid_turn_set((57) * sgn, 127); // turn to corner
 chassis.pid_wait_quick_chain();
 // set_drive(20 + 4, 2000, 50, 120); 
 // chassis.pid_wait();
