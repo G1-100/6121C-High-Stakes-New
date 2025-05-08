@@ -10,10 +10,10 @@ void skills() {
 
     chassis.odom_xyt_set(-60.5, -13, (-46)); // starts at middle of red alliance line
     //pros::Task lb_task(LBLoop);
-    LBState = EXTENDED;
-    LBRotation.set_position(STOP1);
-    ladybrown2.set_zero_position(-46);
-    ChangeLBState(FULLEXTENDED);
+    //LBState = EXTENDED;
+    //LBRotation.set_position(STOP1);
+    //ladybrown2.set_zero_position(-46);
+    //ChangeLBState(FULLEXTENDED);
     intakeUnstuckActivated = true;
     ColorLoopActive = false;
     colorFiltrationActive = false;
