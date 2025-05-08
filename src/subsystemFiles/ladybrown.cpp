@@ -171,7 +171,7 @@ void LBExtend(double point) {
         negPower = -10;
         angleChange = STOP2 - STOP1;
         iterationsRequired = 1;
-        timeOut = 2500;
+        timeOut = 2500 + 2000;
     } else if (point > 2) {
         if (point == 2.8) {
             GOALANGLE = STOP3 - 20;

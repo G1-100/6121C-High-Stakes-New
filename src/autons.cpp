@@ -1806,6 +1806,162 @@ void barcbotsMogoRush(bool isBlue) {
   chassis.pid_wait();
 }
 
+// void worldsMogoRush(bool isBlue) {
+
+//   // PRELOAD near corner, set up to intake two stack during first movement
+ 
+//   colorFiltrationActive = false;
+ 
+//  int sgn=isBlue?1:-1;
+//   //chassis.odom_xyt_set(0, 0, (-63+180) * sgn); // Set position
+//   LBState = PROPPED;
+//   ladybrown2.set_zero_position(-25); // ladybrown currently 46 degrees above
+//   ChangeLBState(SEMIEXTENDED);
+//   chassis.odom_xyt_set(0, 0, (-89) * sgn); // Set position
+//   set_drive(32 + 4, 2500, 126, 127); // Move to first mogo
+//   pros::delay(100);
+//   intake.move(-127);
+//   //startColorUntil(1);
+//   //leftDoinker.toggle();
+//   //pros::delay(200);
+//   //intake.move(127);
+//   chassis.pid_wait_until(12 - 6);
+//   if (isBlue) {
+//    rightDoinker.toggle();
+//   } else {
+//    leftDoinker.toggle();
+//   }
+//   pros::delay(150);
+//   intake.move(0);
+//   chassis.pid_wait_until(30.5 - 0.75);
+//   if (isBlue) {
+//    rightDoinker.toggle();
+//   } else {
+//    leftDoinker.toggle();
+//   }
+//   chassis.pid_wait_until(30.5 + 4);
+//   // pros::delay(500);
+//   // chassis.pid_turn_set(-150 * sgn); // Turn mogo to disrupt
+//   // chassis.pid_wait();
+//   set_drive(-8 - 4, 1500, 120); // Move back
+//   chassis.pid_wait();
+//   if (isBlue) {
+//    rightDoinker.toggle();
+//   } else {
+//    leftDoinker.toggle();
+//   }
+//   pros::delay(300);
+//   set_drive(-7 - 5);
+//   chassis.pid_wait();
+//   if (isBlue) {
+//    rightDoinker.toggle();
+//   } else {
+//    leftDoinker.toggle();
+//   }
+//   std::cout <<"CUR THETA: " << chassis.odom_theta_get() << std::endl;
+  
+//   chassis.pid_turn_set((-57) * sgn, 90); // Turn to first ring
+//   chassis.pid_wait();
+//   intake.move(127);
+//   set_drive(17 - 1+2); // Move to first ring
+//   chassis.pid_wait_until(16);
+//   set_drive(-2,127); // Move back a bit to intake ring
+//   chassis.pid_wait_until(-1);
+//   chassis.pid_turn_set((90 + 3) * sgn, 90); // Turn to first mogo)
+//   //intake.move(100);
+//   //pros::delay(100);
+//   //intake.move(80);
+//   intake.move(0);
+//   //chassis.pid_wait_until(2);
+//   chassis.pid_wait();
+//   set_drive(-17 + 5-0.5-2, 2000, 0, 80); // Move to first mogo
+//   chassis.pid_wait_until(-7);
+//   chassis.pid_speed_max_set(70);
+//   chassis.pid_wait_until(-10 + 2);
+//   mogoClamp.toggle(); // Clamp first mogo
+//   intake.move(127);
+//   //stopColorUntilFunction();
+//   chassis.pid_wait_until(-11);
+//   chassis.pid_turn_set(90 * sgn, 90); // Turn to second mogo
+//   chassis.pid_wait();
+//   chassis.pid_drive_set(21 + 2, 127); // Move forward
+//   chassis.pid_wait_until(19 + 2);
+//   chassis.pid_turn_set(0 * sgn, 90); // Turn against wall
+//   intake.move(-127);
+//   chassis.pid_wait_quick_chain();
+//   mogoClamp.toggle(); // drop first mogo
+//   chassis.pid_turn_set(135 * sgn, 90); // Turn to second mogo
+//   intake.move(-127);
+//   chassis.pid_wait();
+//   chassis.pid_drive_set(-27, 100); // Move to second mogo
+//   chassis.pid_wait_until(-10);
+//   chassis.pid_speed_max_set(65);
+//   chassis.pid_wait_until(-25);
+//   mogoClamp.toggle(); // Clamp second mogo
+//   chassis.pid_wait();
+
+//   //chassis.pid_drive_set(43 - 20, 127); // Move to push ring
+//   //intake.move(127);
+//   //chassis.pid_wait_until(15);
+//   //chassis.pid_wait_until(25 - 3);
+//   //mogoClamp.toggle(); // Release mogo
+//   // chassis.pid_wait();
+//   // //chassis.pid_drive_set(-5, 127); // Move back a bit
+//   // //chassis.pid_wait();
+//   // chassis.pid_turn_set((135 - 7.5 + 1) * sgn, 90); // Turn to second mogo
+//   // chassis.pid_wait();
+//   // set_drive(-35 - 3-2, 2000, 65, 90); // Move to second mogo
+//   // chassis.pid_wait_until(-10);
+//   // chassis.pid_speed_max_set(60);
+//   // chassis.pid_wait_until(-30 - 3);
+//   // mogoClamp.toggle(); // Clamp second mogo
+//   // chassis.pid_wait();
+//   // intake.move(127);
+//   // //startColorUntil(1);
+//   chassis.pid_drive_set(15, 127); // Move to push ring
+//   chassis.pid_wait_quick_chain();
+//   // chassis.pid_turn_set((135.5 - 2 + 1) * sgn, 90); // Turn to corner
+//   // chassis.pid_wait_quick_chain();
+//   // intake.move(127);
+//   // set_drive(30+1);
+//   // chassis.pid_wait_quick_chain();
+//   chassis.pid_turn_set(130 * sgn, 90); // Turn to corner
+//   chassis.pid_wait_quick_chain();
+//   intake.move(127);
+//   intakeUnstuckActivated =false;
+//   long startMillis = pros::millis();
+//   while (pros::millis() - startMillis < 1000 + 500) {
+//    chassis.drive_set(80, 80);
+//    pros::delay(10);
+//   }
+
+//   chassis.pid_drive_set(-39, 127);
+//   chassis.pid_wait_until(-37);
+//   chassis.pid_turn_set(220,127);
+//   chassis.pid_wait();
+//   chassis.pid_drive_set(40-5 - 1,127);
+//   chassis.pid_wait();
+//   ChangeLBState(EXTENDED);/*
+//   intake.move(100);
+//  chassis.pid_wait_until(-9);
+//  intakeUnstuckActivated = true;
+//  chassis.pid_turn_set(256 * sgn, 127);
+//  chassis.pid_wait();
+//  set_drive(40.5 - 1.5);
+//  chassis.pid_wait_until(5);
+//  stopColorUntilFunction();
+//   intake.move(127);
+//  //allianceColorBlue = !allianceColorBlue;
+//  chassis.pid_wait();
+//  chassis.pid_turn_set((-135 + 3) * sgn, 90);
+//  chassis.pid_wait();
+//  ChangeLBState(EXTENDED);
+//  set_drive(4 - 1);
+//  chassis.pid_wait();*/
+
+
+// }
+
 void worldsMogoRush(bool isBlue) {
 
   // PRELOAD near corner, set up to intake two stack during first movement
@@ -1821,7 +1977,7 @@ void worldsMogoRush(bool isBlue) {
   set_drive(32 + 4, 2500, 126, 127); // Move to first mogo
   pros::delay(100);
   intake.move(-127);
-  //startColorUntil(1);
+  startColorUntil(1);
   //leftDoinker.toggle();
   //pros::delay(200);
   //intake.move(127);
@@ -1833,7 +1989,7 @@ void worldsMogoRush(bool isBlue) {
   }
   pros::delay(150);
   intake.move(0);
-  chassis.pid_wait_until(30.5 - 0.75);
+  chassis.pid_wait_until(27 + 3.5);
   if (isBlue) {
    rightDoinker.toggle();
   } else {
@@ -1843,14 +1999,15 @@ void worldsMogoRush(bool isBlue) {
   // pros::delay(500);
   // chassis.pid_turn_set(-150 * sgn); // Turn mogo to disrupt
   // chassis.pid_wait();
-  set_drive(-8 - 4, 1500, 120); // Move back
-  chassis.pid_wait();
+  set_drive(-12, 1500, 120); // Move back
+  chassis.pid_wait_until(-9);
   if (isBlue) {
    rightDoinker.toggle();
   } else {
    leftDoinker.toggle();
   }
-  pros::delay(300);
+  chassis.pid_wait();
+  pros::delay(300 - 50);
   set_drive(-7 - 5);
   chassis.pid_wait();
   if (isBlue) {
@@ -1865,99 +2022,78 @@ void worldsMogoRush(bool isBlue) {
   intake.move(127);
   set_drive(17 - 1+2); // Move to first ring
   chassis.pid_wait_until(16);
+  intake.move(100);
   set_drive(-2,127); // Move back a bit to intake ring
-  chassis.pid_wait_until(-1);
-  chassis.pid_turn_set((90 + 3) * sgn, 90); // Turn to first mogo)
-  //intake.move(100);
-  //pros::delay(100);
-  //intake.move(80);
-  intake.move(0);
-  //chassis.pid_wait_until(2);
   chassis.pid_wait();
-  set_drive(-17 + 5-0.5-2, 2000, 0, 80); // Move to first mogo
+  intake.move(85);
+  chassis.pid_turn_set(90 * sgn, 90); // Turn to first mogo
+  chassis.pid_wait_until(2);
+  //intake.move(0);
+  intake.move(45 + 10);
+  chassis.pid_wait();
+  set_drive(-17 + 5, 2000, 0, 80); // Move to first mogo
   chassis.pid_wait_until(-7);
   chassis.pid_speed_max_set(70);
   chassis.pid_wait_until(-10 + 2);
   mogoClamp.toggle(); // Clamp first mogo
   intake.move(127);
-  //stopColorUntilFunction();
+  stopColorUntilFunction();
   chassis.pid_wait_until(-11);
-  chassis.pid_turn_set(90 * sgn, 90); // Turn to second mogo
-  chassis.pid_wait();
-  chassis.pid_drive_set(21 + 2, 127); // Move forward
-  chassis.pid_wait_until(19 + 2);
-  chassis.pid_turn_set(0 * sgn, 90); // Turn against wall
+  chassis.pid_drive_chain_constant_set(2);
+  chassis.pid_drive_set(43 - 5, 127); // Move to push ring
+  intake.move(127);
+  chassis.pid_wait_until(15 - 9);
+  mogoClamp.toggle(); // Release mogo
   intake.move(-127);
   chassis.pid_wait_quick_chain();
-  mogoClamp.toggle(); // drop first mogo
-  chassis.pid_turn_set(135 * sgn, 90); // Turn to second mogo
-  intake.move(-127);
+  //chassis.pid_drive_set(-5, 127); // Move back a bit
+  //chassis.pid_wait();
+  chassis.pid_turn_set((127 - 2) * sgn, 90); // Turn to second mogo
   chassis.pid_wait();
-  chassis.pid_drive_set(-27, 100); // Move to second mogo
+  set_drive(-35 - 3, 2000, 65, 90); // Move to second mogo
   chassis.pid_wait_until(-10);
-  chassis.pid_speed_max_set(65);
-  chassis.pid_wait_until(-25);
+  chassis.pid_speed_max_set(60);
+  chassis.pid_wait_until(-30 - 3);
   mogoClamp.toggle(); // Clamp second mogo
   chassis.pid_wait();
-
-  //chassis.pid_drive_set(43 - 20, 127); // Move to push ring
-  //intake.move(127);
-  //chassis.pid_wait_until(15);
-  //chassis.pid_wait_until(25 - 3);
-  //mogoClamp.toggle(); // Release mogo
-  // chassis.pid_wait();
-  // //chassis.pid_drive_set(-5, 127); // Move back a bit
-  // //chassis.pid_wait();
-  // chassis.pid_turn_set((135 - 7.5 + 1) * sgn, 90); // Turn to second mogo
-  // chassis.pid_wait();
-  // set_drive(-35 - 3-2, 2000, 65, 90); // Move to second mogo
-  // chassis.pid_wait_until(-10);
-  // chassis.pid_speed_max_set(60);
-  // chassis.pid_wait_until(-30 - 3);
-  // mogoClamp.toggle(); // Clamp second mogo
-  // chassis.pid_wait();
-  // intake.move(127);
-  // //startColorUntil(1);
-  chassis.pid_drive_set(15, 127); // Move to push ring
+  intake.move(127);
+  //startColorUntil(1);
+  chassis.pid_turn_set((135.5 + 3) * sgn, 90); // Turn to corner
   chassis.pid_wait_quick_chain();
-  // chassis.pid_turn_set((135.5 - 2 + 1) * sgn, 90); // Turn to corner
-  // chassis.pid_wait_quick_chain();
-  // intake.move(127);
-  // set_drive(30+1);
-  // chassis.pid_wait_quick_chain();
-  chassis.pid_turn_set(130 * sgn, 90); // Turn to corner
+  intake.move(127);
+  set_drive(30);
   chassis.pid_wait_quick_chain();
   intake.move(127);
   intakeUnstuckActivated =false;
   long startMillis = pros::millis();
-  while (pros::millis() - startMillis < 1000 + 500) {
-   chassis.drive_set(80, 80);
+  while (pros::millis() - startMillis < 1500 - 500) {
+   chassis.drive_set(100, 100);
    pros::delay(10);
   }
 
-  chassis.pid_drive_set(-39, 127);
-  chassis.pid_wait_until(-37);
-  chassis.pid_turn_set(220,127);
-  chassis.pid_wait();
-  chassis.pid_drive_set(40-5 - 1,127);
-  chassis.pid_wait();
-  ChangeLBState(EXTENDED);/*
-  intake.move(100);
- chassis.pid_wait_until(-9);
+
+  chassis.pid_drive_set(-10, 127);
+  intake.move(127);
+ chassis.pid_wait_until(-8);
+ chassis.pid_drive_set(5, 127); // Drive out of corner
+ chassis.pid_wait_quick_chain();
+ chassis.pid_drive_set(-5, 127);
+ chassis.pid_wait_quick_chain();
  intakeUnstuckActivated = true;
- chassis.pid_turn_set(256 * sgn, 127);
+ chassis.pid_turn_set((256 - 4) * sgn, 127);
  chassis.pid_wait();
- set_drive(40.5 - 1.5);
+ set_drive(39);
  chassis.pid_wait_until(5);
  stopColorUntilFunction();
+ mogoClamp.toggle();
   intake.move(127);
  //allianceColorBlue = !allianceColorBlue;
- chassis.pid_wait();
+ chassis.pid_wait_until(38 - 1);
  chassis.pid_turn_set((-135 + 3) * sgn, 90);
  chassis.pid_wait();
  ChangeLBState(EXTENDED);
- set_drive(4 - 1);
- chassis.pid_wait();*/
+ set_drive(3);
+ chassis.pid_wait();
 
 
 }
