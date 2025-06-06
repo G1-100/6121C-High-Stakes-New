@@ -158,12 +158,6 @@ void autonomous() {
   //pros::Task logger_task(logger);
   //skills();
   //ringWalk(allianceColorBlue);
-  //RingRush6(allianceColorBlue);
-  //stateSoloAwp(allianceColorBlue);
-  //safeFourRing(allianceColorBlue);
-  //newMogoRush(allianceColorBlue);
-  //barcbotsMogoRush(allianceColorBlue);
-  worldsMogoRush(allianceColorBlue);
 
   // ez::as::auton_selector.selected_auton_call();  // Calls selected auton from autonomous selector
 }
@@ -327,15 +321,11 @@ void opcontrol() {
       calledMoveBackForAWS = false;
     }
 
-    //chassis.opcontrol_tank();  // Tank control
-     chassis.opcontrol_arcade_standard(ez::SPLIT);   // Standard split arcade
+    chassis.opcontrol_tank();  // Tank control
+    //chassis.opcontrol_arcade_standard(ez::SPLIT);   // Standard split arcade
     // chassis.opcontrol_arcade_standard(ez::SINGLE);  // Standard single arcade
     // chassis.opcontrol_arcade_flipped(ez::SPLIT);    // Flipped split arcade
     // chassis.opcontrol_arcade_flipped(ez::SINGLE);   // Flipped single arcade
-
-    // . . .
-    // Put more user control code here!
-    // . . .
 
     pros::delay(ez::util::DELAY_TIME);  // This is used for timer calculations!  Keep this ez::util::DELAY_TIME
   }
